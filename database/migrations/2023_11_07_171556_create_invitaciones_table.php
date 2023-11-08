@@ -13,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('invitaciones', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->text('texto');
+            $table->string('imagen')->nullable();
+            $table->enum('tipo_menu', ['Menu Fijo con Precio', 'Menu Fijo sin Precio', 'Menu a Elegir con Precio', 'Menu a Elegir sin Precio']);
+            $table->foreignUuid('creado_por')->constrained('users');
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('invitaciones');
     }
 };
