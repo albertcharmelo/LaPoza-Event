@@ -194,6 +194,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\DzServiceProvider::class,
+
 
     ],
 
@@ -209,6 +211,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
+        'DzHelper' => App\Helper\DzHelper::class,
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
