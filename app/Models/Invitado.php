@@ -28,6 +28,7 @@ class Invitado extends Model
     /**
      * Obtener la invitacion asociada al invitado
      *
+     * *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function invitacion()
