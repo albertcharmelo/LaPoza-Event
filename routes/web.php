@@ -38,7 +38,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 /* ---------------------------------------------------------------------------------------------- */
 
 
-Route::get('/', function () {
-    $page_title = 'Dashboard';
-    return view('welcome')->with('page_title', $page_title);
-})->middleware('auth');
+Route::get('/', [\App\Http\Controllers\EventoController::class, 'index'])->middleware('auth');
+
+
+/* ------------------------------------------- EVENTOS ------------------------------------------ */
+Route::post('/eventos', [App\Http\Controllers\EventoController::class, 'getEventos'])->middleware('auth');
