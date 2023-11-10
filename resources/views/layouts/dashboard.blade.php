@@ -41,7 +41,7 @@ $action = DzHelper::action();
     <link href="{{ asset($style) }}" rel="stylesheet" type="text/css" />
     @endforeach
     @endif
-
+    @yield('css')
 </head>
 
 <body>
