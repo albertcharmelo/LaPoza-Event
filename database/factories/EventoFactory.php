@@ -25,6 +25,7 @@ class EventoFactory extends Factory
             'telefono_organizador' => fake()->phoneNumber(),
             'numero_invitados' => fake()->numberBetween(6, 100),
             'ingreso_bruto' => fake()->numberBetween(1000, 100000),
+            'status' => fake()->boolean(),
             'fecha' => fake()->date(),
         ];
     }
