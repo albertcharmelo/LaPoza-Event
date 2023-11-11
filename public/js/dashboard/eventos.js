@@ -30,10 +30,16 @@
         columns: [
             { data: "nombre" },
             { data: "email_organizador" },
-
-            { data: "numero_invitados" },
+            { data: "comensales" },
             { data: "fecha" },
-            { data: "ingreso_bruto" },
+            {
+                data: "status",
+                render: function (data) {
+                    var text = data === 1 ? "Activo" : "Inactivo";
+                    var color = data === 1 ? "text-success" : "text-warning";
+                    return `<span class="${color}">${text}</span>`;
+                },
+            },
         ],
     });
 

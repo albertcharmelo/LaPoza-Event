@@ -43,3 +43,7 @@ Route::get('/', [\App\Http\Controllers\EventoController::class, 'index'])->middl
 
 /* ------------------------------------------- EVENTOS ------------------------------------------ */
 Route::post('/eventos', [App\Http\Controllers\EventoController::class, 'getEventos'])->middleware('auth');
+Route::get('/eventos/{evento}', [App\Http\Controllers\EventoController::class, 'details'])->middleware('auth');
+
+/* ------------------------------------------ INVITADOS ----------------------------------------- */
+Route::post('/invitados', [App\Http\Controllers\InvitadoController::class, 'getInvitados'])->middleware('auth');

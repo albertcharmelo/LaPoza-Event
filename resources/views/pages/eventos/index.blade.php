@@ -17,7 +17,7 @@
                 <div class="card-header">
                     <h4 class="card-title">Todos los eventos</h4>
                 </div>
-                <div class="card-body">
+                <div class="card-body px-3">
                     <div class="table-responsive">
                         <table id="eventosTable" class="display" style="min-width: 845px">
                             <thead>
@@ -25,10 +25,9 @@
 
                                     <th>Nombre</th>
                                     <th>Email</th>
-
-                                    <th>Invitados</th>
+                                    <th>Comensales</th>
                                     <th>Fecha</th>
-                                    <th>Ingreso bruto</th>
+                                    <th>Estado</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -38,9 +37,9 @@
                                 <tr>
                                     <th>Nombre</th>
                                     <th>Email</th>
-                                    <th>Invitados</th>
+                                    <th>Comensales</th>
                                     <th>Fecha</th>
-                                    <th>Ingreso bruto</th>
+                                    <th>Estado</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -56,6 +55,4 @@
 <!-- Datatable -->
 <script src="{{ asset('vendor/datatables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/dashboard/eventos.js') }}" type="text/javascript"></script>
-
-
 @endsection

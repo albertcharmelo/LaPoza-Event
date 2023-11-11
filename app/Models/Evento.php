@@ -10,6 +10,7 @@ class Evento extends Model
 {
     use HasFactory, HasUuids;
     protected $table = 'eventos';
+    protected $with = ['invitados', 'invitacion'];
     protected $fillable = [
         'id',
         'nombre',
@@ -42,6 +43,27 @@ class Evento extends Model
     {
         return $this->hasMany(Invitado::class, 'evento_id', 'id');
     }
+
+    /**
+     * Devuelve una relación de todos los invitados confirmados para este evento.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function invitadosConfirmados()
+    {
+        return $this->hasMany(Invitado::class, 'evento_id', 'id')->where('asistencia_confirmada', true);
+    }
+
+    /**
+     * Devuelve una relación de todos los invitados ausentes en este evento.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function invitadosAusentes()
+    {
+        return $this->hasMany(Invitado::class, 'evento_id', 'id')->where('asistencia_confirmada', false);
+    }
+
 
     /**
      * Obtener las opciones de menu asociadas al evento

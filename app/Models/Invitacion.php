@@ -60,4 +60,15 @@ class Invitacion extends Model
     {
         return $this->hasMany(MenuOpcion::class, 'invitacion_id', 'id');
     }
+
+    /**
+     * Obtener el creador de la invitacion
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+
+    public function creador()
+    {
+        return $this->hasOne(User::class, 'id', 'creado_por');
+    }
 }
