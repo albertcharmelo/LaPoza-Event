@@ -9,6 +9,7 @@ use App\Models\Evento;
 use App\Models\Imagen;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
+use App\Http\Controllers\UtilController;
 
 
 class InvitacionesController extends Controller
@@ -48,15 +49,19 @@ class InvitacionesController extends Controller
                 $nombre = $file->getClientOriginalName();
                 $formato = $file->getClientOriginalExtension();
                 $size = $file->getSize();                
-                $url = $file->store('images/invitaciones', 'public');                
+                // $url = $file->store('images/invitaciones', 'public');
+                $requestImagen = new Request();
+                $requestImagen->merge(['imagen' => $file]);
+                $imagen_base64 = UtilController::crearImagenBase64($requestImagen);
                 $imagen = Imagen::create([
                     'nombre' => $nombre,
-                    'url' => $url,
+                    // 'url' => $url,
                     'formato' => $formato,
                     'size' => $size,
+                    'imagen_base64' => $imagen_base64,
                     'creado_por' => $creado_por,
                 ]);
-                $imagenes[] = $imagen;     
+                $imagenes[] = $imagen;
 
             }            
             $imagenes = DB::table('imagenes')->where('creado_por', $creado_por)->get();
