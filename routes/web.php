@@ -47,3 +47,6 @@ Route::get('/eventos/{evento}', [App\Http\Controllers\EventoController::class, '
 
 /* ------------------------------------------ INVITADOS ----------------------------------------- */
 Route::post('/invitados', [App\Http\Controllers\InvitadoController::class, 'getInvitados'])->middleware('auth');
+
+/* ------------------------------------------- QRCODES ------------------------------------------ */
+Route::get('/qrcodes/generate', [App\Http\Controllers\QrController::class, 'generate'])->middleware('auth');

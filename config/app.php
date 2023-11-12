@@ -195,6 +195,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\DzServiceProvider::class,
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
 
 
     ],
@@ -212,6 +213,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         'DzHelper' => App\Helper\DzHelper::class,
+        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
