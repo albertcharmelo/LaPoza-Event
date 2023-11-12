@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\InvitacionesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,3 +48,9 @@ Route::get('/eventos/{evento}', [App\Http\Controllers\EventoController::class, '
 
 /* ------------------------------------------ INVITADOS ----------------------------------------- */
 Route::post('/invitados', [App\Http\Controllers\InvitadoController::class, 'getInvitados'])->middleware('auth');
+
+/* ------------------------------------------- INVITACIONES  ------------------------------------------ */
+Route::prefix('/invitaciones')->group(function () {
+    Route::get('/index', [InvitacionesController::class, 'index'])->middleware('auth')->name('invitaciones.index');
+    Route::post('/agregarInvitacion', [InvitacionesController::class, 'agregarInvitacion'])->middleware('auth');
+});
