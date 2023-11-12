@@ -12,10 +12,10 @@ class Invitacion extends Model
     protected $table = 'invitaciones';
     protected $fillable = [
         'id',
-        'evento_id',
+        'titulo',
         'texto',
-        'imagen',
         'tipo_menu',
+        'evento_id',
         'creado_por',
         'created_at',
         'updated_at',
@@ -71,4 +71,15 @@ class Invitacion extends Model
     {
         return $this->hasOne(User::class, 'id', 'creado_por');
     }
+
+    /**
+     * Obtener las imagenes asociadas a la invitacion
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+
+    public function imagenes()
+    {        
+        return $this->belongsToMany(Imagen::class, 'invitaciones_imagenes', 'invitacion_id', 'imagen_id');
+    }    
 }
