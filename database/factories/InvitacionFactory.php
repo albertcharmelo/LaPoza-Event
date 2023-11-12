@@ -23,6 +23,7 @@ class InvitacionFactory extends Factory
 
         $array_menus = ['Menu Fijo con Precio', 'Menu Fijo sin Precio', 'Menu a Elegir con Precio', 'Menu a Elegir sin Precio'];
         return [
+            'titulo' => fake()->text(),
             'texto' => fake()->text(),
             'imagen' => fake()->imageUrl(960, 680, 'party', true),
             'tipo_menu' => fake()->randomElement($array_menus),
