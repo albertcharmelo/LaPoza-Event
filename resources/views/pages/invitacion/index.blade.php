@@ -14,6 +14,13 @@
     .sw-theme-default>.nav {
         box-shadow: none;
     }
+
+    .sw-theme-default .toolbar>.btn {
+
+        background-color: #FC410C;
+        border: 1px solid #FC410C;
+
+    }
 </style>
 @endsection
 @section('content')
