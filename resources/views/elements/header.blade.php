@@ -639,7 +639,7 @@
 				</div>
 				<ul class="navbar-nav header-right">
 					<li class="nav-item recipe">
-						<a href="javascript:void(0);" class="btn btn-primary btn-rounded">Crear invitación</a>
+						<a href= "{{ route('invitaciones.index') }}" class="btn btn-primary btn-rounded">Crear invitación</a>
 					</li>
 					<li class="nav-item dropdown notification_dropdown">
 						<a class="nav-link  ai-icon" href="javascript:void(0);" role="button" data-bs-toggle="dropdown">
