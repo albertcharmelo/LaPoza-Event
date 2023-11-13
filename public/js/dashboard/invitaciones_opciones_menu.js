@@ -22,6 +22,7 @@ btn_add_option.click(function () {
         badge.appendTo(listBadges);
         opciones_de_platos.push(option);
         input_add_option.val("");
+        input_add_option.focus();
     }
 });
 
