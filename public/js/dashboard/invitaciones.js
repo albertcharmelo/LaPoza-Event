@@ -2,16 +2,91 @@ let btnGuardar = $("#btnGuardar");
 let titulo = $("#titulo");
 let files = $("#files");
 let descripcion = $("#descripcion");
+let ckeditorInvitacion = $("#ckeditorInvitacion");
 let listoDocumentos = $("#listoDocumentos");
 let tipoMenu = $("#tipoMenu");
 let boxUploadMenu = $("#boxUploadMenu");
 let boxUploadOptions = $("#boxUploadOptions");
 let arrayFiles = [];
 let filesArray = [];
-document.addEventListener("DOMContentLoaded", function () {});
+
+$(document).ready(function () {
+    // SmartWizard initialize
+    var smartWizard = $("#smartwizard").smartWizard();
+
+    // Go to step 1
+    smartWizard.smartWizard("goToStep", 0);
+
+    smartWizard.on(
+        "leaveStep",
+        function (e, anchorObject, stepNumber, stepDirection) {
+            console.log(stepNumber, stepDirection);
+            if (stepNumber === 0) {
+                console.log("titulo: " + titulo.val());
+                console.log("titulo: ", titulo.val());                
+                if (titulo.val() == "") {
+                    Swal.fire({
+                        type: "warning",
+                        title: "¡Advertencia!",
+                        text: "Debe ingresar un título",
+                        confirmButtonText: "Aceptar",
+                        confirmButtonColor: "#3085d6",
+                        allowOutsideClick: false,
+                    });
+                }
+
+                if (CKeditor.getData() == "") {
+                    Swal.fire({
+                        type: "warning",
+                        title: "¡Advertencia!",
+                        text: "Debe ingresar un mensaje de invitación",
+                        confirmButtonText: "Aceptar",
+                        confirmButtonColor: "#3085d6",
+                        allowOutsideClick: false,
+                    });
+                    return false;
+                }
+
+                if (files.val() == "") {
+                    Swal.fire({
+                        type: "warning",
+                        title: "¡Advertencia!",
+                        text: "Debe seleccionar al menos un archivo",
+                        confirmButtonText: "Aceptar",
+                        confirmButtonColor: "#3085d6",
+                        allowOutsideClick: false,
+                    });
+                    return false;
+                }
+            }
+
+            // if (stepNumber === 1) {
+            //     if (
+            //         tipoMenu.val() == "Menu a Elegir con Precio" ||
+            //         tipoMenu.val() == "Menu a Elegir sin Precio"
+            //     ) {
+            //         if (boxUploadOptions.val() == "") {
+            //             Swal.fire({
+            //                 type: "warning",
+            //                 title: "¡Advertencia!",
+            //                 text: "Debe agregar los platos con sus opciones",
+            //                 confirmButtonText: "Aceptar",
+            //                 confirmButtonColor: "#3085d6",
+            //                 allowOutsideClick: false,
+            //             }).then((result) => {
+            //                 if (result.value) {
+            //                     boxUploadOptions.focus();
+            //                 }
+            //             });
+            //             return false;
+            //         }
+            //     }
+            // }
+        }
+    );
+});
 
 btnGuardar.on("click", function () {
-    agregarInvitacion();
     if (titulo.val() == "") {
         Swal.fire({
             type: "warning",
@@ -36,10 +111,56 @@ btnGuardar.on("click", function () {
         return false;
     }
 
+    if (files.val() == "") {
+        Swal.fire({
+            type: "warning",
+            title: "¡Advertencia!",
+            text: "Debe seleccionar al menos un archivo",
+            confirmButtonText: "Aceptar",
+            confirmButtonColor: "#3085d6",
+            allowOutsideClick: false,
+        });
+        return false;
+    }
+    
+    if (tipoMenu.val() == null) {        
+        Swal.fire({
+            type: "warning",
+            title: "¡Advertencia!",
+            text: "Debe seleccionar un tipo de menú",
+            confirmButtonText: "Aceptar",
+            confirmButtonColor: "#3085d6",
+            allowOutsideClick: false,
+        });
+        return false;
+    }
+
+    if (
+        tipoMenu.val() == "Menu a Elegir con Precio" ||
+        tipoMenu.val() == "Menu a Elegir sin Precio"
+    ) {
+        if (boxUploadOptions.val() == "") {
+            Swal.fire({
+                type: "warning",
+                title: "¡Advertencia!",
+                text: "Debe agregar los platos con sus opciones",
+                confirmButtonText: "Aceptar",
+                confirmButtonColor: "#3085d6",
+                allowOutsideClick: false,
+            }).then((result) => {
+                if (result.value) {
+                    boxUploadOptions.focus();
+                }
+            });
+            return false;
+        }
+    }
+    agregarInvitacion();    
+
     async function agregarInvitacion() {
         const data = new FormData();
         data.append("titulo", titulo.val());
-        data.append("descripcion", descripcion.val());
+        data.append("descripcion", CKeditor.getData());
         data.append("tipoMenu", tipoMenu.val());
         filesArray.forEach((file, index) => {
             data.append(`files[${index}]`, file);
