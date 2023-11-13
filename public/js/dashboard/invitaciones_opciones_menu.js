@@ -25,6 +25,11 @@ btn_add_option.click(function () {
     }
 });
 
+input_add_option.keyup(function (e) {
+    if (e.keyCode === 13) {
+        btn_add_option.click();
+    }
+});
 // para agregar un plato a la lista de platos
 btn_add_other_plate.click(function () {
     let list_badges_has_child = listBadges.children().length;
@@ -34,6 +39,7 @@ btn_add_other_plate.click(function () {
         listBadges.empty();
         input_add_option.val("");
         actualPlato.text(array_name_platos[platos_with_options.length]);
+        input_add_option.focus();
         addPlateOptionsWithPlate();
     }
 });

@@ -45,6 +45,57 @@
         height: 170px;
         cursor: pointer;
     }
+
+    .tab-content {
+        min-height: 490px;
+        height: auto !important;
+    }
+
+    .ck.ck-editor__main>.ck-editor__editable {
+        background: #212130 !important;
+    }
+
+    .ck.ck-reset_all,
+    .ck.ck-reset_all * {
+        color: white !important;
+    }
+
+    .ck.ck-toolbar {
+        background: #171622 !important;
+        border-color: #2e2e42 !important;
+    }
+
+    .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+        border-color: #2e2e42 !important;
+    }
+
+    .ck.ck-editor__main>.ck-editor__editable.ck-focused {
+        border-color: #624FD1 !important;
+    }
+
+    .ck.ck-list {
+
+        background: #2e2e42;
+    }
+
+
+
+    .ck.ck-button.ck-on,
+    a.ck.ck-button.ck-on {
+        background: #2e2e42 !important;
+
+    }
+
+    .ck.ck-button:not(.ck-disabled):hover,
+    a.ck.ck-button:not(.ck-disabled):hover {
+        background: #171622 !important;
+
+    }
+
+    .ck.ck-button {
+        background: #2e2e42 !important;
+
+    }
 </style>
 @endsection
 @section('content')
@@ -74,7 +125,7 @@
                                 </a>
                             </li>
                         </ul>
-                        <div class="tab-content">
+                        <div class="tab-content ">
                             <div id="wizard_invitacion_pte1" class="tab-pane" role="tabpanel">
                                 <div class="row">
                                     <div class="col-lg-12 mb-2">
@@ -88,7 +139,7 @@
                                         <div class="mb-3">
                                             <label for="comment" class="text-black font-w600 form-label">Mensaje de
                                                 invitacion</label>
-                                            <textarea class="form-control" id="ckeditorInvitacion"
+                                            <textarea class="form-control " id="ckeditorInvitacion"
                                                 name="descripcion"></textarea>
                                         </div>
                                     </div>
