@@ -32,6 +32,7 @@ $(document).ready(function () {
                         confirmButtonColor: "#3085d6",
                         allowOutsideClick: false,
                     });
+                    return false;
                 }
 
                 if (CKeditor.getData() == "") {
@@ -96,6 +97,10 @@ function iniciarDatos() {
     boxUploadOptions.val("");
     arrayFiles = [];
     filesArray = [];
+    boxUploadOptions.hide();
+    platos_with_options = [];
+    listResultsPlates.html("");
+    actualPlato.text("1º");
 }
 
 btnGuardar.on("click", function () {
@@ -222,6 +227,8 @@ btnGuardar.on("click", function () {
                             allowOutsideClick: false,
                         });
                     }
+                    iniciarDatos();                    
+                    $("#smartwizard").smartWizard("goToStep", 0);
                 });
         } catch (error) {
             Swal.fire({
@@ -268,6 +275,15 @@ tipoMenu.on("change", function () {
         boxUploadMenu.show("slow");
     } else {
         boxUploadMenu.hide("fast");
+    }
+
+    if (
+        tipoMenu.val() == "Menu a Elegir con Precio" ||
+        tipoMenu.val() == "Menu a Elegir sin Precio"
+    ) {
+        boxUploadOptions.show("slow");
+    } else {
+        boxUploadOptions.hide("fast");
     }
 });
 
