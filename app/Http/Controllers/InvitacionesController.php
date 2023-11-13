@@ -40,6 +40,7 @@ class InvitacionesController extends Controller
                 'titulo' => $validatedData['titulo'],
                 'texto' =>  $validatedData['descripcion'],
                 'tipo_menu' => $validatedData['tipoMenu'],
+                'platos_opciones' => $request->platos_opciones,
                 'creado_por' => $creado_por,
                 'evento_id' => $evento_id,
             ]);
