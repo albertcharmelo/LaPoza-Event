@@ -1,7 +1,6 @@
 let btnGuardar = $("#btnGuardar");
 let titulo = $("#titulo");
 let files = $("#files");
-let descripcion = $("#descripcion");
 let ckeditorInvitacion = $("#ckeditorInvitacion");
 let listoDocumentos = $("#listoDocumentos");
 let tipoMenu = $("#tipoMenu");
@@ -84,7 +83,20 @@ $(document).ready(function () {
             // }
         }
     );
+
+    iniciarDatos();
 });
+
+function iniciarDatos() {    
+    titulo.val("");        
+    CKeditor.setData("");
+    files.val(""); 
+    listoDocumentos.text("");
+    tipoMenu.val(""); 
+    boxUploadOptions.val("");
+    arrayFiles = [];
+    filesArray = [];
+}
 
 btnGuardar.on("click", function () {
     if (titulo.val() == "") {
@@ -99,11 +111,11 @@ btnGuardar.on("click", function () {
         return false;
     }
 
-    if (descripcion.val() == "") {
+    if (CKeditor.getData() == "") {
         Swal.fire({
             type: "warning",
             title: "¡Advertencia!",
-            text: "Debe ingresar una descripción",
+            text: "Debe ingresar un mensaje de invitación",
             confirmButtonText: "Aceptar",
             confirmButtonColor: "#3085d6",
             allowOutsideClick: false,
@@ -135,11 +147,12 @@ btnGuardar.on("click", function () {
         return false;
     }
 
+    let platos_opciones_obj = "";
     if (
         tipoMenu.val() == "Menu a Elegir con Precio" ||
         tipoMenu.val() == "Menu a Elegir sin Precio"
     ) {
-        if (boxUploadOptions.val() == "") {
+        if (platos_with_options.length == 0) {
             Swal.fire({
                 type: "warning",
                 title: "¡Advertencia!",
@@ -153,15 +166,24 @@ btnGuardar.on("click", function () {
                 }
             });
             return false;
-        }
+        }        
+        platos_opciones_obj = platos_with_options.map((plato, index) => {
+            let obj = {};
+            plato.forEach((value, i) => {
+                obj[`${i+1}`] = value;
+            });
+            return obj;
+        });
     }
     agregarInvitacion();    
 
     async function agregarInvitacion() {
+        console.log("platos_opciones_obj: ", JSON.stringify(platos_opciones_obj));
         const data = new FormData();
         data.append("titulo", titulo.val());
         data.append("descripcion", CKeditor.getData());
         data.append("tipoMenu", tipoMenu.val());
+        data.append("platos_opciones", JSON.stringify(platos_opciones_obj));
         filesArray.forEach((file, index) => {
             data.append(`files[${index}]`, file);
         });
