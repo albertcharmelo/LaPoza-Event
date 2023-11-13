@@ -16,12 +16,13 @@ class InvitacionesController extends Controller
 {
     public function index(Request $request)
     {
-        return view('pages.invitacion.index');
+        $page_title = 'Invitaciones';
+        return view('pages.invitacion.index', compact('page_title'));
     }
 
     public function agregarInvitacion(Request $request)
-    {        
-        try {            
+    {
+        try {
             $validatedData = $request->validate([
                 'titulo' => 'required',
                 'descripcion' => 'required',

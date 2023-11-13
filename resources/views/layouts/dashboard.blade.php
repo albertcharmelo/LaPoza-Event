@@ -41,6 +41,15 @@ $action = DzHelper::action();
     <link href="{{ asset($style) }}" rel="stylesheet" type="text/css" />
     @endforeach
     @endif
+    <style>
+        .color-global {
+            color: #FD683E !important;
+        }
+
+        .bg-global {
+            background-color: #FD683E !important;
+        }
+    </style>
     @yield('css')
 </head>
 
