@@ -1,0 +1,42 @@
+.ck-editor__editable_inline:not(.ck-comment__input *) {
+    height: 150px;
+    overflow-y: auto;
+}
+
+.inputimage {
+    width: 100%;
+    height: 25%;
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.sw-theme-default {
+    border: none;
+}
+
+.sw-theme-default > .nav {
+    box-shadow: none;
+}
+
+.sw-theme-default > .nav {
+    box-shadow: none;
+}
+
+.sw-theme-default .toolbar > .btn {
+    background-color: #fc410c;
+    border: 1px solid #fc410c;
+}
+
+.sidebar-right .nice-select .option {
+    background: rgba(0, 0, 0, 0.05) !important;
+}
+
+.border-dotted {
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='14' ry='14' stroke='%233D3D50FF' stroke-width='2' stroke-dasharray='6%2c 14' stroke-dashoffset='3' stroke-linecap='butt'/%3e%3c/svg%3e");
+    border-radius: 14px;
+    height: 170px;
+    cursor: pointer;
+}
