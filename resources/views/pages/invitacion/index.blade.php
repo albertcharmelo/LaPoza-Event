@@ -6,13 +6,13 @@
 @endsection
 @section('content')
     <div class="container-fluid">
-        <div class="row page-titles">
+        {{-- <div class="row page-titles">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item active"><a href="javascript:void(0)">Inicio</a></li>
                 <li class="breadcrumb-item"><a href="javascript:void(0)">Invitaciones</a></li>
             </ol>
         </div>
-        <!-- row -->
+        <!-- row --> --}}
         <div class="row">
             <div class="col-xl-12 col-xxl-12">
                 <div class="card">
@@ -185,16 +185,6 @@
         $(document).ready(function() {
             // SmartWizard initialize
             $('#smartwizard').smartWizard();
-<<<<<<< Updated upstream
-    });
-
-    
-  
-
-        </script>
-        @endsection
-=======
         });
     </script>
 @endsection
->>>>>>> Stashed changes
