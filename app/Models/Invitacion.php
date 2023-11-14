@@ -14,6 +14,7 @@ class Invitacion extends Model
         'id',
         'titulo',
         'texto',
+        'imagen',
         'tipo_menu',
         'platos_opciones',
         'evento_id',
