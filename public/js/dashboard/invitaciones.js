@@ -19,82 +19,49 @@ $(document).ready(function () {
     smartWizard.on(
         "leaveStep",
         function (e, anchorObject, stepNumber, stepDirection) {
-            console.log(stepNumber, stepDirection);
             if (stepNumber === 0) {
-                console.log("titulo: " + titulo.val());
-                console.log("titulo: ", titulo.val());                
                 if (titulo.val() == "") {
-                    Swal.fire({
-                        type: "warning",
-                        title: "¡Advertencia!",
-                        text: "Debe ingresar un título",
-                        confirmButtonText: "Aceptar",
-                        confirmButtonColor: "#3085d6",
-                        allowOutsideClick: false,
-                    });
+                    SwalShowMessage(
+                        "warning",
+                        "¡Advertencia!",
+                        "Debe ingresar un título"
+                    );
                     return false;
                 }
 
                 if (CKeditor.getData() == "") {
-                    Swal.fire({
-                        type: "warning",
-                        title: "¡Advertencia!",
-                        text: "Debe ingresar un mensaje de invitación",
-                        confirmButtonText: "Aceptar",
-                        confirmButtonColor: "#3085d6",
-                        allowOutsideClick: false,
-                    });
+                    SwalShowMessage(
+                        "warning",
+                        "¡Advertencia!",
+                        "Debe ingresar un mensaje de invitación"
+                    );
                     return false;
                 }
 
                 if (files.val() == "") {
-                    Swal.fire({
-                        type: "warning",
-                        title: "¡Advertencia!",
-                        text: "Debe seleccionar al menos un archivo",
-                        confirmButtonText: "Aceptar",
-                        confirmButtonColor: "#3085d6",
-                        allowOutsideClick: false,
-                    });
+                    SwalShowMessage(
+                        "warning",
+                        "¡Advertencia!",
+                        "Debe seleccionar al menos un archivo"
+                    );
                     return false;
                 }
             }
-
-            // if (stepNumber === 1) {
-            //     if (
-            //         tipoMenu.val() == "Menu a Elegir con Precio" ||
-            //         tipoMenu.val() == "Menu a Elegir sin Precio"
-            //     ) {
-            //         if (boxUploadOptions.val() == "") {
-            //             Swal.fire({
-            //                 type: "warning",
-            //                 title: "¡Advertencia!",
-            //                 text: "Debe agregar los platos con sus opciones",
-            //                 confirmButtonText: "Aceptar",
-            //                 confirmButtonColor: "#3085d6",
-            //                 allowOutsideClick: false,
-            //             }).then((result) => {
-            //                 if (result.value) {
-            //                     boxUploadOptions.focus();
-            //                 }
-            //             });
-            //             return false;
-            //         }
-            //     }
-            // }
         }
     );
-
     iniciarDatos();
 });
 
-function iniciarDatos() {    
-    titulo.val("");        
+function iniciarDatos() {
+    titulo.val("");
     CKeditor.setData("");
-    files.val(""); 
+    files.val("");
     listoDocumentos.text("");
-    tipoMenu.val(""); 
-    boxUploadOptions.val("");
+    tipoMenu.val("");
+    input_file_menu.value = "";
+    name_menu_uploaded.innerHTML = "";
+    boxUploadMenu.hide();
+    boxUploadOptions.hide();
     arrayFiles = [];
     filesArray = [];
     boxUploadOptions.hide();
@@ -103,53 +70,62 @@ function iniciarDatos() {
     actualPlato.text("1º");
 }
 
+function SwalShowMessage(type, title, text) {
+    Swal.fire({
+        type: type,
+        title: title,
+        text: text,
+        confirmButtonText: "Aceptar",
+        confirmButtonColor: "#fc410c",
+        allowOutsideClick: false,
+    });
+}
+
 btnGuardar.on("click", function () {
     if (titulo.val() == "") {
-        Swal.fire({
-            type: "warning",
-            title: "¡Advertencia!",
-            text: "Debe ingresar un título",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "#3085d6",
-            allowOutsideClick: false,
-        });
+        SwalShowMessage("warning", "¡Advertencia!", "Debe ingresar un título");
         return false;
     }
 
     if (CKeditor.getData() == "") {
-        Swal.fire({
-            type: "warning",
-            title: "¡Advertencia!",
-            text: "Debe ingresar un mensaje de invitación",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "#3085d6",
-            allowOutsideClick: false,
-        });
+        SwalShowMessage(
+            "warning",
+            "¡Advertencia!",
+            "Debe ingresar un mensaje de invitación"
+        );
         return false;
     }
 
     if (files.val() == "") {
-        Swal.fire({
-            type: "warning",
-            title: "¡Advertencia!",
-            text: "Debe seleccionar al menos un archivo",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "#3085d6",
-            allowOutsideClick: false,
-        });
+        SwalShowMessage(
+            "warning",
+            "¡Advertencia!",
+            "Debe seleccionar al menos un archivo"
+        );
         return false;
     }
-    
-    if (tipoMenu.val() == null) {        
-        Swal.fire({
-            type: "warning",
-            title: "¡Advertencia!",
-            text: "Debe seleccionar un tipo de menú",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "#3085d6",
-            allowOutsideClick: false,
-        });
+
+    if (tipoMenu.val() == null) {
+        SwalShowMessage(
+            "warning",
+            "¡Advertencia!",
+            "Debe seleccionar un tipo de menú"
+        );
         return false;
+    }
+
+    if (
+        tipoMenu.val() == "Menu Fijo con Precio" ||
+        tipoMenu.val() == "Menu Fijo sin Precio"
+    ) {
+        if (input_file_menu.value == "") {
+            SwalShowMessage(
+                "warning",
+                "¡Advertencia!",
+                "Debe seleccionar un archivo de menú"
+            );
+            return false;
+        }
     }
 
     let platos_opciones_obj = "";
@@ -167,31 +143,57 @@ btnGuardar.on("click", function () {
                 allowOutsideClick: false,
             }).then((result) => {
                 if (result.value) {
-                    boxUploadOptions.focus();
+                    input_add_option.focus();
                 }
             });
             return false;
-        }        
+        }
         platos_opciones_obj = platos_with_options.map((plato, index) => {
             let obj = {};
             plato.forEach((value, i) => {
-                obj[`${i+1}`] = value;
+                obj[`${i + 1}`] = value;
             });
             return obj;
         });
     }
-    agregarInvitacion();    
 
+    async function appendFileToFormData(file, data) {
+        const base64File = await getBase64(file);
+        data.append("file_menu[base64]", base64File);
+    }
+
+    function getBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+        });
+    }
+
+    agregarInvitacion();
     async function agregarInvitacion() {
-        console.log("platos_opciones_obj: ", JSON.stringify(platos_opciones_obj));
         const data = new FormData();
         data.append("titulo", titulo.val());
         data.append("descripcion", CKeditor.getData());
         data.append("tipoMenu", tipoMenu.val());
         data.append("platos_opciones", JSON.stringify(platos_opciones_obj));
-        filesArray.forEach((file, index) => {
-            data.append(`files[${index}]`, file);
+        // filesArray.forEach((file, index) => {
+        //     data.append(`files[${index}]`, file);
+        // });
+
+        const fileMenu = document.querySelector('#input_file_menu').files[0];
+        appendFileToFormData(fileMenu, data);        
+
+        const filePromises = filesArray.map((file, index) => {
+            return getBase64(file).then((base64File) => {
+                data.append(`files[${index}][base64]`, base64File);
+                data.append(`files[${index}][name]`, file.name);
+                data.append(`files[${index}][type]`, file.type);
+                data.append(`files[${index}][size]`, file.size.toString());
+            });
         });
+        await Promise.all(filePromises);
 
         const URL = "/invitaciones/agregarInvitacion";
         try {
@@ -205,40 +207,27 @@ btnGuardar.on("click", function () {
             })
                 .then((response) => {
                     if (!response.ok) {
-                        Swal.fire({
-                            type: "warning",
-                            title: "¡Advertencia!",
-                            text: "No se pudo agregar la invitación",
-                            confirmButtonText: "Aceptar",
-                            confirmButtonColor: "#3085d6",
-                            allowOutsideClick: false,
-                        });
+                        SwalShowMessage(
+                            "warning",
+                            "¡Advertencia!",
+                            "No se pudo agregar la invitación"
+                        );
                     }
                     return response.json();
                 })
                 .then((data) => {
                     if (data.status == "success") {
-                        Swal.fire({
-                            type: "success",
-                            title: "¡Éxito!",
-                            text: data.message,
-                            confirmButtonText: "Aceptar",
-                            confirmButtonColor: "#3085d6",
-                            allowOutsideClick: false,
-                        });
+                        SwalShowMessage("success", "¡Éxito!", data.message);
                     }
-                    iniciarDatos();                    
+                    iniciarDatos();
                     $("#smartwizard").smartWizard("goToStep", 0);
                 });
         } catch (error) {
-            Swal.fire({
-                type: "warning",
-                title: "¡Advertencia!",
-                text: "No se pudo agregar la invitación",
-                confirmButtonText: "Aceptar",
-                confirmButtonColor: "#3085d6",
-                allowOutsideClick: false,
-            });
+            SwalShowMessage(
+                "warning",
+                "¡Advertencia!",
+                "No se pudo agregar la invitación"
+            );
         } finally {
             // hideLoader();
         }
@@ -268,6 +257,12 @@ document.querySelector("#files").addEventListener("change", function (e) {
 });
 
 tipoMenu.on("change", function () {
+    name_menu_uploaded.innerHTML = "";
+    platos_with_options = [];
+    listResultsPlates.html("");
+    input_file_menu.value = "";
+    opciones_de_platos = [];
+
     if (
         tipoMenu.val() == "Menu Fijo con Precio" ||
         tipoMenu.val() == "Menu Fijo sin Precio"
@@ -276,12 +271,15 @@ tipoMenu.on("change", function () {
     } else {
         boxUploadMenu.hide("fast");
     }
-
     if (
         tipoMenu.val() == "Menu a Elegir con Precio" ||
         tipoMenu.val() == "Menu a Elegir sin Precio"
     ) {
+        actualPlato.text("1º");
+        input_add_option.val("");
+        listBadges.html("");
         boxUploadOptions.show("slow");
+        input_add_option.focus();
     } else {
         boxUploadOptions.hide("fast");
     }
