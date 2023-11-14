@@ -36,7 +36,7 @@
                                     <div class="row">
                                         <div class="col-lg-12 mb-2">
                                             <div class="mb-3">
-                                                <label class="text-label form-label">Título del evento</label>
+                                                <label class="text-black font-w600 form-label">Título del evento</label>
                                                 <input type="text" name="titulo" class="form-control"
                                                     placeholder="Título de la Invitación" id="titulo" required>
                                             </div>
@@ -67,7 +67,7 @@
                                 <div id="wizard_invitacion_pte2" class="tab-pane" role="tabpanel">
                                     <div class="row">
                                         <div class="col-12 mb-3">
-                                            <label class="form-label">Tipo de Menú</label>
+                                            <label class="text-black font-w600 form-label">Tipo de Menú</label>
                                             <select class="  form-control wide" id="tipoMenu" name="tipoMenu">
                                                 <option value="" selected disabled hidden>Selecciona una opción</option>
                                                 <option value="Menu Fijo con Precio">Menu Fijo con Precio</option>
@@ -80,10 +80,10 @@
                                         </div>
                                         <div class="col-12">
                                             <div id="boxUploadMenu" style="min-height: 200px;display:none">
-                                                <label class="form-label">Imagen del Menú</label>
+                                                <label class="text-black font-w600 form-label">Imagen del Menú</label>
                                                 <div onclick="openInputMenu()"
                                                     class="cursor-pointer dropzoneInput w-100 d-flex flex-column  justify-content-center align-items-center border-dotted">
-                                                    <input type="file" id="input_file_menu" class="d-none">
+                                                    <input type="file" id="input_file_menu" class="d-none" name = "input_file_menu" />
                                                     <div class="div mb-3">
                                                         <i class="fas fa-upload" style="font-size: 30px;color:white"></i>
                                                     </div>
