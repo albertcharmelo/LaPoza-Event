@@ -8,6 +8,10 @@ let boxUploadMenu = $("#boxUploadMenu");
 let boxUploadOptions = $("#boxUploadOptions");
 let arrayFiles = [];
 let filesArray = [];
+let nombre_org = $("#nombre_org");
+let email_org = $("#email_org");
+let telefono_org = $("#telefono_org");
+let fecha_evento = $("#fecha_evento");
 
 $(document).ready(function () {
     // SmartWizard initialize
@@ -47,6 +51,51 @@ $(document).ready(function () {
                     return false;
                 }
             }
+            if (stepNumber === 1) {
+                if (tipoMenu.val() == null) {
+                    SwalShowMessage(
+                        "warning",
+                        "¡Advertencia!",
+                        "Debe seleccionar un tipo de menú"
+                    );
+                    return false;
+                }
+
+                if (
+                    tipoMenu.val() == "Menu Fijo con Precio" ||
+                    tipoMenu.val() == "Menu Fijo sin Precio"
+                ) {
+                    if (input_file_menu.value == "") {
+                        SwalShowMessage(
+                            "warning",
+                            "¡Advertencia!",
+                            "Debe seleccionar un archivo de menú"
+                        );
+                        return false;
+                    }
+                }
+
+                if (
+                    tipoMenu.val() == "Menu a Elegir con Precio" ||
+                    tipoMenu.val() == "Menu a Elegir sin Precio"
+                ) {
+                    if (platos_with_options.length == 0) {
+                        Swal.fire({
+                            type: "warning",
+                            title: "¡Advertencia!",
+                            text: "Debe agregar los platos con sus opciones",
+                            confirmButtonText: "Aceptar",
+                            confirmButtonColor: "#3085d6",
+                            allowOutsideClick: false,
+                        }).then((result) => {
+                            if (result.value) {
+                                input_add_option.focus();
+                            }
+                        });
+                        return false;
+                    }
+                }
+            }
         }
     );
     iniciarDatos();
@@ -68,6 +117,15 @@ function iniciarDatos() {
     platos_with_options = [];
     listResultsPlates.html("");
     actualPlato.text("1º");
+
+    nombre_org.val("");
+    email_org.val("");
+    telefono_org.val("");        
+    let fecha = new Date();
+    let dia = fecha.getDate();
+    let mes = fecha.getMonth() + 1;
+    let anio = fecha.getFullYear();    
+    fecha_evento.val(anio + "-" + mes + "-" + dia);
 }
 
 function SwalShowMessage(type, title, text) {
@@ -157,6 +215,35 @@ btnGuardar.on("click", function () {
         });
     }
 
+    if (nombre_org.val() == "") {
+        SwalShowMessage(
+            "warning",
+            "¡Advertencia!",
+            "Debe ingresar el nombre de organizador"
+        );
+        return false;
+    }
+
+    if (email_org.val() == "") {
+        SwalShowMessage(
+            "warning",
+            "¡Advertencia!",
+            "Debe ingresar el email de organizador"
+        );
+        return false;
+    }  else {
+        if (!validateEmail(email_org.val())) {
+            SwalShowMessage(
+                "warning",
+                "¡Advertencia!",
+                "Debe ingresar un email válido"
+            );
+            return false;
+        }
+    }
+
+
+
     async function appendFileToFormData(file, data) {
         const base64File = await getBase64(file);
         data.append("file_menu[base64]", base64File);
@@ -182,7 +269,7 @@ btnGuardar.on("click", function () {
         //     data.append(`files[${index}]`, file);
         // });
 
-        const fileMenu = document.querySelector('#input_file_menu').files[0];
+        const fileMenu = document.querySelector("#input_file_menu").files[0];
         appendFileToFormData(fileMenu, data);        
 
         const filePromises = filesArray.map((file, index) => {
@@ -194,6 +281,11 @@ btnGuardar.on("click", function () {
             });
         });
         await Promise.all(filePromises);
+
+        data.append("nombre_org", nombre_org.val());
+        data.append("email_org", email_org.val());
+        data.append("telefono_org", telefono_org.val());
+        data.append("fecha_evento", fecha_evento.val());
 
         const URL = "/invitaciones/agregarInvitacion";
         try {
@@ -233,6 +325,11 @@ btnGuardar.on("click", function () {
         }
     }
 });
+
+function validateEmail(email) {
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+}
 
 document.querySelector("#files").addEventListener("change", function (e) {
     var fileName = "";
