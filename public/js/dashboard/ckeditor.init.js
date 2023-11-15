@@ -1,6 +1,7 @@
 let CKeditor;
 $(document).ready(function () {
     ClassicEditor.create(document.querySelector("#ckeditorInvitacion"), {
+        
         toolbar: {
             items: [
                 "heading",

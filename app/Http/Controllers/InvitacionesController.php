@@ -22,11 +22,12 @@ class InvitacionesController extends Controller
 
     public function agregarInvitacion(Request $request)
     {
+
         try {
             $validatedData = $request->validate([
                 'titulo' => 'required',
                 'descripcion' => 'required',
-                'tipoMenu' => 'required',                
+                'tipoMenu' => 'required',
                 'files' => 'required|array|min:1',
                 'nombre_org' => 'required',
                 'email_org' => 'required'
@@ -42,7 +43,8 @@ class InvitacionesController extends Controller
                 }
             }
 
-            $creado_por = auth()->user()->id;           
+            $evento_id = Evento::first()->id; // Cambiar luego por el evento seleccionado
+            $creado_por = auth()->user()->id;
 
             $imagen = $request->input('file_menu.base64');
             $imagen = substr($imagen, strpos($imagen, ",") + 1);
@@ -53,7 +55,7 @@ class InvitacionesController extends Controller
                 'email_organizador' => $validatedData['email_org'],
                 'telefono_organizador' => $request->telefono_org,
                 'numero_invitados' => 0,
-                'ingreso_bruto' => 0, 
+                'ingreso_bruto' => 0,
                 'fecha' => $request->fecha_evento,
                 'creado_por' => $creado_por,
             ]);
@@ -114,5 +116,13 @@ class InvitacionesController extends Controller
                 'message' => 'Error al crear la invitacion: ' . $th->getMessage(),
             ], 400);
         }
+    }
+
+    public function show(Invitacion $invitacion)
+    {
+        $page_title = $invitacion->titulo;
+        $invitacion->platos_opciones = json_decode($invitacion->platos_opciones);
+
+        return view('pages.invitacion.show', compact('invitacion', 'page_title'));
     }
 }

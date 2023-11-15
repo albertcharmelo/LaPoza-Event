@@ -10,6 +10,7 @@ class Invitacion extends Model
 {
     use HasFactory, HasUuids;
     protected $table = 'invitaciones';
+
     protected $fillable = [
         'id',
         'titulo',
@@ -81,7 +82,7 @@ class Invitacion extends Model
      */
 
     public function imagenes()
-    {        
+    {
         return $this->belongsToMany(Imagen::class, 'invitaciones_imagenes', 'invitacion_id', 'imagen_id');
-    }    
+    }
 }

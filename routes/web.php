@@ -48,11 +48,14 @@ Route::get('/eventos/{evento}', [App\Http\Controllers\EventoController::class, '
 
 /* ------------------------------------------ INVITADOS ----------------------------------------- */
 Route::post('/invitados', [App\Http\Controllers\InvitadoController::class, 'getInvitados'])->middleware('auth');
+Route::post('/invitados/create', [App\Http\Controllers\InvitadoController::class, 'create']);
+
 
 /* ------------------------------------------- INVITACIONES  ------------------------------------------ */
 Route::prefix('/invitaciones')->group(function () {
     Route::get('/index', [InvitacionesController::class, 'index'])->middleware('auth')->name('invitaciones.index');
     Route::post('/agregarInvitacion', [InvitacionesController::class, 'agregarInvitacion'])->middleware('auth');
+    Route::get('/{invitacion}', [InvitacionesController::class, 'show'])->name('invitaciones.show');
 });
 /* ------------------------------------------- QRCODES ------------------------------------------ */
 Route::get('/qrcodes/generate', [App\Http\Controllers\QrController::class, 'generate'])->middleware('auth');

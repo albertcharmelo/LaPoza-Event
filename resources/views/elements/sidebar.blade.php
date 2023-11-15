@@ -6,20 +6,20 @@
         <ul class="metismenu" id="menu">
             <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="flaticon-025-dashboard"></i>
-                    <span class="nav-text">Dashboard</span>
+                    <span class="nav-text">Panel</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{!! url('/index'); !!}">Dashboard Light</a></li>
-                    <li><a href="{!! url('/index-2'); !!}">Dashboard Dark</a></li>
+                    <li><a href="{!! url('/'); !!}">Eventos</a></li>
+                    {{-- <li><a href="{!! url('/index-2'); !!}">Dashboard Dark</a></li>
                     <li><a href="{!! url('/order-page-list'); !!}">Orders</a></li>
                     <li><a href="{!! url('/order-details-page'); !!}">Order Details</a></li>
                     <li><a href="{!! url('/customer-page-list'); !!}">Customers</a></li>
                     <li><a href="{!! url('/analytics'); !!}">Analytics</a></li>
-                    <li><a href="{!! url('/review'); !!}">Review</a></li>
+                    <li><a href="{!! url('/review'); !!}">Review</a></li> --}}
                 </ul>
 
             </li>
-            <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+            {{-- <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="flaticon-050-info"></i>
                     <span class="nav-text">Apps</span>
                 </a>
@@ -143,7 +143,7 @@
                     <li><a href="{!! url('/page-lock-screen'); !!}">Lock Screen</a></li>
                     <li><a href="{!! url('/empty-page'); !!}">Empty Page</a></li>
                 </ul>
-            </li>
+            </li> --}}
         </ul>
         {{-- <div class="plus-box">
             <img src="{{ asset('images/plus.png') }}" alt="">
