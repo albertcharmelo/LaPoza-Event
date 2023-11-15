@@ -120,11 +120,11 @@ function iniciarDatos() {
 
     nombre_org.val("");
     email_org.val("");
-    telefono_org.val("");        
+    telefono_org.val("");
     let fecha = new Date();
     let dia = fecha.getDate();
     let mes = fecha.getMonth() + 1;
-    let anio = fecha.getFullYear();    
+    let anio = fecha.getFullYear();
     fecha_evento.val(anio + "-" + mes + "-" + dia);
 }
 
@@ -231,7 +231,7 @@ btnGuardar.on("click", function () {
             "Debe ingresar el email de organizador"
         );
         return false;
-    }  else {
+    } else {
         if (!validateEmail(email_org.val())) {
             SwalShowMessage(
                 "warning",
@@ -241,8 +241,6 @@ btnGuardar.on("click", function () {
             return false;
         }
     }
-
-
 
     async function appendFileToFormData(file, data) {
         const base64File = await getBase64(file);
@@ -270,7 +268,7 @@ btnGuardar.on("click", function () {
         // });
 
         const fileMenu = document.querySelector("#input_file_menu").files[0];
-        appendFileToFormData(fileMenu, data);        
+        appendFileToFormData(fileMenu, data);
 
         const filePromises = filesArray.map((file, index) => {
             return getBase64(file).then((base64File) => {

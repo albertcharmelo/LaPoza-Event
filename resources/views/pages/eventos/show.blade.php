@@ -8,7 +8,7 @@
     <div class="row page-titles">
         <ol class="breadcrumb">
             <li class="breadcrumb-item active"><a href="{{ url('/') }}">Eventos</a></li>
-            <li class="breadcrumb-item"><a href="javascript:void(0)">{{ $evento->nombre }}</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0)">{{ $evento->invitacion->titulo }}</a></li>
         </ol>
     </div>
     <div class="row">
@@ -165,8 +165,8 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="post-details">
-                                                    <h3 class="mb-2 text-black">{{ $evento->invitacion->texto }}</h3>
-                                                    <ul class="mb-4 post-meta d-flex flex-wrap">
+                                                    <h3 class="mb-2 text-black">{{ $evento->invitacion->titulo }}</h3>
+                                                    <ul class="mb-4 post-meta d-flex flex-wrap align-items-center">
                                                         <li class="post-author me-3">Por {{ $evento->nombre }}</li>
                                                         <li class="post-date me-3"><i
                                                                 class="fas fa-calendar-check me-2"></i>
@@ -174,12 +174,21 @@
                                                             \Carbon\Carbon::parse($evento->fecha)->format('d/m/Y') }}
 
                                                         </li>
+                                                        <li class="post-author me-3">
+                                                            <a href="{{ route('invitaciones.show', $evento->invitacion->id) }}"
+                                                                class="btn btn-primary light btn-xs mb-1">Ver
+                                                                invitación</a>
+                                                            </a>
+                                                        </li>
 
                                                     </ul>
-                                                    <img src="{{ $evento->invitacion->imagen }}" width="908"
-                                                        height="359" alt="Imagen del evento"
+                                                    @foreach ($evento->invitacion->imagenes as $imagen)
+                                                    <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}"
+                                                        width="908" height="359" alt="Imagen del evento"
                                                         class="img-fluid mb-3 w-100 rounded">
-                                                    {{-- <p>{{ $evento->invitacion->texto }}</p> --}}
+                                                    @endforeach
+
+                                                    <p>{!! $evento->invitacion->texto !!}</p>
                                                     <div class="profile-skills mt-5 mb-5">
                                                         <h4 class="text-primary mb-2">Tipo de menu</h4>
                                                         <a href="javascript:void();;"

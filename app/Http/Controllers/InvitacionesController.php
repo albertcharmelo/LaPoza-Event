@@ -22,7 +22,6 @@ class InvitacionesController extends Controller
 
     public function agregarInvitacion(Request $request)
     {
-
         try {
             $validatedData = $request->validate([
                 'titulo' => 'required',
@@ -43,7 +42,6 @@ class InvitacionesController extends Controller
                 }
             }
 
-            $evento_id = Evento::first()->id; // Cambiar luego por el evento seleccionado
             $creado_por = auth()->user()->id;
 
             $imagen = $request->input('file_menu.base64');
@@ -122,7 +120,6 @@ class InvitacionesController extends Controller
     {
         $page_title = $invitacion->titulo;
         $invitacion->platos_opciones = json_decode($invitacion->platos_opciones);
-
         return view('pages.invitacion.show', compact('invitacion', 'page_title'));
     }
 }
