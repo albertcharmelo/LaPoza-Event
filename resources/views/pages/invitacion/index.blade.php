@@ -21,7 +21,7 @@
                 </div>
                 <div class="card-body" style="height: auto">
                     <div id="smartwizard" class="form-wizard order-create">
-                        <ul class="nav nav-wizard">
+                        <ul class="nav nav-wizard" style="flex-direction: row !important">
                             <li><a class="nav-link" href="#wizard_invitacion_pte1">
                                     <span>1</span>
                                 </a>
@@ -34,6 +34,7 @@
                                     <span>3</span>
                                 </a>
                             </li>
+
                         </ul>
 
                         <div class="tab-content ">

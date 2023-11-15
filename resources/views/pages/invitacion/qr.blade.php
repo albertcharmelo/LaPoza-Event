@@ -15,6 +15,8 @@
                         <img src="data:image/png;base64,{{ $invitado->codigoQr->path }}" alt="Qr del evento"
                             id="qrImageBase64" class="img-fluid mb-3 rounded" style="max-height: 300px;width:auto">
                     </div>
+                    @if ($invitado->invitacion->tipo_menu != 'Menu Fijo con Precio' && $invitado->invitacion->tipo_menu
+                    != 'Menu Fijo sin Precio')
                     <div class="my-3 d-flex flex-column gap-3">
                         @foreach ($invitado->platos_elegidos as $index => $plato)
                         <div>
@@ -24,6 +26,8 @@
                         </div>
                         @endforeach
                     </div>
+                    @endif
+
                 </div>
             </div>
         </div>
