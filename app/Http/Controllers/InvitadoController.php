@@ -20,8 +20,8 @@ class InvitadoController extends Controller
             'observaciones' => 'string',
             'evento_id' => 'required | string',
             'invitacion_id' => 'required | string',
-            'platos' => 'required | array',
-            'platos.*' => 'required | string',
+            'platos' => '  array',
+            'platos.*' => 'string',
         ]);
 
 
@@ -31,7 +31,9 @@ class InvitadoController extends Controller
             ], 400);
         }
 
-        $palatos_elegidos  = implode(',', $request->platos);
+        $platos_elegidos  = implode('*', $request->platos);
+
+
         $invitado = Invitado::create([
             'nombre' => $request->nombre,
             'email' => $request->email,
@@ -41,9 +43,17 @@ class InvitadoController extends Controller
             'observaciones' => $request->observaciones,
             'evento_id' => $request->evento_id,
             'invitacion_id' => $request->invitacion_id,
-            'menu' => $palatos_elegidos,
+            'platos_elegidos' => $platos_elegidos,
         ]);
 
+        $request_to_qrCode = new Request([
+            'invitado_id' => $invitado->id,
+            'invitacion_id' => $request->invitacion_id,
+            'value' => $invitado->id,
+        ]);
+
+        $created_qrCode = QrController::generate($request_to_qrCode);
+        $invitado->codigoQr = $created_qrCode;
         return response()->json($invitado, 200);
     }
 

@@ -59,3 +59,4 @@ Route::prefix('/invitaciones')->group(function () {
 });
 /* ------------------------------------------- QRCODES ------------------------------------------ */
 Route::get('/qrcodes/generate', [App\Http\Controllers\QrController::class, 'generate'])->middleware('auth');
+Route::get('/qrcode/invitacion/{invitado}', [App\Http\Controllers\QrController::class, 'invitacion']);

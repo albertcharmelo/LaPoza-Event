@@ -12,7 +12,9 @@ class CodigoQr extends Model
     protected $table = 'codigo_qr';
     protected $fillable = [
         'id',
+        'path',
         'invitacion_id',
+        'invitado_id',
         'created_at',
         'updated_at',
     ];
@@ -25,5 +27,16 @@ class CodigoQr extends Model
     public function invitacion()
     {
         return $this->hasOne(Invitacion::class, 'id', 'invitacion_id');
+    }
+
+    /**
+     * Obtener el invitado asociado al codigo qr
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+
+    public function invitado()
+    {
+        return $this->hasOne(Invitado::class, 'id', 'invitado_id');
     }
 }

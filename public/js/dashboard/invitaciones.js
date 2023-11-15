@@ -6,6 +6,7 @@ let listoDocumentos = $("#listoDocumentos");
 let tipoMenu = $("#tipoMenu");
 let boxUploadMenu = $("#boxUploadMenu");
 let boxUploadOptions = $("#boxUploadOptions");
+let inputPrice = $("#input_add_price");
 let arrayFiles = [];
 let filesArray = [];
 let nombre_org = $("#nombre_org");
@@ -370,6 +371,12 @@ tipoMenu.on("change", function () {
         tipoMenu.val() == "Menu a Elegir con Precio" ||
         tipoMenu.val() == "Menu a Elegir sin Precio"
     ) {
+        if (tipoMenu.val() == "Menu a Elegir con Precio") {
+            inputPrice.show();
+        } else {
+            inputPrice.hide();
+        }
+
         actualPlato.text("1º");
         input_add_option.val("");
         listBadges.html("");

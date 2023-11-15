@@ -1,4 +1,6 @@
+let input_add_price = document.getElementById("input_add_price");
 let input_add_option = $("#input_add_option");
+let select_tipoMenu = $("#tipoMenu");
 let btn_add_option = $("#btn_add_option");
 let btn_add_other_plate = $("#btn_add_other_plate");
 let listBadges = $("#listBadges");
@@ -8,21 +10,55 @@ let array_name_platos = [];
 let opciones_de_platos = [];
 let platos_with_options = []; // variable que guarda el resultado final de los platos con sus opciones
 
+const maskOptions = {
+    mask: "€num",
+    blocks: {
+        num: {
+            // nested masks are available!
+            mask: Number,
+            thousandsSeparator: ".",
+            radix: ",",
+            mapToRadix: ["."],
+            scale: 2,
+            normalizeZeros: true,
+            signed: false,
+            padFractionalZeros: true,
+        },
+    },
+};
+
+const maskInputPrice = IMask(input_add_price, maskOptions);
+
 /* ------------------------------------------- EVENTOS ------------------------------------------ */
 
 // para agregar una opcion a un plato
 btn_add_option.click(function () {
     let option = input_add_option.val();
+    if (select_tipoMenu.val() == "Menu a Elegir con Precio") {
+        if (option !== "" && input_add_price.value !== "") {
+            const precio = maskInputPrice.value; //si reempalzas value por typedValue, obtienes el valor sin formato
 
-    if (option !== "") {
-        let badge = $(
-            "<a href='javascript:void(0)' class='badge badge-rounded badge-primary' onclick='eliminarOpcion(event)'></a>"
-        );
-        badge.text(option);
-        badge.appendTo(listBadges);
-        opciones_de_platos.push(option);
-        input_add_option.val("");
-        input_add_option.focus();
+            let badge = $(
+                "<a href='javascript:void(0)' class='badge badge-rounded badge-primary' onclick='eliminarOpcion(event)'></a>"
+            );
+            badge.text(option + " - " + precio);
+            badge.appendTo(listBadges);
+            opciones_de_platos.push(option + " - " + precio);
+            input_add_option.val("");
+            input_add_price.value = "";
+            input_add_option.focus();
+        }
+    } else {
+        if (option !== "") {
+            let badge = $(
+                "<a href='javascript:void(0)' class='badge badge-rounded badge-primary' onclick='eliminarOpcion(event)'></a>"
+            );
+            badge.text(option);
+            badge.appendTo(listBadges);
+            opciones_de_platos.push(option);
+            input_add_option.val("");
+            input_add_option.focus();
+        }
     }
 });
 

@@ -23,6 +23,7 @@ class Invitado extends Model
         'asistencia_confirmada',
         'created_at',
         'updated_at',
+        'platos_elegidos'
     ];
 
     /**
@@ -58,5 +59,16 @@ class Invitado extends Model
 
     {
         return $this->hasMany(MenuOpcion::class, 'invitado_id', 'id');
+    }
+
+    /**
+     * Obtener los codigo qr del invitado
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+
+    public function codigoQr()
+    {
+        return $this->hasOne(CodigoQr::class, 'invitado_id', 'id');
     }
 }

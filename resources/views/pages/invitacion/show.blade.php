@@ -10,6 +10,10 @@
     .datos-chooise {
         display: none;
     }
+
+    .qr-chooise {
+        display: none;
+    }
 </style>
 @endsection
 @section('content')
@@ -28,9 +32,14 @@
 
                 </ul>
                 <p class="my-2 py-0">{!! $invitacion->texto !!}</p>
-                <img src="{{ $invitacion->imagen }}" alt="Imagen del evento" class="img-fluid mb-3 w-100 rounded  ">
+                @foreach ($invitacion->imagenes as $imagen)
+                <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}" alt="Imagen del evento"
+                    class="img-fluid mb-3 w-100 rounded ">
+                @endforeach
             </div>
             <div class="plates-chooise" id="platosBox">
+                @if ($invitacion->tipo_menu == 'Menu a Elegir con Precio' || $invitacion->tipo_menu == 'Menu a Elegir
+                sin Precio')
                 <h2>Selecciona los platos del menú</h2>
                 <p class="text-muted">Agrega las opciones para los {{ count($invitacion->platos_opciones) }} platos
                     pulsando en el <span class="color-global">Seleccionador
@@ -49,6 +58,13 @@
                     </div>
 
                     @endfor
+                    @else
+                    <h2>Menu a servir dentro del Evento</h2>
+                    <p class="text-muted">El siguiente menú fijo no estará sujeto a modificaciones </p>
+                    <img src="data:image/png;base64,{{ $invitacion->imagen }}" alt="Imagen del menu"
+                        class="img-fluid mb-3 w-100 rounded ">
+                    @endif
+
             </div>
             <div class="datos-chooise" id="datosBox">
                 <h2>Datos de la invitación</h2>
@@ -92,6 +108,25 @@
                     </div>
 
                 </form>
+            </div>
+            <div class="qr-chooise px-5 py-3" id="QrCodeBox">
+                <div class="d-flex flex-column items-center justify-center w-100">
+                    <h1 class="text-center">Invitacion confirmada con éxito
+                    </h1>
+                    <p class="text-muted text-center">Con el siguiente codigoQr podra
+                        confirmar su asistencia el día evento. Además de con este poder consumir en el evento.</p>
+                    <p class="text-center">Puede acceder a su codigo qr a
+                        través del siguiente enlace <a id="urlToSeeQr" href="" target="_blank"></a>
+                    </p>
+                    <div class="d-flex justify-content-center w-100 align-items-center h-auto my-5">
+                        <img src="" alt="Qr del evento" id="qrImageBase64" class="img-fluid mb-3 rounded"
+                            style="max-height: 300px;width:auto">
+                    </div>
+                    <h2 class="text-center">
+                        <span class="color-global">¡Gracias por confirmar su asistencia!, Te esperamos !!</span>
+                    </h2>
+                </div>
+
             </div>
         </div>
         <div class="card-footer">

@@ -6,7 +6,7 @@
         createdRow: function (row, data) {
             $(row).addClass("cursor-pointer");
             $(row).on("click", function () {
-                window.location.href = "/invitados/" + data.id;
+                window.location.href = "/qrcode/invitacion/" + data.id;
             });
         },
         language: {

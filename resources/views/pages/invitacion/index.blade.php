@@ -126,6 +126,11 @@
                                                             class="form-control form-control-sm w-100 w-lg-75 "
                                                             id="input_add_option" placeholder="introduzca una opción"
                                                             name="input_add_option" />
+                                                        <input type="text"
+                                                            class="form-control form-control-sm w-100 w-lg-25 "
+                                                            id="input_add_price" placeholder="0.00"
+                                                            name="input_add_price" />
+
                                                         <div class="d-flex flex-column flex-lg-row w-100 w-lg-75 gap-2">
                                                             <button class="btn btn-sm btn-primary w-lg-25 w-100"
                                                                 id="btn_add_option">Agregar
@@ -214,6 +219,7 @@
 <script>
     var _token = '{{ csrf_token() }}';
 </script>
+<script src="https://unpkg.com/imask"></script>
 <script src="{{ asset('vendor/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/dashboard/ckeditor.init.js') }}" type="text/javascript"></script>
 <script src="{{ asset('vendor/bootstrap-select/dist/js/bootstrap-select.min.js') }}" type="text/javascript"></script>
