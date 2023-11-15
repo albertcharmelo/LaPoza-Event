@@ -28,6 +28,8 @@ class InvitacionesController extends Controller
                 'descripcion' => 'required',
                 'tipoMenu' => 'required',                
                 'files' => 'required|array|min:1',
+                'nombre_org' => 'required',
+                'email_org' => 'required'
             ]);
 
             foreach ($request->input('files') as $index => $file) {
@@ -40,13 +42,21 @@ class InvitacionesController extends Controller
                 }
             }
 
-            $evento_id = Evento::first()->id; // Cambiar luego por el evento seleccionado
             $creado_por = auth()->user()->id;           
 
             $imagen = $request->input('file_menu.base64');
             $imagen = substr($imagen, strpos($imagen, ",") + 1);
 
             DB::beginTransaction();
+            $evento = Evento::create([
+                'nombre' => $validatedData['nombre_org'],
+                'email_organizador' => $validatedData['email_org'],
+                'telefono_organizador' => $request->telefono_org,
+                'numero_invitados' => 0,
+                'ingreso_bruto' => 0, 
+                'fecha' => $request->fecha_evento,
+                'creado_por' => $creado_por,
+            ]);
             $invitacion = Invitacion::create([
                 'titulo' => $validatedData['titulo'],
                 'texto' =>  $validatedData['descripcion'],
@@ -54,7 +64,7 @@ class InvitacionesController extends Controller
                 'tipo_menu' => $validatedData['tipoMenu'],
                 'platos_opciones' => $request->platos_opciones,
                 'creado_por' => $creado_por,
-                'evento_id' => $evento_id,
+                'evento_id' => $evento->id,
             ]);
 
             $invitacion_imagenes = [];
