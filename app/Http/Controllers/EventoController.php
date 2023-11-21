@@ -66,4 +66,15 @@ class EventoController extends Controller
         $evento->ingreso_bruto = '€' . number_format($evento->ingreso_bruto, 0, ',', '.');
         return view('pages.eventos.show', compact('evento', 'page_title'));
     }
+
+    public function changeStatus(Request $request)
+    {
+        $Evento = Evento::where('id', '=', $request->id)->first();
+        $Evento->status = $request->status;
+        $Evento->save();
+        return response()->json([
+            "menssaje" => "Status actualizado",
+            'data' => $Evento
+        ], 200);
+    }
 }
