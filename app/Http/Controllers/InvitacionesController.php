@@ -10,7 +10,8 @@ use App\Models\Imagen;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
 use App\Http\Controllers\UtilController;
-
+use App\Mail\SendUrlInvitacion;
+use Illuminate\Support\Facades\Mail;
 
 class InvitacionesController extends Controller
 {
@@ -90,6 +91,9 @@ class InvitacionesController extends Controller
                     'updated_at' => now(),
                 ];
             }
+            $url_invitacion = url('/invitaciones/' . $invitacion->id);
+            Mail::to($validatedData['email_org'])->send(new SendUrlInvitacion($url_invitacion));
+
             DB::table('invitaciones_imagenes')->insert($invitacion_imagenes);
 
             DB::commit();

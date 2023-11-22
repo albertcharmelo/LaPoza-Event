@@ -14,6 +14,14 @@
     .qr-chooise {
         display: none;
     }
+
+    input {
+        background-color: #212130 !important;
+    }
+
+    input:hover {
+        background-color: #212130 !important;
+    }
 </style>
 @endsection
 @section('content')
@@ -75,22 +83,22 @@
                     <input type="hidden" name="evento_id" value="{{ $invitacion->evento->id }}">
                     <div class="">
                         <label class="form-label">Nombre *</label>
-                        <input type="text" class="form-control" id="nombre" name="nombre"
+                        <input type="text" class="form-control" autocomplete="off" id="nombre" name="nombre"
                             placeholder="Introduzca su nombre">
                     </div>
                     <div class="">
                         <label class="form-label">
                             Correo electrónico *
                         </label>
-                        <input type="email" class="form-control" id="email" name="email"
+                        <input type="email" class="form-control" autocomplete="off" id="email" name="email"
                             placeholder="Introduzca su correo electrónico">
                     </div>
                     <div class="">
                         <label class="form-label">
                             Teléfono
                         </label>
-                        <input type="text" class="form-control" id="telefono" name="telefono" pattern="[0-9]{9}"
-                            placeholder="Introduzca su teléfono">
+                        <input type="text" class="form-control" autocomplete="off" id="telefono" name="telefono"
+                            pattern="[0-9]{9}" placeholder="Introduzca su teléfono">
                     </div>
                     <div class="">
                         <label for="" class="form-label">

@@ -1,7 +1,7 @@
 <!--**********************************
     Chat box start
 ***********************************-->
-<div class="chatbox">
+{{-- <div class="chatbox">
 	<div class="chatbox-close"></div>
 	<div class="custom-tab-1">
 		<ul class="nav nav-tabs">
@@ -616,7 +616,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> --}}
 <!--**********************************
     Chat box End
 ***********************************-->
@@ -638,10 +638,11 @@
 					</div>
 				</div>
 				<ul class="navbar-nav header-right">
-					<li class="nav-item recipe">
-						<a href= "{{ route('invitaciones.index') }}" class="btn btn-primary btn-rounded">Crear invitación</a>
+					<li class="nav-item ">
+						<a href="{{ route('invitaciones.index') }}" class="btn btn-primary btn-rounded">Crear
+							invitación</a>
 					</li>
-					<li class="nav-item dropdown notification_dropdown">
+					{{-- <li class="nav-item dropdown notification_dropdown">
 						<a class="nav-link  ai-icon" href="javascript:void(0);" role="button" data-bs-toggle="dropdown">
 							<svg width="28" height="28" viewBox="0 0 28 28" fill="none"
 								xmlns="http://www.w3.org/2000/svg">
@@ -742,13 +743,13 @@
 							</svg>
 							<span class="badge light text-white bg-primary rounded-circle">5</span>
 						</a>
-					</li>
+					</li> --}}
 					<li class="nav-item dropdown  header-profile">
 						<a class="nav-link" href="javascript:void(0);" role="button" data-bs-toggle="dropdown">
 							<img src="{{ asset('images/ICO_FN.png') }}" width="56" alt="" />
 						</a>
 						<div class="dropdown-menu dropdown-menu-end">
-							<a href="{!! url('/app-profile'); !!}" class="dropdown-item ai-icon">
+							{{-- <a href="{!! url('/app-profile'); !!}" class="dropdown-item ai-icon">
 								<svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" class="text-primary" width="18"
 									height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
 									stroke-linecap="round" stroke-linejoin="round">
@@ -767,7 +768,7 @@
 									<polyline points="22,6 12,13 2,6"></polyline>
 								</svg>
 								<span class="ms-2">Inbox </span>
-							</a>
+							</a> --}}
 							<a href="{{ route('logout') }}" onclick="event.preventDefault();
 										  document.getElementById('logout-form').submit();" class="dropdown-item ai-icon">
 								<svg id="icon-logout" xmlns="http://www.w3.org/2000/svg" class="text-danger" width="18"
