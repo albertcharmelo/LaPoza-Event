@@ -24,8 +24,8 @@
         }
 
         a {
-            color: #ffffff;
-            background-color: #007bff;
+            color: #fff !important;
+            background-color: #FD683E;
             padding: 10px 20px;
             border-radius: 5px;
             text-decoration: none;
@@ -37,8 +37,8 @@
 
 <body>
     <h1>¡Te invitamos al evento!</h1>
-    <p>Para registrarte en el evento, por favor sigue el siguiente enlace:</p>
-    <a href="{{ $urlInvitacion }}">Registrarse</a>
+    <p>Para registrarte en el evento, por favor has click en el siguiente boton </p>
+    <a href="{{ $urlInvitacion }}">Ir al enlace</a>
 </body>
 
 </html>

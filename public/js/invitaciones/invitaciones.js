@@ -73,12 +73,12 @@ const enviarInforamcion = async (e) => {
     e.preventDefault();
     let data = Object.fromEntries(new FormData(e.target));
     // verificar que no existan campos vacios
-    const values = Object.values(data);
-    if (values.includes("") || values.includes(null)) {
+    const { nombre, telefono, invitados } = data;
+    if (!nombre || !telefono || !invitados) {
         SwalShowMessage(
             "warning",
             "¡Advertencia!",
-            "Debe llenar todos los campos"
+            "Debe llenar los campos de nombre, teléfono y numero invitados"
         );
         return;
     }
@@ -108,6 +108,7 @@ const enviarInforamcion = async (e) => {
             await datosBox.hide("fast");
             mostrarQrCode(dataResponse);
             await QrCodeBox.show("slow");
+            currentStep++;
         }
     } catch (error) {
         SwalShowMessage("error", "¡Error!", error);
@@ -127,6 +128,7 @@ const nextStep = async () => {
             await platosBox.show("slow");
             currentStep++;
             BtnNext.text("Acepto");
+
             break;
         case 2:
             const platos = verificarPlatos();
@@ -139,7 +141,6 @@ const nextStep = async () => {
             break;
         case 3:
             datosFormulario.submit();
-            currentStep++;
             break;
         default:
             break;

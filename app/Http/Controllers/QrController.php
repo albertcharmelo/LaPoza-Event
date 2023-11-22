@@ -36,15 +36,33 @@ class QrController extends Controller
             ], 400);
         }
 
-        $qrCode = QrCode::format('png')
-            ->size(200)
+        $curl = curl_init();
 
-            ->generate($request->value);
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://storage.worki.es/api/generarQr',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => 'text=hola',
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/x-www-form-urlencoded',
+                'Authorization: Bearer 14|AZ5DTvY8f24NEnHLAFywyUIiuDlC2zQWBZArlWbz'
+            ),
+        ));
 
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $qrCode = base64_encode($response);
+        dd($qrCode);
         $qr_code_created = CodigoQr::create([
             'invitado_id' => $request->invitado_id,
             'invitacion_id' => $request->invitacion_id,
-            'path' => base64_encode($qrCode)
+            'path' => $qrCode
         ]);
 
         return $qr_code_created;

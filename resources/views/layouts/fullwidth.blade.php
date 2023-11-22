@@ -27,7 +27,7 @@ $loginbackground = '';
     <meta property="og:title" content="La poza eventos : Crear invitaciones para enventos en el restaurante LaPoza" />
     <meta property="og:description" content="{{ config('dz.name') }} | @yield('title', $page_title ?? '')" />
     <meta name="format-detection" content="telephone=no">
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    {{-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) --}}
     <!-- PAGE TITLE HERE -->
     <title>{{ config('dz.name') }} | @yield('title', $page_title ?? '')</title>
 
@@ -35,7 +35,7 @@ $loginbackground = '';
     <link rel="shortcut icon" type="image/png" href="{{ asset('images/favicon.png') }}" />
 
     <!-- Style css -->
-
+    @include('layouts.globalCss')
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
 

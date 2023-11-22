@@ -26,6 +26,7 @@ $action = DzHelper::action();
     <link rel="shortcut icon" type="image/png" href="{{ asset('images/favicon.png') }}" />
 
     <!-- Style css -->
+    @include('layouts.globalCss')
     @php
     $action = isset($action) ? $controller.'_'.$action : 'dashboard_1';
     @endphp

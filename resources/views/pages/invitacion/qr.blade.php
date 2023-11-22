@@ -25,8 +25,18 @@
                                 style="font-size: 18px">
                         </div>
                         @endforeach
+                        @if ($invitado->observaciones != null || $invitado->observaciones != '')
+                        <div>
+                            <h3 class="text-center"> Observaciones / Alergias / Intolerancias</h3>
+                            <textarea name="observaciones" readonly id="" cols="30" rows="10" class="form-control"
+                                style="font-size: 18px">{{ $invitado->observaciones }}</textarea>
+                        </div>
+                        @endif
+
                     </div>
                     @endif
+
+
 
                 </div>
             </div>
