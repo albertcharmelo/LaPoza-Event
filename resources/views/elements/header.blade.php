@@ -639,7 +639,7 @@
 				</div>
 				<ul class="navbar-nav header-right">
 					<li class="nav-item ">
-						<a href="{{ route('invitaciones.index') }}" class="btn btn-primary btn-rounded">Crear
+						<a href="{{ route('invitaciones.create') }}" class="btn btn-primary btn-rounded">Crear
 							invitación</a>
 					</li>
 					{{-- <li class="nav-item dropdown notification_dropdown">
