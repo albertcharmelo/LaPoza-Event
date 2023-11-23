@@ -55,7 +55,9 @@ Route::post('/invitados/create', [App\Http\Controllers\InvitadoController::class
 
 /* ------------------------------------------- INVITACIONES  ------------------------------------------ */
 Route::prefix('/invitaciones')->group(function () {
-    Route::get('/index', [InvitacionesController::class, 'index'])->middleware('auth')->name('invitaciones.index');
+    Route::get('/index', [InvitacionesController::class, 'index'])->middleware('auth')->name('index');
+    Route::post('/getInvitaciones', [InvitacionesController::class, 'getInvitaciones'])->middleware('auth');
+    Route::get('/create', [InvitacionesController::class, 'create'])->middleware('auth')->name('invitaciones.create');
     Route::post('/agregarInvitacion', [InvitacionesController::class, 'agregarInvitacion'])->middleware('auth');
     Route::get('/{invitacion}', [InvitacionesController::class, 'show'])->name('invitaciones.show');
 });
