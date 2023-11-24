@@ -11,6 +11,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
 use App\Http\Controllers\UtilController;
 use App\Mail\SendUrlInvitacion;
+use App\Models\Invitado;
 use App\Models\PlatillaMenu;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -180,5 +181,81 @@ class InvitacionesController extends Controller
             'data' => $plantillas,
             'status' => 'success'
         ], 201);
+    }
+
+    public function getPlatos(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'invitacion_id' => 'required | string',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => $validate->errors(),
+            ], 400);
+        }
+
+        $platos_invitados = Invitado::where('invitacion_id', $request->invitacion_id)->get(['platos_elegidos', 'numero_personas']);
+
+        $platos = [];
+
+        foreach ($platos_invitados as $platos_elegidos_string) {
+            $plato_decode = json_decode($platos_elegidos_string->platos_elegidos);
+            $cantidadComensalesPInvitacion = $platos_elegidos_string->numero_personas;
+            foreach ($plato_decode as $platos_del_invitado) {
+
+                foreach ($platos_del_invitado as $plato) {
+                    $data = [
+                        'plato' => $plato,
+                        'cantidad' => $cantidadComensalesPInvitacion,
+                    ];
+
+                    $platos[] = $data;
+                }
+            }
+        }
+
+        // agrupar por plato y sumar cantidad de comensales
+        $platos = collect($platos)->groupBy('plato')->map(function ($row) {
+            return [
+                'plato' => $row[0]['plato'],
+                'cantidad' => $row->sum('cantidad'),
+            ];
+        })->values();
+
+        return response()->json($platos, 200);
+    }
+
+    public function getInvitadosByPlato(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'invitacion_id' => 'required | string',
+            'plato' => 'required | string',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => $validate->errors(),
+            ], 400);
+        }
+
+        $invitados = Invitado::where('invitacion_id', $request->invitacion_id)->get();
+
+        $invitados_plato = [];
+
+        foreach ($invitados as $invitado) {
+            $platos_elegidos = json_decode($invitado->platos_elegidos);
+            foreach ($platos_elegidos as $platos_del_invitado) {
+                foreach ($platos_del_invitado as $plato) {
+                    if ($plato == $request->plato) {
+                        $invitados_plato[] = $invitado;
+                    }
+                }
+            }
+        }
+
+        return response()->json($invitados_plato, 200);
     }
 }

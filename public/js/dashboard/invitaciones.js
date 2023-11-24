@@ -11,8 +11,13 @@ let arrayFiles = [];
 let filesArray = [];
 let nombre_org = $("#nombre_org");
 let email_org = $("#email_org");
-let telefono_org = $("#telefono_org");
+let telefono_organizador = document.getElementById("telefono_org");
 let fecha_evento = $("#fecha_evento");
+
+const maskInputOptions = {
+    mask: "(000)-00-00-00",
+};
+const telefono_org = IMask(telefono_organizador, maskInputOptions);
 
 $(document).ready(function () {
     // SmartWizard initialize
@@ -121,7 +126,7 @@ function iniciarDatos() {
 
     nombre_org.val("");
     email_org.val("");
-    telefono_org.val("");
+    telefono_org.value = "";
     let fecha = new Date();
     let dia = fecha.getDate();
     let mes = fecha.getMonth() + 1;
@@ -277,7 +282,7 @@ btnGuardar.on("click", function () {
 
         data.append("nombre_org", nombre_org.val());
         data.append("email_org", email_org.val());
-        data.append("telefono_org", telefono_org.val());
+        data.append("telefono_org", telefono_org.value);
         data.append("fecha_evento", fecha_evento.val());
 
         const URL = "/invitaciones/agregarInvitacion";
