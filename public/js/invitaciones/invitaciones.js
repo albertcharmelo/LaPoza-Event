@@ -44,15 +44,21 @@ function mostrarQrCode(data) {
  * @returns {Array} - Array con las respuestas seleccionadas para cada plato.
  */
 const verificarPlatos = () => {
-    const cantidadDePlatos = $(".platos_select").length;
-    // obtener la respuesta de todos los platos
     const respuestas = [];
-    for (let i = 0; i < cantidadDePlatos; i++) {
-        const plato = $(`.platos_select:eq(${i})`);
-        respuestas.push(plato.val());
-    }
 
-    if (respuestas.includes(null)) {
+    $(".opcion_plato:checked").each(function () {
+        const platoQuestion = $(this)
+            .closest(".opcion_plato_box")
+            .siblings(".plato_question")
+            .text();
+        const opcionSeleccionada = $(this).val();
+
+        respuestas.push({
+            [platoQuestion]: opcionSeleccionada,
+        });
+    });
+
+    if (respuestas.length !== $(".platos_select").length) {
         SwalShowMessage(
             "warning",
             "¡Advertencia!",
@@ -72,6 +78,7 @@ const verificarPlatos = () => {
 const enviarInforamcion = async (e) => {
     e.preventDefault();
     let data = Object.fromEntries(new FormData(e.target));
+
     // verificar que no existan campos vacios
     const { nombre, telefono, invitados } = data;
     if (!nombre || !telefono || !invitados) {

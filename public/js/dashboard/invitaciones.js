@@ -207,13 +207,7 @@ btnGuardar.on("click", function () {
             });
             return false;
         }
-        platos_opciones_obj = platos_with_options.map((plato, index) => {
-            let obj = {};
-            plato.forEach((value, i) => {
-                obj[`${i + 1}`] = value;
-            });
-            return obj;
-        });
+        platos_opciones_obj = platos_with_options;
     }
 
     if (nombre_org.val() == "") {
