@@ -14,14 +14,13 @@ class InvitadoController extends Controller
 
         $validation = Validator::make($request->all(), [
             'nombre' => 'required | string',
-            'email' => 'required | string',
-            'telefono' => ' string',
+            'telefono' => 'required |string',
             'invitados' => 'required | integer | min:1',
             'observaciones' => 'string',
             'evento_id' => 'required | string',
             'invitacion_id' => 'required | string',
             'platos' => '  array',
-            'platos.*' => 'string',
+
         ]);
 
 
@@ -31,7 +30,7 @@ class InvitadoController extends Controller
             ], 400);
         }
 
-        $platos_elegidos  = implode('*', $request->platos);
+        $platos_elegidos  = json_encode($request->platos);
 
 
         $invitado = Invitado::create([
