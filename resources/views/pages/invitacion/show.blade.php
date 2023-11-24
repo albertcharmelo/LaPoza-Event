@@ -48,30 +48,41 @@
             <div class="plates-chooise" id="platosBox">
                 @if ($invitacion->tipo_menu == 'Menu a Elegir con Precio' || $invitacion->tipo_menu == 'Menu a Elegir
                 sin Precio')
-                <h2>Selecciona los platos del menú</h2>
-                <p class="text-muted">Agrega las opciones para los {{ count($invitacion->platos_opciones) }} platos
+                <h1>Selecciona los platos del menú</h1>
+                <h6 class="text-muted mb-4">Agrega las opciones para los {{ count($invitacion->platos_opciones) }}
+                    platos
                     pulsando en el <span class="color-global">Seleccionador
-                    </span> para cada platillo.</p>
-                @for ($i = 0; $i < count($invitacion->platos_opciones); $i++)
-                    <div class="my-2">
-                        <label class="form-label">Seleccione el {{ $i + 1 }}º plato</label>
-                        <select class="form-control platos_select">
-                            <option selected disabled hidden value="">
-                                Seleccione una opción
-                            </option>
-                            @foreach ($invitacion->platos_opciones[$i] as $plato)
-                            <option value="{{ $plato }}">{{ $plato }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    </span> para cada platillo.</h6>
+                <div class="row">
+                    @foreach ($invitacion->platos_opciones as $key => $opciones)
+                    <div class="my-2 col-12  p-2 platos_select">
+                        @foreach ($opciones as $pregunta => $plato)
+                        <div class="border border-primary p-4 rounded">
 
-                    @endfor
-                    @else
-                    <h2>Menu a servir dentro del Evento</h2>
-                    <p class="text-muted">El siguiente menú fijo no estará sujeto a modificaciones </p>
-                    <img src="data:image/png;base64,{{ $invitacion->imagen }}" alt="Imagen del menu"
-                        class="img-fluid mb-3 w-100 rounded ">
-                    @endif
+                            <h3 class="form-label my-3 plato_question">{{ $pregunta }}</h3>
+
+                            <div class="d-flex flex-column gap-3 mb-3 opcion_plato_box">
+                                @foreach ($plato as $plato_opcion)
+                                <div class="d-flex gap-3 align-items-center">
+                                    <input type="radio" name="{{ $pregunta }}" class="form-check-input opcion_plato"
+                                        value="{{ $plato_opcion }}" id="">
+                                    <h5 class="text-center mb-0">{{ $plato_opcion }}</h5>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endforeach
+
+                    </div>
+                    @endforeach
+
+                </div>
+                @else
+                <h2>Menu a servir dentro del Evento</h2>
+                <p class="text-muted">El siguiente menú fijo no estará sujeto a modificaciones </p>
+                <img src="data:image/png;base64,{{ $invitacion->imagen }}" alt="Imagen del menu"
+                    class="img-fluid mb-3 w-100 rounded ">
+                @endif
 
             </div>
             <div class="datos-chooise" id="datosBox">

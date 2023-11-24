@@ -58,7 +58,6 @@ class QrController extends Controller
 
         curl_close($curl);
         $qrCode = base64_encode($response);
-        dd($qrCode);
         $qr_code_created = CodigoQr::create([
             'invitado_id' => $request->invitado_id,
             'invitacion_id' => $request->invitacion_id,
@@ -73,7 +72,7 @@ class QrController extends Controller
 
 
         $page_title = 'Invitacion';
-        $invitado->platos_elegidos = explode('*', $invitado->platos_elegidos);
+        $invitado->platos_elegidos = json_decode($invitado->platos_elegidos);
         return view('pages.invitacion.qr', compact('invitado', 'page_title'));
     }
 }

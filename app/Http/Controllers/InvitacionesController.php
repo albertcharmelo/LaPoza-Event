@@ -11,7 +11,9 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
 use App\Http\Controllers\UtilController;
 use App\Mail\SendUrlInvitacion;
+use App\Models\PlatillaMenu;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class InvitacionesController extends Controller
 {
@@ -23,6 +25,8 @@ class InvitacionesController extends Controller
 
     public function agregarInvitacion(Request $request)
     {
+
+
         try {
             $validatedData = $request->validate([
                 'titulo' => 'required',
@@ -124,6 +128,57 @@ class InvitacionesController extends Controller
     {
         $page_title = $invitacion->titulo;
         $invitacion->platos_opciones = json_decode($invitacion->platos_opciones);
+
         return view('pages.invitacion.show', compact('invitacion', 'page_title'));
+    }
+
+    public function crearPlantilla(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'tipoMenu' => 'required | string',
+            'name' => 'required | string',
+            'platos' => 'required | array',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => $validate->errors(),
+            ], 400);
+        }
+
+        $platos = json_encode($request->platos);
+        $tipoMenu = $request->tipoMenu;
+        $name = $request->name;
+
+
+
+        $plantilla = PlatillaMenu::create([
+            'name' => $name,
+            'tipo_menu' => $tipoMenu,
+            'platos' => $platos,
+        ]);
+
+        return response()->json([
+            'message' => 'Plantilla creada correctamente',
+            'data' => $plantilla,
+            'status' => 'success'
+        ], 201);
+    }
+
+    public function getPlantillas(Request $request)
+    {
+        $plantillas = PlatillaMenu::all();
+
+        foreach ($plantillas as $key => $plantilla) {
+            $plantilla->platos = json_decode($plantilla->platos);
+        }
+
+
+        return response()->json([
+            'message' => 'Plantillas obtenidas correctamente',
+            'data' => $plantillas,
+            'status' => 'success'
+        ], 201);
     }
 }

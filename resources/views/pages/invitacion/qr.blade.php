@@ -18,12 +18,15 @@
                     @if ($invitado->invitacion->tipo_menu != 'Menu Fijo con Precio' && $invitado->invitacion->tipo_menu
                     != 'Menu Fijo sin Precio')
                     <div class="my-3 d-flex flex-column gap-3">
-                        @foreach ($invitado->platos_elegidos as $index => $plato)
+                        @foreach ($invitado->platos_elegidos as $plato)
+                        @foreach ($plato as $pregunta => $opcion_elegida)
                         <div>
-                            <h3 class="text-center">Plato {{ $index + 1 }}° elegido: </h3>
-                            <input type="text" name="plato" value="{{ $plato }}" class="form-control text-center"
-                                style="font-size: 18px">
+                            <h3 class="text-center">{{ $pregunta }} </h3>
+                            <input type="text" name="plato" readonly value="{{ $opcion_elegida }}"
+                                class="form-control text-center" style="font-size: 18px">
                         </div>
+                        @endforeach
+
                         @endforeach
                         @if ($invitado->observaciones != null || $invitado->observaciones != '')
                         <div>

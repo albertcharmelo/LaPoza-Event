@@ -5,6 +5,8 @@
 <link href="{{ asset('css/dashboard/invitaciones.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
+@include('pages.invitacion.modalPlantillasInvitacion')
+@include('pages.invitacion.modalSavePlantilla')
 <div class="container-fluid">
     {{-- <div class="row page-titles">
         <ol class="breadcrumb">
@@ -17,7 +19,7 @@
         <div class="col-xl-12 col-xxl-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Invitación</h4>
+                    <h1 class="card-title">Invitación</h1>
                 </div>
                 <div class="card-body" style="height: auto">
                     <div id="smartwizard" class="form-wizard order-create">
@@ -42,16 +44,16 @@
                                 <div class="row">
                                     <div class="col-lg-12 mb-2">
                                         <div class="mb-3">
-                                            <label class="text-black font-w600 form-label">Título de la
-                                                invitación</label>
+                                            <h3 class="text-black font-w600 form-label">Título de la
+                                                invitación</h3>
                                             <input type="text" name="titulo" class="form-control"
                                                 placeholder="Introduzca el título aquí" id="titulo" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="mb-3">
-                                            <label for="comment" class="text-black font-w600 form-label">Mensaje de
-                                                invitacion</label>
+                                            <h3 for="comment" class="text-black font-w600 form-label">Mensaje de
+                                                invitacion</h3>
                                             <textarea class="form-control " id="ckeditorInvitacion"
                                                 name="descripcion"></textarea>
                                         </div>
@@ -59,8 +61,7 @@
                                     <div class="col-lg-12">
                                         <div class="mb-3">
 
-                                            <label for="comment"
-                                                class="text-black font-w600 form-label">Archivos</label>
+                                            <h3 for="comment" class="text-black font-w600 form-label">Archivos</h3>
                                             <div class="custom-file">
 
                                                 <input type="file" class="custom-file-input" id="files" lang="es"
@@ -74,7 +75,7 @@
                             <div id="wizard_invitacion_pte2" class="tab-pane" role="tabpanel">
                                 <div class="row">
                                     <div class="col-12 mb-3">
-                                        <label class="text-black font-w600 form-label">Tipo de Menú</label>
+                                        <h3 class="text-black font-w600 form-label">Tipo de Menú</h3>
                                         <select class="  form-control wide" id="tipoMenu" name="tipoMenu">
                                             <option value="" selected disabled hidden>Selecciona una opción
                                             </option>
@@ -109,12 +110,20 @@
                                                     opción</span>, para agregar otro platillo
                                                 pulse <span class="text-secondary">Añadir plato</span> </p>
 
+                                            <button class="btn btn-primary btn-md mb-3" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModalCenter">Usar
+                                                Plantilla</button>
+
 
                                             <div class="mt-3">
                                                 <h4 class="d-flex gap-2">
-                                                    <div class="border border-primary rounded-circle"
+                                                    <input type="text" class=" form-control  form-control-lg"
+                                                        style="font-size: 22px" id="input_add_question"
+                                                        placeholder="Ejemplo: Elija el Entrante de su menú " value="">
+
+                                                    {{-- <div class="border border-primary rounded-circle"
                                                         style="width: 22px; height: 22px;"></div> <span
-                                                        id="actualPlato">1º</span> plato a elegir
+                                                        id="actualPlato">1º</span> plato a elegir --}}
                                                 </h4>
                                                 <div class="bootstrap-badge mb-3 mt-1" id="listBadges">
 
@@ -125,12 +134,13 @@
                                                     <div class=" d-flex flex-column flex-lg-row w-100 w-lg-75 gap-2">
                                                         <input type="text"
                                                             class="form-control form-control-sm w-100 w-lg-75 "
-                                                            id="input_add_option" placeholder="introduzca una opción"
+                                                            id="input_add_option" style="font-size: 18px"
+                                                            placeholder="introduzca una opción"
                                                             name="input_add_option" />
                                                         <input type="text"
                                                             class="form-control form-control-sm w-100 w-lg-25 "
-                                                            id="input_add_price" placeholder="0.00"
-                                                            name="input_add_price" />
+                                                            id="input_add_price" style="font-size: 18px"
+                                                            placeholder="0.00" name="input_add_price" />
 
                                                         <div class="d-flex flex-column flex-lg-row w-100 w-lg-75 gap-2">
                                                             <button class="btn btn-sm btn-primary w-lg-25 w-100"
@@ -149,14 +159,13 @@
 
                                             </div>
 
-                                            <div id="listResultsPlates">
-
-                                                <div>
-
-
-                                                </div>
-
+                                            <div class="my-4" id="listResultsPlates">
                                             </div>
+                                            <button type="button" class="btn btn-primary btn-block my-5 d-none"
+                                                id="btn_save_template" data-bs-toggle="modal"
+                                                data-bs-target="#modalSaveTemplate">Guardar
+                                                plantilla de
+                                                menú</button>
 
                                         </div>
                                     </div>
