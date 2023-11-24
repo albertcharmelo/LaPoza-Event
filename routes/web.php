@@ -56,6 +56,8 @@ Route::prefix('/invitaciones')->group(function () {
     Route::get('/index', [InvitacionesController::class, 'index'])->middleware('auth')->name('invitaciones.index');
     Route::post('/agregarInvitacion', [InvitacionesController::class, 'agregarInvitacion'])->middleware('auth');
     Route::get('/{invitacion}', [InvitacionesController::class, 'show'])->name('invitaciones.show');
+    Route::post('/crearPlantilla', [InvitacionesController::class, 'crearPlantilla'])->middleware('auth');
+    Route::post('/getPlantillas', [InvitacionesController::class, 'getPlantillas'])->middleware('auth');
 });
 /* ------------------------------------------- QRCODES ------------------------------------------ */
 Route::get('/qrcodes/generate', [App\Http\Controllers\QrController::class, 'generate'])->middleware('auth');
