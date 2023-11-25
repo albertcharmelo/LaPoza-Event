@@ -1,7 +1,9 @@
 @extends('layouts.dashboard')
 @section('css')
 <link href="{{ asset('vendor/datatables/css/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('css/dashboard/eventos.css') }}" rel="stylesheet" type="text/css" />
 @endsection
+
 @section('content')
 <div class="container-fluid">
     <input type="text" class="d-none" readonly id="evento_id" value="{{ $evento->id }}">
@@ -131,7 +133,7 @@
                                     <div class="my-post-content pt-3">
                                         {{-- tabla de invitados --}}
                                         <div class="">
-                                            <h4 class="card-title">Todos los eventos</h4>
+                                            <h4 class="card-title">Todos los invitados</h4>
                                         </div>
                                         <div class="card-body">
                                             <div class="table-responsive">
@@ -241,6 +243,30 @@
 
                                                             </div>
                                                         </form>
+                                                    </div>
+                                                    <div class="profile-skills mt-5 mb-5">
+                                                        <h4 class="text-primary mb-2">Resumen de platos</h4>
+                                                        <div class="card-body">
+                                                            <div class="table-responsive">
+                                                                <table id="TableResumenPlatos" class="display" style="min-width: 845px">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th with="90%">Descripción del plato</th>
+                                                                            <th with="10%" class="text-center">Cantidad</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                
+                                                                    </tbody>
+                                                                    <tfoot>
+                                                                        <tr>
+                                                                            <th with="90%">Descripción del plato</th>
+                                                                            <th with="10%" class="text-center">Cantidad</th>
+                                                                        </tr>
+                                                                    </tfoot>
+                                                                </table>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
