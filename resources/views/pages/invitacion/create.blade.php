@@ -5,6 +5,8 @@
 <link href="{{ asset('css/dashboard/invitaciones.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
+@include('pages.invitacion.modalPlantillasInvitacion')
+@include('pages.invitacion.modalSavePlantilla')
 <div class="container-fluid">
     {{-- <div class="row page-titles">
         <ol class="breadcrumb">
