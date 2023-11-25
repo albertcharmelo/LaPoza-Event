@@ -57,3 +57,10 @@
         this.nodes().to$().removeClass("selected");
     });
 })(jQuery);
+
+function showLoader() {
+    $("#loader_page").show();
+}
+function hideLoader() {
+    $("#loader_page").hide();
+}
