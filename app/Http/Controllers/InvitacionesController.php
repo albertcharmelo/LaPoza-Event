@@ -14,6 +14,8 @@ use App\Mail\SendUrlInvitacion;
 use App\Models\Invitado;
 use App\Models\PlatillaMenu;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 
 class InvitacionesController extends Controller
@@ -21,7 +23,47 @@ class InvitacionesController extends Controller
     public function index(Request $request)
     {
         $page_title = 'Invitaciones';
+
         return view('pages.invitacion.index', compact('page_title'));
+    }
+
+    public function getInvitaciones(Request $request)
+    {
+        if (!Auth::check()) {
+            return response()->json([
+                'message' => 'No autorizado',
+            ], 401);
+        }
+        try {
+
+            $invitaciones = Invitacion::select('id', 'titulo', 'tipo_menu', 'updated_at', 'evento_id')
+                ->with('evento:id,nombre,fecha')
+                ->orderBy('updated_at', 'desc')
+                ->get();
+
+            // Formatea updated_at para cada invitacion
+            $invitaciones->map(function ($invitacion) {
+                $invitacion->updated_at_formatted = Carbon::parse($invitacion->updated_at)->format('d/m/Y');
+                $invitacion->evento->fecha_formatted = Carbon::parse($invitacion->evento->fecha)->format('d/m/Y');
+                return $invitacion;
+            });
+
+            return response()->json($invitaciones, 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al obtener las invitaciones: ' . $e->getMessage(),
+            ], 400);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Error al obtener las invitaciones: ' . $th->getMessage(),
+            ], 400);
+        }
+    }
+
+    public function create(Request $request)
+    {
+        $page_title = 'Invitaciones';
+        return view('pages.invitacion.create', compact('page_title'));
     }
 
     public function agregarInvitacion(Request $request)

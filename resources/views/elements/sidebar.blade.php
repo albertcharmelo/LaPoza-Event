@@ -17,6 +17,9 @@
                     <li><a href="{!! url('/analytics'); !!}">Analytics</a></li>
                     <li><a href="{!! url('/review'); !!}">Review</a></li> --}}
                 </ul>
+                <ul aria-expanded="false">
+                    <li><a href="{!! url('/invitaciones/index'); !!}">Invitaciones</a></li>
+                </ul>
 
             </li>
             {{-- <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
