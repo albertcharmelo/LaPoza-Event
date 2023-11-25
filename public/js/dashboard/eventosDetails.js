@@ -1,6 +1,8 @@
 (function ($) {
     "use strict";
     const evento_id = $("#evento_id").val();
+    var nombre_plato = $("#nombre_plato");
+    
 
     var table = $("#invitadosTable").DataTable({
         createdRow: function (row, data) {
@@ -31,11 +33,17 @@
             },
             dataType: "json",
             dataSrc: "",
+            beforeSend: function () {
+                showLoader();
+            },
+            complete: function () {
+                hideLoader();                
+            },
         },
         columns: [
             { data: "nombre" },
             { data: "telefono" },
-            { data: "numero_personas" },
+            { data: "numero_personas", className: "dt-body-center" },
             {
                 data: "asistencia_confirmada",
                 render: function (data) {
@@ -43,6 +51,7 @@
                     var color = data === 1 ? "text-success" : "text-warning";
                     return `<span class="${color}">${text}</span>`;
                 },
+                className: "dt-body-center",
             },
         ],
     });
@@ -62,11 +71,58 @@
     });
 
     var tableResumen = $("#TableResumenPlatos").DataTable({
-        createdRow: function (row, data) {          
-            // $(row).on("click", function () {
-            //     window.location.href = "/qrcode/invitacion/" + data.id;
-            // });            
-        },        
+        createdRow: function (row, data) {
+            $(row).on("click", function () {
+                nombre_plato = data.plato;  
+                $('#nombre_plato').text(nombre_plato);              
+                
+                var tableInvitadosByPlato = $(
+                    "#tableInvitadosByPlato"
+                ).DataTable({
+                    destroy: true,
+                    language: {
+                        paginate: {
+                            next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
+                            previous:
+                                '<i class="fa fa-angle-double-left" aria-hidden="true"></i>',
+                        },
+                        searchPlaceholder: "Buscar invitado",
+                        search: "Buscar:",
+                        info: "Mostrando _START_ a _END_ de _TOTAL_ v",
+                        lengthMenu: "Mostrar _MENU_ invitados",
+                    },
+                    ajax: {
+                        url: "/invitaciones/getInvitadosByPlatos",
+                        type: "POST",
+                        data: function (d) {
+                            d.evento_id = evento_id;
+                            d.plato = nombre_plato;
+                        },
+                        headers: {
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                                "content"
+                            ),
+                        },
+                        dataType: "json",
+                        dataSrc: "",
+                        beforeSend: function () {
+                            showLoader();
+                        },
+                        complete: function () {
+                            hideLoader();
+                        },
+                    },
+                    columns: [
+                        { data: "nombre" },
+                        { data: "telefono", className: "dt-body-center" },
+                    ],
+                });
+                tableInvitadosByPlato.rows().every(function () {
+                    this.nodes().to$().removeClass("selected");
+                });
+                $("#ModalInvitadosByPlato").modal("show");
+            });
+        },
         language: {
             paginate: {
                 next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
@@ -89,6 +145,12 @@
             },
             dataType: "json",
             dataSrc: "",
+            beforeSend: function () {
+                showLoader();
+            },
+            complete: function () {
+                hideLoader();
+            },
         },
         columns: [
             { data: "plato" },
@@ -110,3 +172,10 @@
         this.nodes().to$().removeClass("selected");
     });
 })(jQuery);
+
+function showLoader() {
+    $("#loader_page").show();
+}
+function hideLoader() {
+    $("#loader_page").hide();
+}
