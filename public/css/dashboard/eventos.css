@@ -5,3 +5,31 @@
 #TableResumenPlatos tbody tr:hover {
     background-color: #171622 !important;
 } 
+
+#TableResumenPlatos tbody tr:hover td {
+    color: #fff;
+}
+
+#invitadosTable tbody tr {
+    cursor: pointer;
+}
+
+#invitadosTable tbody tr:hover {
+    background-color: #171622 !important;
+}
+
+#invitadosTable tbody tr:hover td {
+    color: #fff;
+}
+
+#tableInvitadosByPlato tbody tr {
+    cursor: pointer;
+}
+
+#tableInvitadosByPlato tbody tr:hover {
+    background-color: #171622 !important;
+}
+
+#tableInvitadosByPlato tbody tr:hover td {
+    color: #fff;
+}
