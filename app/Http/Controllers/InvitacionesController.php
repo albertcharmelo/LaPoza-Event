@@ -186,7 +186,7 @@ class InvitacionesController extends Controller
     public function getPlatos(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'invitacion_id' => 'required | string',
+            'evento_id' => 'required | string',
         ]);
 
         if ($validate->fails()) {
@@ -196,7 +196,7 @@ class InvitacionesController extends Controller
             ], 400);
         }
 
-        $platos_invitados = Invitado::where('invitacion_id', $request->invitacion_id)->get(['platos_elegidos', 'numero_personas']);
+        $platos_invitados = Invitado::where('evento_id', $request->evento_id)->get(['platos_elegidos', 'numero_personas']);
 
         $platos = [];
 
