@@ -1,0 +1,7 @@
+#TableResumenPlatos tbody tr {
+    cursor: pointer;
+}
+
+#TableResumenPlatos tbody tr:hover {
+    background-color: #171622 !important;
+} 
