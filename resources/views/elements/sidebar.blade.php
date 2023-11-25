@@ -10,6 +10,8 @@
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{!! url('/'); !!}">Eventos</a></li>
+                    <li><a href="{!! url('/invitaciones/index'); !!}">Invitaciones</a></li>
+
                     {{-- <li><a href="{!! url('/index-2'); !!}">Dashboard Dark</a></li>
                     <li><a href="{!! url('/order-page-list'); !!}">Orders</a></li>
                     <li><a href="{!! url('/order-details-page'); !!}">Order Details</a></li>
@@ -17,10 +19,6 @@
                     <li><a href="{!! url('/analytics'); !!}">Analytics</a></li>
                     <li><a href="{!! url('/review'); !!}">Review</a></li> --}}
                 </ul>
-                <ul aria-expanded="false">
-                    <li><a href="{!! url('/invitaciones/index'); !!}">Invitaciones</a></li>
-                </ul>
-
             </li>
             {{-- <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="flaticon-050-info"></i>
