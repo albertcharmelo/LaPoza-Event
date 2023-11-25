@@ -190,6 +190,7 @@ class InvitacionesController extends Controller
             ], 400);
         }
 
+
         $platos = json_encode($request->platos);
         $tipoMenu = $request->tipoMenu;
         $name = $request->name;
@@ -198,6 +199,7 @@ class InvitacionesController extends Controller
 
         $plantilla = PlatillaMenu::create([
             'name' => $name,
+            'description' => $request->description || 'Sin descripción',
             'tipo_menu' => $tipoMenu,
             'platos' => $platos,
         ]);

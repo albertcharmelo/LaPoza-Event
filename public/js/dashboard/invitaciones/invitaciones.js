@@ -15,7 +15,7 @@ let telefono_organizador = document.getElementById("telefono_org");
 let fecha_evento = $("#fecha_evento");
 
 const maskInputOptions = {
-    mask: "(000)-00-00-00",
+    mask: "000-00-00-00",
 };
 const telefono_org = IMask(telefono_organizador, maskInputOptions);
 

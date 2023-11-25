@@ -147,8 +147,7 @@
                                                                 id="btn_add_option">Agregar
                                                                 opción</button>
                                                             <button class="btn btn-sm btn-secondary w-lg-25 w-100"
-                                                                id="btn_add_other_plate">Añadir otro
-                                                                plato</button>
+                                                                id="btn_add_other_plate">Agregar plato</button>
 
                                                         </div>
 

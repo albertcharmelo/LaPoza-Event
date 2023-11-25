@@ -16,7 +16,6 @@ class InvitadoController extends Controller
             'nombre' => 'required | string',
             'telefono' => 'required |string',
             'invitados' => 'required | integer | min:1',
-            'observaciones' => 'string',
             'evento_id' => 'required | string',
             'invitacion_id' => 'required | string',
             'platos' => '  array',

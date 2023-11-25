@@ -46,8 +46,10 @@
                 @endforeach
             </div>
             <div class="plates-chooise" id="platosBox">
-                @if ($invitacion->tipo_menu == 'Menu a Elegir con Precio' || $invitacion->tipo_menu == 'Menu a Elegir
-                sin Precio')
+
+
+                @if ($invitacion->tipo_menu == 'Menu a Elegir con Precio' ||
+                $invitacion->tipo_menu == 'Menu a Elegir sin Precio')
                 <h1>Selecciona los platos del menú</h1>
                 <h6 class="text-muted mb-4">Agrega las opciones para los {{ count($invitacion->platos_opciones) }}
                     platos
@@ -99,14 +101,14 @@
                     </div>
                     <div class="">
                         <label class="form-label">
-                            Correo electrónico *
+                            Correo electrónico
                         </label>
                         <input type="email" class="form-control" autocomplete="off" id="email" name="email"
                             placeholder="Introduzca su correo electrónico">
                     </div>
                     <div class="">
                         <label class="form-label">
-                            Teléfono
+                            Teléfono *
                         </label>
                         <input type="text" class="form-control" autocomplete="off" id="telefono" name="telefono"
                             pattern="[0-9]{9}" placeholder="Introduzca su teléfono">
@@ -156,6 +158,7 @@
 
 @endsection
 @section('scripts')
+<script src="https://unpkg.com/imask"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.js') }}" type="text/javascript">
 </script>

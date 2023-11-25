@@ -15,6 +15,7 @@ class PlatillaMenu extends Model
         'name',
         'tipo_menu',
         'platos',
+        'description',
     ];
     protected $table = 'plantillas_menus';
 }

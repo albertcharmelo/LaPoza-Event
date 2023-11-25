@@ -170,6 +170,7 @@ function addPlateOptionsWithPlate() {
 
 function savePlantillas() {
     let nombrePlantilla = $("#nombrePlantilla").val();
+    let descripcionPlantilla = $("#descripcionPlantilla").val();
     if (nombrePlantilla == "") {
         SwalShowMessage(
             "warning",
@@ -181,6 +182,7 @@ function savePlantillas() {
 
     let data = {
         name: nombrePlantilla,
+        description: descripcionPlantilla,
         tipoMenu: select_tipoMenu.val(),
         platos: platos_with_options,
     };
@@ -199,6 +201,7 @@ function savePlantillas() {
                     "¡Éxito!",
                     "Se ha creado la plantilla correctamente"
                 );
+                getPlantillas();
                 $("#nombrePlantilla").val("");
                 $("#modalSaveTemplate").modal("hide");
             } else {
@@ -254,12 +257,16 @@ function createListPlantillas(data = plantillas) {
 
     data.forEach((plantilla, pregunta) => {
         html += `
-            <li class="list-group-item d-flex justify-content-between align-items-center template-card rounded" onclick="getOnePlantilla('${plantilla.id}')">
-            <div class="d-flex flex-column justify-content-center gap-2">
-                <h3 class="mb-0" >${plantilla.name}</h3>
-                <h5>2 entrantes y 1 bebida</h5>
+            <li class="list-group-item d-flex justify-content-between align-items-center template-card rounded" onclick="getOnePlantilla('${
+                plantilla.id
+            }')">
+            <div class="d-flex flex-column justify-content-center w-75 gap-2">
+                <h4 class="mb-0" >${plantilla.name}</h4>
+                <h6>${plantilla.description || "Sin descripción"}</h6>
             </div>
-                <span class="badge bg-primary rounded-pill">${plantilla.tipo_menu}</span>
+                <span class="badge bg-primary rounded-pill">${
+                    plantilla.tipo_menu
+                }</span>
             </li>
         `;
     });
@@ -290,7 +297,7 @@ function getOnePlantilla(params) {
     select_tipoMenu.val(plantilla.tipo_menu);
 
     select_tipoMenu.trigger("change");
-
+    tipoMenu.val(plantilla.tipo_menu); // esta variable esta en dashboard/invitaciones/invitaciones.js
     // llenar el input de nombre de plantilla
     plantilla.platos.forEach((plato) => {
         for (const pregunta in plato) {

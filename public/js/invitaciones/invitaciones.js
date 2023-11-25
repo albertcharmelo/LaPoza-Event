@@ -6,9 +6,14 @@ const QrCodeBox = $("#QrCodeBox");
 const qrImageBase64 = $("#qrImageBase64"); // img tag
 const urlToSeeQr = $("#urlToSeeQr"); // a tag
 const BtnNext = $("#BtnNext");
-
+let telefono = document.getElementById("telefono");
 let patos_seleccionados = [];
 let currentStep = 1;
+
+const maskInputOptions = {
+    mask: "000-00-00-00",
+};
+const telefono_invi = IMask(telefono, maskInputOptions);
 
 /**
  * Muestra un mensaje utilizando la librería SweetAlert2.

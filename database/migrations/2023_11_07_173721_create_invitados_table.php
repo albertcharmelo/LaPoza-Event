@@ -17,9 +17,9 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('invitacion_id')->constrained('invitaciones');
             $table->string('nombre');
-            $table->string('telefono');
-            $table->string('email');
-            $table->string('nif');
+            $table->string('telefono')->nullable();
+            $table->string('email')->nullable();
+            $table->string('nif')->nullable();
             $table->integer('numero_personas');
             $table->text('observaciones')->nullable();
             $table->boolean('asistencia_confirmada')->default(false);
