@@ -1,11 +1,12 @@
 <!--**********************************
   Footer start
 ***********************************-->
-    <div class="footer">
-        <div class="copyright">
-            <p>Copyright © Designed &amp; Developed by <a href="https://dexignzone.com/" target="_blank">DexignZone</a> 2023</p>
-        </div>
+<div class="footer">
+    <div class="copyright">
+        <p style="margin-bottom: 0px;"><a href="http://somostuwebmaster.es" style=" color:white;">Powered by
+                SomosTuWebMaster.es - {{ date('Y') }}</a></p>
     </div>
+</div>
 <!--**********************************
   Footer end
 ***********************************-->
