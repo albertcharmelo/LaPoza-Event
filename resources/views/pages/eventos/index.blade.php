@@ -24,12 +24,11 @@
                             <table id="eventosTable" class="display" style="min-width: 845px">
                                 <thead>
                                     <tr>
-
-                                        <th>Nombre</th>
-                                        <th>Email</th>
-                                        <th>Comensales</th>
-                                        <th>Fecha</th>
-                                        <th>Activo</th>
+                                        <th with="50%">Nombre</th>
+                                        <th with="35%">Email</th>
+                                        <th with="5%" class="text-center">Comensales</th>
+                                        <th with="5%" class="text-center">Fecha</th>
+                                        <th with="5%" class="text-center">Activo</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -37,11 +36,11 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th>Nombre</th>
-                                        <th>Email</th>
-                                        <th>Comensales</th>
-                                        <th>Fecha</th>
-                                        <th>Activo</th>
+                                        <th with="50%">Nombre</th>
+                                        <th with="35%">Email</th>
+                                        <th with="5%" class="text-center">Comensales</th>
+                                        <th with="5%" class="text-center">Fecha</th>
+                                        <th with="5%" class="text-center">Activo</th>
                                     </tr>
                                 </tfoot>
                             </table>
