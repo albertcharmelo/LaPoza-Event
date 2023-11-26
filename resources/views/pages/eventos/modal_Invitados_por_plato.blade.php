@@ -5,7 +5,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Invitados por plato: <span id="nombre_plato"></span></h4>
+                <h4 class="modal-title">Invitados por el plato: <span id="nombre_plato"></span></h4>
                 <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">X</button>
             </div>
             <div class="modal-body">
