@@ -7,6 +7,7 @@
 @section('content')
 <div class="container-fluid">
     <input type="text" class="d-none" readonly id="evento_id" value="{{ $evento->id }}">
+    <input type="text" class="d-none" readonly id="tipo_menu" value="{{ $evento->invitacion->tipo_menu }}">
     <div class="row page-titles">
         <ol class="breadcrumb">
             <li class="breadcrumb-item active"><a href="{{ url('/') }}">Eventos</a></li>
@@ -192,7 +193,7 @@
 
                                                     <p>{!! $evento->invitacion->texto !!}</p>
                                                     <div class="profile-skills mt-5 mb-5">
-                                                        <h4 class="text-primary mb-2">Tipo de menu</h4>
+                                                        <h4 class="text-primary mb-2">Tipo de menú</h4>
                                                         <a href="javascript:void();;"
                                                             class="btn btn-primary light btn-xs mb-1">{{
                                                             $evento->invitacion->tipo_menu }}</a>
@@ -244,7 +245,7 @@
                                                             </div>
                                                         </form>
                                                     </div>
-                                                    <div class="profile-skills mt-5 mb-5">
+                                                    <div class="mt-5 mb-5" id="resumenPlatos">
                                                         <h4 class="text-primary mb-2">Resumen de platos</h4>
                                                         <div class="card-body p-0">
                                                             <div class="table-responsive">
