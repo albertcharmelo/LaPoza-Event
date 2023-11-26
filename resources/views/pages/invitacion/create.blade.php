@@ -95,7 +95,7 @@
                                                 <input type="file" id="input_file_menu" class="d-none"
                                                     name="input_file_menu" />
                                                 <div class="div mb-3">
-                                                    <i class="fas fa-upload" style="font-size: 30px;color:white"></i>
+                                                    <i class="fas fa-upload" style="font-size: 30px !important; color:white"></i>
                                                 </div>
                                                 <span class="text-white text-center">
                                                     Haz click aqui para cargar el menú
@@ -118,7 +118,7 @@
                                             <div class="mt-3">
                                                 <h4 class="d-flex gap-2">
                                                     <input type="text" class=" form-control  form-control-lg"
-                                                        style="font-size: 22px" id="input_add_question"
+                                                        style="font-size: 22px !important;" id="input_add_question"
                                                         placeholder="Ejemplo: Elija el Entrante de su menú " value="">
 
                                                     {{-- <div class="border border-primary rounded-circle"
@@ -134,12 +134,12 @@
                                                     <div class=" d-flex flex-column flex-lg-row w-100 w-lg-75 gap-2">
                                                         <input type="text"
                                                             class="form-control form-control-sm w-100 w-lg-75 "
-                                                            id="input_add_option" style="font-size: 18px"
+                                                            id="input_add_option" style="font-size: 18px !important;"
                                                             placeholder="introduzca una opción"
                                                             name="input_add_option" />
                                                         <input type="text"
                                                             class="form-control form-control-sm w-100 w-lg-25 "
-                                                            id="input_add_price" style="font-size: 18px"
+                                                            id="input_add_price" style="font-size: 18px !important;"
                                                             placeholder="0.00" name="input_add_price" />
 
                                                         <div class="d-flex flex-column flex-lg-row w-100 w-lg-75 gap-2">
