@@ -106,6 +106,17 @@
 ::after {
     box-sizing: border-box;
 }
+#eventosTable tbody tr {
+    cursor: pointer;
+}
+
+#eventosTable tbody tr:hover {
+    background-color: #171622 !important;
+}
+
+#eventosTable tbody tr:hover td {
+    color: #fff;
+}
 
 #TableResumenPlatos tbody tr {
     cursor: pointer;
@@ -131,14 +142,16 @@
     color: #fff;
 }
 
-#tableInvitadosByPlato tbody tr {
-    cursor: pointer;
-}
-
 #tableInvitadosByPlato tbody tr:hover {
     background-color: #171622 !important;
 }
 
 #tableInvitadosByPlato tbody tr:hover td {
     color: #fff;
+}
+
+.container-fluid {
+    padding-top: 1.0rem !important;
+    padding-right: 1.0rem !important;
+    padding-left: 1.0rem !important;
 }
