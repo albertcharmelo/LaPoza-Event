@@ -1,8 +1,13 @@
 (function ($) {
     "use strict";
     const evento_id = $("#evento_id").val();
+    const tipo_menu = $("#tipo_menu").val();
     var nombre_plato = $("#nombre_plato");
-    
+    let resumenPlatos = $("#resumenPlatos");
+    resumenPlatos.hide();
+    if (tipo_menu == "Menu a Elegir con Precio" || tipo_menu == "Menu a Elegir sin Precio") {
+        resumenPlatos.show();
+    }    
 
     var table = $("#invitadosTable").DataTable({
         createdRow: function (row, data) {
@@ -50,9 +55,7 @@
                     var text = data === 1 ? "Activo" : "Inactivo";
                     var color = data === 1 ? "text-success" : "text-warning";
                     return `<span class="${color}">${text}</span>`;
-                },
-                className: "dt-body-center",
-            },
+                }, className: "dt-body-center" },
         ],
     });
 
@@ -69,6 +72,11 @@
     table.rows().every(function () {
         this.nodes().to$().removeClass("selected");
     });
+
+    if (
+        tipo_menu == "Menu a Elegir con Precio" ||
+        tipo_menu == "Menu a Elegir sin Precio"
+    ) {
 
     var tableResumen = $("#TableResumenPlatos").DataTable({
         createdRow: function (row, data) {
@@ -171,6 +179,7 @@
     tableResumen.rows().every(function () {
         this.nodes().to$().removeClass("selected");
     });
+}
 })(jQuery);
 
 function showLoader() {
