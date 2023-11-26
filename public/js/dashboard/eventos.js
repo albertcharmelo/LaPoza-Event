@@ -35,8 +35,8 @@
         columns: [
             { data: "nombre" },
             { data: "email_organizador" },
-            { data: "comensales" },
-            { data: "fecha" },
+            { data: "comensales", className: "dt-body-center" },
+            { data: "fecha", className: "dt-body-center" },
             {
                 data: "status",
                 render: function (data, type, row) {
@@ -46,6 +46,7 @@
                             <span class="custom-toggle-slider rounded-circle" data-label-off="NO" data-label-on="SI"></span>
                         </label></td>`;
                 },
+                className: "dt-body-center",
             },
         ],
     });
