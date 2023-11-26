@@ -135,15 +135,15 @@
                                         <div class="">
                                             <h4 class="card-title">Todos los invitados</h4>
                                         </div>
-                                        <div class="card-body">
+                                        <div class="card-body p-0">
                                             <div class="table-responsive">
                                                 <table id="invitadosTable" class="display" style="min-width: 845px">
                                                     <thead>
                                                         <tr>
                                                             <th>Nombre</th>
-                                                            <th>Télefono</th>
-                                                            <th>N° Comensales</th>
-                                                            <th>Asistencia</th>
+                                                            <th>Teléfono</th>
+                                                            <th class="text-center">N° Comensales</th>
+                                                            <th class="text-center">Asistencia</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -152,9 +152,9 @@
                                                     <tfoot>
                                                         <tr>
                                                             <th>Nombre</th>
-                                                            <th>Télefono</th>
-                                                            <th>N° Comensales</th>
-                                                            <th>Asistencia</th>
+                                                            <th>Teléfono</th>
+                                                            <th class="text-center">N° Comensales</th>
+                                                            <th class="text-center">Asistencia</th>
                                                         </tr>
                                                     </tfoot>
                                                 </table>
@@ -230,12 +230,12 @@
                                                                 <div class=" col-12 col-lg-4">
                                                                     <div class="mb-3">
                                                                         <label for="email"
-                                                                            class="text-black font-w600 form-label">Télefono
+                                                                            class="text-black font-w600 form-label">Teléfono
 
                                                                         </label>
                                                                         <input type="text" class="form-control"
                                                                             value="{{ $evento->telefono_organizador }}"
-                                                                            placeholder="telefono" readonly
+                                                                            placeholder="Teléfono" readonly
                                                                             name="telefono" id="telefono">
                                                                     </div>
                                                                 </div>
@@ -246,9 +246,9 @@
                                                     </div>
                                                     <div class="profile-skills mt-5 mb-5">
                                                         <h4 class="text-primary mb-2">Resumen de platos</h4>
-                                                        <div class="card-body">
+                                                        <div class="card-body p-0">
                                                             <div class="table-responsive">
-                                                                <table id="TableResumenPlatos" class="display" style="min-width: 845px">
+                                                                <table id="TableResumenPlatos" class="display" style="min-width: 845px; width: 100% !important;">
                                                                     <thead>
                                                                         <tr>
                                                                             <th with="90%">Descripción del plato</th>
@@ -268,6 +268,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    @include('pages.eventos.modal_Invitados_por_plato')
                                                 </div>
                                             </div>
                                         </div>

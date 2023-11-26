@@ -125,6 +125,28 @@ $action = DzHelper::action();
         <div class="content-body">
             <!-- row -->
             @yield('content')
+            <div class="loader_page" id="loader_div" style="display: none;">
+                <div class="lds-grid">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <div class="loader_page" id="loader_page" style="display:none;">
+                <div class="wrapper">
+                    <div class="circle_0 circle-1"></div>
+                    <div class="circle_0 circle-1a"></div>
+                    <div class="circle_0 circle-2"></div>
+                    <div class="circle_0 circle-3"></div>
+                </div>
+                <h6>Cargando...</h6>
+            </div>
         </div>
         <!--**********************************
             Content body end

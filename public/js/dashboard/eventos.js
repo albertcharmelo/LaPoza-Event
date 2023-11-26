@@ -80,3 +80,10 @@ function changeEstado(id, isChecked) {
         success: function (response) {},
     });
 }
+
+function showLoader() {
+    $("#loader_page").show();
+}
+function hideLoader() {
+    $("#loader_page").hide();
+}
