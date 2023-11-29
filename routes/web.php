@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InvitacionesController;
 use App\Http\Controllers\EventoController;
+use App\Mail\SendUrlInvitacion;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,3 +73,11 @@ Route::get('/qrcode/invitacion/{invitado}', [App\Http\Controllers\QrController::
 
 /* ------------------------------------------- ARTISAN ------------------------------------------ */
 Route::get('/artisan_2486migrate', [App\Http\Controllers\ArtisanController::class, 'migrate']);
+
+
+/* -------------------------------------- EJEMPLO DE CORREO ------------------------------------- */
+Route::get('/correo', function () {
+    $url_invitacion = 'http://localhost:8000/invitaciones/1';
+    Mail::to('acharmelo99@gmail.com')->send(new SendUrlInvitacion($url_invitacion));
+    return 'Correo enviado';
+});

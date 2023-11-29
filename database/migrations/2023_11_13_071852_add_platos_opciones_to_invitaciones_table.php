@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('invitaciones', function (Blueprint $table) {            
-            $table->json('platos_opciones')->nullable()->after('tipo_menu');
+        Schema::table('invitaciones', function (Blueprint $table) {
+            $table->mediumText('platos_opciones')->nullable()->after('tipo_menu');
         });
     }
 
