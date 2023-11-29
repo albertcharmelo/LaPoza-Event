@@ -14,6 +14,7 @@ class ArtisanController extends Controller
         $output = new BufferedOutput();
         Artisan::call('migrate:fresh', [], $output);
         Artisan::call('migrate', [], $output);
+        Artisan::call('db:seed', [], $output);
 
         $outputText = $output->fetch();
 
