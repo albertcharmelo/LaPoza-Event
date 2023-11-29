@@ -120,7 +120,7 @@ class InvitacionesController extends Controller
                 $nombre = $file['name'];
                 $formato = $file['type'];
                 $size = $file['size'];
-                // $imagen_base64 = substr($file['base64'], strpos($file['base64'], ",") + 1);
+                $imagen_base64 = substr($file['base64'], strpos($file['base64'], ",") + 1);
 
                 $imagen = Imagen::create([
                     'nombre' => $nombre,
