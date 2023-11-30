@@ -2,17 +2,19 @@ let btnGuardar = $("#btnGuardar");
 let titulo = $("#titulo");
 let files = $("#files");
 let ckeditorInvitacion = $("#ckeditorInvitacion");
-let listoDocumentos = $("#listoDocumentos");
+let listDocumentos = $("#listDocumentos");
 let tipoMenu = $("#tipoMenu");
 let boxUploadMenu = $("#boxUploadMenu");
 let boxUploadOptions = $("#boxUploadOptions");
 let inputPrice = $("#input_add_price");
-let arrayFiles = [];
+let arrayImagenesFiles = [];
 let filesArray = [];
 let nombre_org = $("#nombre_org");
 let email_org = $("#email_org");
 let telefono_organizador = document.getElementById("telefono_org");
 let fecha_evento = $("#fecha_evento");
+let btn_crear = $("#btn_crear");
+let btn_index = $("#btn_index");
 
 const maskInputOptions = {
     mask: "000-00-00-00",
@@ -48,7 +50,7 @@ $(document).ready(function () {
                     return false;
                 }
 
-                if (files.val() == "") {
+                if (arrayImagenesFiles.length == 0) {
                     SwalShowMessage(
                         "warning",
                         "¡Advertencia!",
@@ -71,7 +73,10 @@ $(document).ready(function () {
                     tipoMenu.val() == "Menu Fijo con Precio" ||
                     tipoMenu.val() == "Menu Fijo sin Precio"
                 ) {
-                    if (input_file_menu.value == "") {
+                    if (
+                        document.querySelector("#input_file_menu").files[0] ==
+                        ""
+                    ) {
                         SwalShowMessage(
                             "warning",
                             "¡Advertencia!",
@@ -91,7 +96,7 @@ $(document).ready(function () {
                             title: "¡Advertencia!",
                             text: "Debe agregar los platos con sus opciones",
                             confirmButtonText: "Aceptar",
-                            confirmButtonColor: "#3085d6",
+                            confirmButtonColor: "#fc410c",
                             allowOutsideClick: false,
                         }).then((result) => {
                             if (result.value) {
@@ -105,21 +110,22 @@ $(document).ready(function () {
         }
     );
     iniciarDatos();
+    btn_crear.hide();
+    btn_index.show();
 });
 
 function iniciarDatos() {
     titulo.val("");
     CKeditor.setData("");
     files.val("");
-    listoDocumentos.text("");
+    listDocumentos.text("");
     tipoMenu.val("");
     input_file_menu.value = "";
     name_menu_uploaded.innerHTML = "";
     boxUploadMenu.hide();
     boxUploadOptions.hide();
-    arrayFiles = [];
+    arrayImagenesFiles = [];
     filesArray = [];
-    boxUploadOptions.hide();
     platos_with_options = [];
     listResultsPlates.html("");
     actualPlato.text("1º");
@@ -132,6 +138,121 @@ function iniciarDatos() {
     let mes = fecha.getMonth() + 1;
     let anio = fecha.getFullYear();
     fecha_evento.val(anio + "-" + mes + "-" + dia);
+
+    if (invitacion_edit != null) {
+        titulo.val(invitacion_edit.titulo);
+        CKeditor.setData(invitacion_edit.texto);
+
+        invitacion_edit.imagenes.forEach(function (imagen) {
+            arrayImagenesFiles.push(imagen);
+        });
+        mostrarDocumentos();
+
+        tipoMenu.val(invitacion_edit.tipo_menu);
+        if (
+            tipoMenu.val() == "Menu Fijo con Precio" ||
+            tipoMenu.val() == "Menu Fijo sin Precio"
+        ) {
+            boxUploadMenu.show();
+            input_file_menu.value = "";
+            document.querySelector("#input_file_menu").files[0] =
+                invitacion_edit.imagen;
+            document.getElementById(
+                "name_menu_uploaded"
+            ).innerHTML = `<br><span class="badge badge-pill badge-primary">${invitacion_edit.imagen_nombre}</span>`;
+        } else {
+            if (tipoMenu.val() == "Menu a Elegir con Precio") {
+                inputPrice.show();
+            } else {
+                inputPrice.hide();
+            }
+            boxUploadOptions.show("slow");
+
+            platos_with_options = invitacion_edit.platos_opciones;
+            addPlateOptionsWithPlate();
+        }
+
+        nombre_org.val(invitacion_edit.evento.nombre);
+        email_org.val(invitacion_edit.evento.email_organizador);
+        telefono_org.value = invitacion_edit.evento.telefono_organizador;
+        let fecha = new Date(invitacion_edit.evento.fecha);
+        let dia = fecha.getDate();
+        let mes = fecha.getMonth() + 1;
+        let anio = fecha.getFullYear();
+        fecha_evento.val(anio + "-" + mes + "-" + dia);
+    }
+}
+
+function mostrarDocumentos() {
+    listDocumentos.html("");
+    for (let i = 0; i < arrayImagenesFiles.length; i++) {
+        let fileContainer = $('<div class="file-container"></div>');
+        let fileName = $('<span class="file-name"></span>').text(
+            arrayImagenesFiles[i].nombre
+        );
+        let deleteButton = $(
+            `<button class="delete-button" onclick="eliminarDocumento('${arrayImagenesFiles[i].id}','${i}')">x</button>`
+        );
+        fileContainer.append(fileName);
+        fileContainer.append(deleteButton);
+        $("#listDocumentos").append(fileContainer);
+    }
+}
+
+function eliminarDocumento(imagen_id, i) {
+    const URL = "/invitaciones/eliminarDocumento";
+    try {
+        showLoader();
+        fetch(URL, {
+            method: "POST",
+            body: JSON.stringify({
+                imagen_id: imagen_id,
+                invitacion_id: invitacion_edit.id,
+            }),
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": _token,
+            },
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    SwalShowMessage(
+                        "warning",
+                        "¡Advertencia!",
+                        "No se pudo eliminar el archivo"
+                    );
+                }
+                return response.json();
+            })
+            .then((data) => {
+                if (data.status == "success") {
+                    SwalShowMessage(
+                        "success",
+                        "¡Éxito!",
+                        "Se eliminó el archivo correctamente"
+                    );
+                    for (let i = 0; i < arrayImagenesFiles.length; i++) {
+                        if (arrayImagenesFiles[i].id == imagen_id) {
+                            arrayImagenesFiles.splice(i, 1);
+                        }
+                    }
+                    for (let i = 0; i < filesArray.length; i++) {
+                        if (filesArray[i].name == data.documento.nombre) {
+                            filesArray.splice(i, 1);
+                        }
+                    }
+                    mostrarDocumentos();
+                }
+            });
+    } catch (error) {
+        SwalShowMessage(
+            "warning",
+            "¡Advertencia!",
+            "No se pudo eliminar el archivo"
+        );
+    } finally {
+        hideLoader();
+    }
 }
 
 function SwalShowMessage(type, title, text) {
@@ -160,7 +281,7 @@ btnGuardar.on("click", function () {
         return false;
     }
 
-    if (files.val() == "") {
+    if (arrayImagenesFiles.length == 0) {
         SwalShowMessage(
             "warning",
             "¡Advertencia!",
@@ -182,7 +303,7 @@ btnGuardar.on("click", function () {
         tipoMenu.val() == "Menu Fijo con Precio" ||
         tipoMenu.val() == "Menu Fijo sin Precio"
     ) {
-        if (input_file_menu.value == "") {
+        if (document.querySelector("#input_file_menu").files[0] == "") {
             SwalShowMessage(
                 "warning",
                 "¡Advertencia!",
@@ -203,7 +324,7 @@ btnGuardar.on("click", function () {
                 title: "¡Advertencia!",
                 text: "Debe agregar los platos con sus opciones",
                 confirmButtonText: "Aceptar",
-                confirmButtonColor: "#3085d6",
+                confirmButtonColor: "#fc410c",
                 allowOutsideClick: false,
             }).then((result) => {
                 if (result.value) {
@@ -245,49 +366,46 @@ btnGuardar.on("click", function () {
     async function appendFileToFormData(file, data) {
         const base64File = await getBase64(file);
         data.append("file_menu[base64]", base64File);
-    }
-
-    function getBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = (error) => reject(error);
-        });
+        data.append("file_menu[nombre]", file.name);
     }
 
     agregarInvitacion();
+
     async function agregarInvitacion() {
         const data = new FormData();
         data.append("titulo", titulo.val());
         data.append("descripcion", CKeditor.getData());
         data.append("tipoMenu", tipoMenu.val());
         data.append("platos_opciones", JSON.stringify(platos_opciones_obj));
-        // filesArray.forEach((file, index) => {
-        //     data.append(`files[${index}]`, file);
-        // });
 
-        const fileMenu = document.querySelector("#input_file_menu").files[0];
-        appendFileToFormData(fileMenu, data);
+        if (invitacion_edit == null) {
+            const fileMenu =
+                document.querySelector("#input_file_menu").files[0];
+            appendFileToFormData(fileMenu, data);
 
-        const filePromises = filesArray.map((file, index) => {
-            return getBase64(file).then((base64File) => {
-                data.append(`files[${index}][base64]`, base64File);
-                data.append(`files[${index}][name]`, file.name);
-                data.append(`files[${index}][type]`, file.type);
-                data.append(`files[${index}][size]`, file.size.toString());
+            const filePromises = filesArray.map((file, index) => {
+                return getBase64(file).then((base64File) => {
+                    data.append(`files[${index}][base64]`, base64File);
+                    data.append(`files[${index}][name]`, file.name);
+                    data.append(`files[${index}][type]`, file.type);
+                    data.append(`files[${index}][size]`, file.size.toString());
+                });
             });
-        });
-        await Promise.all(filePromises);
+            await Promise.all(filePromises);
+        }
 
         data.append("nombre_org", nombre_org.val());
         data.append("email_org", email_org.val());
         data.append("telefono_org", telefono_org.value);
         data.append("fecha_evento", fecha_evento.val());
 
-        const URL = "/invitaciones/agregarInvitacion";
+        let URL = "/invitaciones/agregarInvitacion";
+        if (invitacion_edit != null) {
+            URL = "/invitaciones/actualizarInvitacion";
+            data.append("invitacion_id", invitacion_edit.id);
+        }
         try {
-            // showLoader();
+            showLoader();
             await fetch(URL, {
                 method: "POST",
                 body: data,
@@ -306,11 +424,23 @@ btnGuardar.on("click", function () {
                     return response.json();
                 })
                 .then((data) => {
-                    if (data.status == "success") {
-                        SwalShowMessage("success", "¡Éxito!", data.message);
-                    }
+                    invitacion_edit = null;
                     iniciarDatos();
                     $("#smartwizard").smartWizard("goToStep", 0);
+                    if (data.status == "success") {
+                        Swal.fire({
+                            type: "success",
+                            title: "¡Éxito!",
+                            text: data.message,
+                            confirmButtonText: "Aceptar",
+                            confirmButtonColor: "#fc410c",
+                            allowOutsideClick: false,
+                        }).then((result) => {
+                            if (result.value) {
+                                window.location.href = "/invitaciones/index";
+                            }
+                        });
+                    }
                 });
         } catch (error) {
             SwalShowMessage(
@@ -319,10 +449,19 @@ btnGuardar.on("click", function () {
                 "No se pudo agregar la invitación"
             );
         } finally {
-            // hideLoader();
+            hideLoader();
         }
     }
 });
+
+function getBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+    });
+}
 
 function validateEmail(email) {
     var re = /\S+@\S+\.\S+/;
@@ -330,26 +469,111 @@ function validateEmail(email) {
 }
 
 document.querySelector("#files").addEventListener("change", function (e) {
-    var fileName = "";
+    var fileName = "";    
     for (let i = 0; i < this.files.length; i++) {
-        fileName += this.files[i].name + ", ";
-        filesArray.push(this.files[i]);
+        fileName = this.files[i].name;        
+        if (
+            arrayImagenesFiles.filter((imagen) => imagen.nombre == fileName)
+                .length == 0
+        ) {
+            filesArray.push(this.files[i]);
+            if (invitacion_edit == null) {
+                arrayImagenesFiles.push({
+                    nombre: fileName,
+                });
+            }
+        } else {
+            SwalShowMessage(
+                "warning",
+                "¡Advertencia!",
+                "El archivo " + fileName + " ya ha sido seleccionado."
+            );
+            return false;
+        }
     }
-    fileName = fileName.slice(0, -2);
-    arrayFiles.push(fileName);
-    listoDocumentos.html("");
-    for (let i = 0; i < arrayFiles.length; i++) {
-        listoDocumentos.append(arrayFiles[i] + ", ");
-    }
-    let text = listoDocumentos.text();
-    text = text.slice(0, -2);
-    listoDocumentos.text(text);
-    if (listoDocumentos.text() != "") {
-        listoDocumentos.show();
+
+    if (invitacion_edit == null) {
+        listDocumentos.html("");        
+        for (let i = 0; i < arrayImagenesFiles.length; i++) {
+            let fileContainer = $('<div class="file-container"></div>');
+            let fileName = $('<span class="file-name"></span>').text(
+                arrayImagenesFiles[i].nombre
+            );
+            let deleteButton = $('<button class="delete-button">x</button>');
+            deleteButton.on("click", function () {
+                arrayImagenesFiles.splice(i, 1);
+                fileContainer.remove();
+                for (let j = 0; j < filesArray.length; j++) {
+                    if (filesArray[j].name == arrayImagenesFiles[i].nombre) {
+                        filesArray.splice(j, 1);
+                    }
+                }
+            });
+
+            fileContainer.append(fileName);
+            fileContainer.append(deleteButton);
+            $("#listDocumentos").append(fileContainer);
+        }
     } else {
-        listoDocumentos.hide();
+        agregarDocumento();
+        async function agregarDocumento() {
+            let data = new FormData();
+            data.append("invitacion_id", invitacion_edit.id);
+            let documento = document.querySelector("#files").files[0];
+            data = await appendDocumentoToFormData(documento, data);
+
+            const URL = "/invitaciones/agregarDocumento";
+            try {
+                showLoader();
+                fetch(URL, {
+                    method: "POST",
+                    body: data,
+                    headers: {
+                        "X-CSRF-TOKEN": _token,
+                    },
+                })
+                    .then((response) => {
+                        if (!response.ok) {
+                            SwalShowMessage(
+                                "warning",
+                                "¡Advertencia!",
+                                "No se pudo agregar el documento"
+                            );
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        if (data.status == "success") {
+                            SwalShowMessage(
+                                "success",
+                                "¡Éxito!",
+                                "documento agregado correctamente"
+                            );
+                            arrayImagenesFiles.push(data.imagen);
+                            mostrarDocumentos();
+                        }
+                    });
+            } catch (error) {
+                SwalShowMessage(
+                    "warning",
+                    "¡Advertencia!",
+                    "No se pudo agregar el documento"
+                );
+            } finally {
+                hideLoader();
+            }
+        }
     }
 });
+
+async function appendDocumentoToFormData(documento, data) {
+    const base64File = await getBase64(documento);
+    data.append("documento[base64]", base64File);
+    data.append("documento[name]", documento.name);
+    data.append("documento[type]", documento.type);
+    data.append("documento[size]", documento.size.toString());
+    return data;
+}
 
 tipoMenu.on("change", function () {
     name_menu_uploaded.innerHTML = "";
@@ -403,4 +627,60 @@ function ShowNameMenuUploaded(e) {
             "</span>";
     }
     document.getElementById("name_menu_uploaded").innerHTML = fileName;
+
+    if (invitacion_edit != null) {
+        actualizarImagenMenu();
+        async function actualizarImagenMenu() {
+            let data = new FormData();
+            data.append("invitacion_id", invitacion_edit.id);
+            let documento = document.querySelector("#input_file_menu").files[0];
+            data = await appendDocumentoToFormData(documento, data);
+
+            const URL = "/invitaciones/updateImagenMenu";
+            try {
+                showLoader();
+                fetch(URL, {
+                    method: "POST",
+                    body: data,
+                    headers: {
+                        "X-CSRF-TOKEN": _token,
+                    },
+                })
+                    .then((response) => {
+                        if (!response.ok) {
+                            SwalShowMessage(
+                                "warning",
+                                "¡Advertencia!",
+                                "No se pudo actualizar la imagen del menú"
+                            );
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        if (data.status == "success") {
+                            SwalShowMessage(
+                                "success",
+                                "¡Éxito!",
+                                "Imagen del menú actualizada correctamente"
+                            );
+                        }
+                    });
+            } catch (error) {
+                SwalShowMessage(
+                    "warning",
+                    "¡Advertencia!",
+                    "No se pudo actualizar la imagen del menú"
+                );
+            } finally {
+                hideLoader();
+            }
+        }
+    }
+}
+
+function showLoader() {
+    $("#loader_page").show();
+}
+function hideLoader() {
+    $("#loader_page").hide();
 }
