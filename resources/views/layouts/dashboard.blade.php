@@ -125,6 +125,11 @@ $action = DzHelper::action();
         <div class="content-body">
             <!-- row -->
             @yield('content')
+            <div id="loading" style="display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                <img src="{{ asset('images/loading.gif') }}" alt="Loading..." style="width: 350px; height: 350px;" />
+                <h5 style="text-align: center;">Cargando...</h5>
+            </div>
+
             <div class="loader_page" id="loader_div" style="display: none;">
                 <div class="lds-grid">
                     <div></div>
@@ -139,13 +144,14 @@ $action = DzHelper::action();
                 </div>
             </div>
             <div class="loader_page" id="loader_page" style="display:none;">
-                <div class="wrapper">
+                <div class="wrapper_page">
                     <div class="circle_0 circle-1"></div>
                     <div class="circle_0 circle-1a"></div>
                     <div class="circle_0 circle-2"></div>
                     <div class="circle_0 circle-3"></div>
+                    <h6 style="padding-top: 60px;">Cargando...</h6>                    
                 </div>
-                <h6>Cargando...</h6>
+                
             </div>
         </div>
         <!--**********************************
