@@ -638,7 +638,10 @@
 					</div>
 				</div>
 				<ul class="navbar-nav header-right">
-					<li class="nav-item ">
+					<li class="nav-item" id="btn_index" style="display: none;">
+						<a href="{{ route('index') }}" class="btn btn-primary btn-rounded">Invitaciones</a>
+					</li>
+					<li class="nav-item" id="btn_crear">
 						<a href="{{ route('invitaciones.create') }}" class="btn btn-primary btn-rounded">Crear
 							invitación</a>
 					</li>
