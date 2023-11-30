@@ -187,6 +187,7 @@ function savePlantillas() {
         platos: platos_with_options,
     };
 
+    showLoader();
     $.ajax({
         url: "/invitaciones/crearPlantilla",
         type: "POST",
@@ -220,9 +221,11 @@ function savePlantillas() {
             );
         },
     });
+    hideLoader();
 }
 
 function getPlantillas() {
+    showLoader();
     $.ajax({
         url: "/invitaciones/getPlantillas",
         type: "POST",
@@ -250,6 +253,7 @@ function getPlantillas() {
             );
         },
     });
+    hideLoader();
 }
 
 function createListPlantillas(data = plantillas) {
@@ -359,4 +363,11 @@ function eliminarOpcion(e) {
 
 for (let i = 1; i <= 30; i++) {
     array_name_platos.push(`${i}º`);
+}
+
+function showLoader() {
+    $("#loader_page").show();
+}
+function hideLoader() {
+    $("#loader_page").hide();
 }
