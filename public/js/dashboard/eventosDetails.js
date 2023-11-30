@@ -114,9 +114,11 @@
                         dataType: "json",
                         dataSrc: "",
                         beforeSend: function () {
+                            // $("#loading").show();
                             showLoader();
                         },
                         complete: function () {
+                            // $("#loading").hide();                            
                             hideLoader();
                         },
                     },
