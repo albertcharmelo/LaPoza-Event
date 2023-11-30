@@ -95,33 +95,33 @@
                     <input type="hidden" name="invitacion_id" value="{{ $invitacion->id }}">
                     <input type="hidden" name="evento_id" value="{{ $invitacion->evento->id }}">
                     <div class="">
-                        <label class="form-label">Nombre *</label>
+                        <label class="form-label font-w600 text-black">Nombre *</label>
                         <input type="text" class="form-control" autocomplete="off" id="nombre" name="nombre"
                             placeholder="Introduzca su nombre">
                     </div>
                     <div class="">
-                        <label class="form-label">
+                        <label class="form-label font-w600 text-black">
                             Correo electrónico
                         </label>
                         <input type="email" class="form-control" autocomplete="off" id="email" name="email"
                             placeholder="Introduzca su correo electrónico">
                     </div>
                     <div class="">
-                        <label class="form-label">
+                        <label class="form-label font-w600 text-black">
                             Teléfono *
                         </label>
                         <input type="text" class="form-control" autocomplete="off" id="telefono" name="telefono"
                             pattern="[0-9]{9}" placeholder="Introduzca su teléfono">
                     </div>
                     <div class="">
-                        <label for="" class="form-label">
+                        <label for="" class="form-label font-w600 text-black">
                             Número de invitados *
                         </label>
                         <input type="number" class="form-control" id="invitados" name="invitados" min="1" step="1"
                             placeholder="Introduzca el número de invitados">
                     </div>
                     <div class="">
-                        <label for="" class="form-label">
+                        <label for="" class="form-label font-w600 text-black">
                             Observaciones / Alergias / Intolerancias
                         </label>
                         <textarea class="form-control" id="observaciones" name="observaciones" rows="4"
