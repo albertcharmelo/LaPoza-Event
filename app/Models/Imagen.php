@@ -12,8 +12,7 @@ class Imagen extends Model
     protected $table = 'imagenes';
     protected $fillable = [
         'id',
-        'nombre',
-        'url',
+        'nombre',        
         'formato',
         'size',
         'imagen_base64',

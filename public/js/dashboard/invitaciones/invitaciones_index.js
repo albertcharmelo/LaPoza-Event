@@ -3,14 +3,9 @@
     var table = $("#invitacionesTable").DataTable({
         createdRow: function (row, data) {
             $(row).addClass("cursor-pointer");
-            // $(row).on("click", function () {
-            //     window.location.href = "/eventos/" + data.id;
-            // });
-            $(row)
-                .find("td:eq(0), td:eq(1), td:eq(2), td:eq(3)")
-                .on("click", function () {
-                    // window.location.href = "/invitaciones/index" + data.id;
-                });
+            $(row).on("click", function () {
+                window.location.href = "/invitaciones/edit/" + data.id;
+            });            
         },
         language: {
             paginate: {
@@ -31,13 +26,19 @@
             },
             dataType: "json",
             dataSrc: "",
+            beforeSend: function () {               
+                showLoader();
+            },
+            complete: function () {                
+                hideLoader();
+            },
         },
         columns: [
             { data: "titulo" },
-            { data: "tipo_menu" },
-            { data: "updated_at_formatted"},
+            { data: "tipo_menu", className: "dt-body-center"},
+            { data: "updated_at_formatted", className: "dt-body-center"},
             { data: "evento.nombre"},
-            { data: "evento.fecha_formatted"}
+            { data: "evento.fecha_formatted", className: "dt-body-center"}
         ],
     });
 
@@ -55,3 +56,10 @@
         this.nodes().to$().removeClass("selected");
     });
 })(jQuery);
+
+function showLoader() {
+    $("#loader_page").show();
+}
+function hideLoader() {
+    $("#loader_page").hide();
+}

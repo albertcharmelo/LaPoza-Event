@@ -86,6 +86,63 @@ a.ck.ck-button:not(.ck-disabled):hover {
     background: #2e2e42 !important;
 }
 
-.form-control {    
+.form-control {
     font-size: 14px !important;
+}
+
+#invitacionesTable tbody tr {
+    cursor: pointer;
+}
+
+#invitacionesTable tbody tr:hover {
+    background-color: #171622 !important;
+}
+
+#invitacionesTable tbody tr:hover td {
+    color: #fff;
+}
+
+.file-container {
+    display: inline-block;
+    background-color: #f0f0f0;
+    border-radius: 1.75rem;
+    padding: 1px;
+    margin: 1px;
+    border: 0.063rem solid transparent;
+}
+
+.file-name {
+    margin-right: 10px;
+    margin-left: 5px;
+    color: black;
+}
+
+.delete-button {
+    background-color: red;
+    border: none;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    width: 22px;
+    border-radius: 15px;
+    height: 20px;
+    padding-bottom: 24px;
+}
+
+.delete-button:hover {
+    background-color: white;
+    color: black;
+}
+
+.grupoDePlatos:hover {
+    background-color: #171622 !important;
+    cursor: pointer;
+}
+
+.grupoDePlatos {
+    padding: 8px;
+    border-radius: 10px;
 }

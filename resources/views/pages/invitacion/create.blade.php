@@ -19,7 +19,7 @@
         <div class="col-xl-12 col-xxl-12">
             <div class="card">
                 <div class="card-header">
-                    <h1 class="card-title">Invitación</h1>
+                    <h1 class="card-title">{{ $title }}</h1>
                 </div>
                 <div class="card-body" style="height: auto">
                     <div id="smartwizard" class="form-wizard order-create">
@@ -66,7 +66,7 @@
 
                                                 <input type="file" class="custom-file-input" id="files" lang="es"
                                                     name="files[]" multiple>
-                                                <label id="listoDocumentos" for="files">Seleccionar Archivos</label>
+                                                <label for="files" id="listDocumentos"></label>
                                             </div>
                                         </div>
                                     </div>
@@ -88,14 +88,15 @@
                                         </select>
                                     </div>
                                     <div class="col-12">
-                                        <div id="boxUploadMenu" style="min-height: 200px;display:none">
+                                        <div id="boxUploadMenu" style="min-height: 200px; display:none">
                                             <label class="text-black font-w600 form-label">Imagen del Menú</label>
                                             <div onclick="openInputMenu()"
                                                 class="cursor-pointer dropzoneInput w-100 d-flex flex-column  justify-content-center align-items-center border-dotted">
                                                 <input type="file" id="input_file_menu" class="d-none"
                                                     name="input_file_menu" />
                                                 <div class="div mb-3">
-                                                    <i class="fas fa-upload" style="font-size: 30px !important; color:white"></i>
+                                                    <i class="fas fa-upload"
+                                                        style="font-size: 30px !important; color:white"></i>
                                                 </div>
                                                 <span class="text-white text-center">
                                                     Haz click aqui para cargar el menú
@@ -145,9 +146,10 @@
                                                         <div class="d-flex flex-column flex-lg-row w-100 w-lg-75 gap-2">
                                                             <button class="btn btn-sm btn-primary w-lg-25 w-100"
                                                                 id="btn_add_option">Agregar
-                                                                opción</button>
+                                                                opción dentro del grupo</button>
                                                             <button class="btn btn-sm btn-secondary w-lg-25 w-100"
-                                                                id="btn_add_other_plate">Agregar plato</button>
+                                                                id="btn_add_other_plate">Agregar grupo de
+                                                                platos</button>
 
                                                         </div>
 
@@ -157,9 +159,12 @@
 
 
                                             </div>
-
-                                            <div class="my-4" id="listResultsPlates">
+                                            <div class="mt-4">
+                                                <h2 class="mb-3">Menú del Evento</h2>
+                                                <ul class="my-4" id="listResultsPlates">
+                                                </ul>
                                             </div>
+
                                             <button type="button" class="btn btn-primary btn-block my-5 d-none"
                                                 id="btn_save_template" data-bs-toggle="modal"
                                                 data-bs-target="#modalSaveTemplate">Guardar
@@ -227,8 +232,11 @@
 @section('scripts')
 <script>
     var _token = '{{ csrf_token() }}';
+    var invitacion_edit = {!! json_encode($invitacion) !!};
 </script>
 <script src="https://unpkg.com/imask"></script>
+<!-- jsDelivr :: Sortable :: Latest (https://www.jsdelivr.com/package/npm/sortablejs) -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <script src="{{ asset('vendor/ckeditor/ckeditor.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/dashboard/ckeditor.init.js') }}" type="text/javascript"></script>
 <script src="{{ asset('vendor/bootstrap-select/dist/js/bootstrap-select.min.js') }}" type="text/javascript"></script>

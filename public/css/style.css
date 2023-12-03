@@ -29983,3 +29983,10 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
       opacity: 0;
   }
 }
+
+.wrapper_page {
+    height: 50px;
+    margin-top: calc(50vh - 25px);
+    margin-left: calc(45vw - 100px);
+    width: 180px;
+}

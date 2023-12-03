@@ -63,13 +63,13 @@ class InvitacionesController extends Controller
     public function create(Request $request)
     {
         $page_title = 'Invitaciones';
-        return view('pages.invitacion.create', compact('page_title'));
+        $invitacion = null;
+        $title = 'Crear Invitación';
+        return view('pages.invitacion.create', compact('page_title', 'invitacion', 'title'));
     }
 
     public function agregarInvitacion(Request $request)
     {
-
-
         try {
             $validatedData = $request->validate([
                 'titulo' => 'required',
@@ -94,6 +94,7 @@ class InvitacionesController extends Controller
 
             $imagen = $request->input('file_menu.base64');
             $imagen = substr($imagen, strpos($imagen, ",") + 1);
+            $imagen_nombre = $request->input('file_menu.nombre');
 
             DB::beginTransaction();
             $evento = Evento::create([
@@ -108,6 +109,7 @@ class InvitacionesController extends Controller
             $invitacion = Invitacion::create([
                 'titulo' => $validatedData['titulo'],
                 'texto' =>  $validatedData['descripcion'],
+                'imagen_nombre' => $imagen_nombre,
                 'imagen' => $imagen,
                 'tipo_menu' => $validatedData['tipoMenu'],
                 'platos_opciones' => $request->platos_opciones,
@@ -138,10 +140,10 @@ class InvitacionesController extends Controller
                     'updated_at' => now(),
                 ];
             }
+            DB::table('invitaciones_imagenes')->insert($invitacion_imagenes);
+
             $url_invitacion = url('/invitaciones/' . $invitacion->id);
             Mail::to($validatedData['email_org'])->send(new SendUrlInvitacion($url_invitacion));
-
-            DB::table('invitaciones_imagenes')->insert($invitacion_imagenes);
 
             DB::commit();
             return response()->json([
@@ -167,12 +169,269 @@ class InvitacionesController extends Controller
         }
     }
 
+    public function edit($id)
+    {
+        $invitacion = Invitacion::where('id', $id)
+            ->with(['evento' => function ($query) {
+                $query->select('id', 'nombre', 'email_organizador', 'telefono_organizador', 'fecha');
+            }])
+            ->with('imagenes')
+            ->first();
+        $invitacion->platos_opciones = json_decode($invitacion->platos_opciones);
+        $title = 'Editar Invitación';
+        return view('pages.invitacion.create', compact('invitacion', 'title'));
+    }
+
+
+    public function actualizarInvitacion(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'titulo' => 'required',
+                'descripcion' => 'required',
+                'tipoMenu' => 'required',
+                'nombre_org' => 'required',
+                'email_org' => 'required',
+                'invitacion_id' => 'required | string'
+            ]);
+            $creado_por = auth()->user()->id;
+
+            DB::beginTransaction();
+
+            $invitacion = Invitacion::where('id', $request->invitacion_id)->first();
+            $invitacion->update([
+                'titulo' => $validatedData['titulo'],
+                'texto' =>  $validatedData['descripcion'],
+                'tipo_menu' => $validatedData['tipoMenu'],
+                'platos_opciones' => $request->platos_opciones,
+                'creado_por' => $creado_por,
+            ]);
+
+            $evento = Evento::where('id', $invitacion->evento_id)->first();
+            $evento->update([
+                'nombre' => $validatedData['nombre_org'],
+                'email_organizador' => $validatedData['email_org'],
+                'telefono_organizador' => $request->telefono_org,
+                'fecha' => $request->fecha_evento,
+                'creado_por' => $creado_por,
+            ]);
+
+            DB::commit();
+            return response()->json([
+                'message' => 'Invitacion actualizada correctamente',
+                'data' => $invitacion,
+                'status' => 'success'
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Error al actualizar la invitacion: ' . $e->getMessage(),
+            ], 400);
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Error de validación: ' . $e->getMessage(),
+            ], 400);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Error al actualizar la invitacion: ' . $th->getMessage(),
+            ], 400);
+        }
+    }
+
+
     public function show(Invitacion $invitacion)
     {
         $page_title = $invitacion->titulo;
         $invitacion->platos_opciones = json_decode($invitacion->platos_opciones);
 
         return view('pages.invitacion.show', compact('invitacion', 'page_title'));
+    }
+
+    public function agregarDocumento(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'invitacion_id' => 'required | string'
+            ]);
+            $imagen = $request->input('documento.base64');
+            $imagen = substr($imagen, strpos($imagen, ",") + 1);
+            $sizeInMb = (strlen($imagen) * 3 / 4) / (1024 * 1024);
+            if ($sizeInMb > 16) {
+                return response()->json([
+                    'message' => 'El tamaño de la imagen no puede ser mayor a 16MB',
+                ], 400);
+            }
+
+            $creado_por = auth()->user()->id;
+
+            $nombre = $request->input('documento.name');
+            $formato = $request->input('documento.type');
+            $size = $request->input('documento.size');
+            $invitacion_imagenes = [];
+
+            DB::beginTransaction();
+
+            $imagen = Imagen::create([
+                'nombre' => $nombre,
+                'formato' => $formato,
+                'size' => $size,
+                'imagen_base64' => $imagen,
+                'creado_por' => $creado_por,
+            ]);
+            $invitacion_imagenes[] = [
+                'id' => (string) Str::uuid(),
+                'invitacion_id' => $validatedData['invitacion_id'],
+                'imagen_id' => $imagen->id,
+                'creado_por' => $creado_por,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+            DB::table('invitaciones_imagenes')->insert($invitacion_imagenes);
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Documento agregado correctamente',
+                'imagen' => $imagen,
+                'status' => 'success'
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Error al agregar el documento: ' . $e->getMessage(),
+            ], 400);
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Error de validación: ' . $e->getMessage(),
+            ], 400);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Error al agregar el documento: ' . $th->getMessage(),
+            ], 400);
+        }
+    }
+
+    public function eliminarDocumento(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'imagen_id' => 'required | string',
+            'invitacion_id' => 'required | string',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => $validate->errors(),
+            ], 400);
+        }
+
+        try {
+            $imagen_id = $request->imagen_id;
+            $invitacion_id = $request->invitacion_id;
+
+            $imagen = Imagen::where('id', $imagen_id)->first();
+            $invitacion = Invitacion::where('id', $invitacion_id)->first();
+
+            if (!$imagen) {
+                return response()->json([
+                    'message' => 'El documento no existe',
+                ], 400);
+            }
+
+            if (!$invitacion) {
+                return response()->json([
+                    'message' => 'La invitacion no existe',
+                ], 400);
+            }
+
+            $invitacion_imagen = DB::table('invitaciones_imagenes')
+                ->where('invitacion_id', $invitacion_id)
+                ->where('imagen_id', $imagen_id)
+                ->first();
+
+            if (!$invitacion_imagen) {
+                return response()->json([
+                    'message' => 'La documento no esta asociada a la invitacion',
+                ], 400);
+            }
+
+            $invitacion_imagen = DB::table('invitaciones_imagenes')
+                ->where('invitacion_id', $invitacion_id)
+                ->where('imagen_id', $imagen_id)
+                ->delete();
+
+            $ImagenDelete = $imagen;
+
+            $imagen->delete();
+
+            return response()->json([
+                'message' => 'Documento eliminado correctamente',
+                'documento' => $ImagenDelete,
+                'status' => 'success'
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al eliminar el documento: ' . $e->getMessage(),
+            ], 400);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Error al eliminar el documento: ' . $th->getMessage(),
+            ], 400);
+        }
+    }
+
+    public function updateImagenMenu(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'invitacion_id' => 'required | string'
+            ]);
+            $imagen = $request->input('documento.base64');
+            $imagen = substr($imagen, strpos($imagen, ",") + 1);
+            $sizeInMb = (strlen($imagen) * 3 / 4) / (1024 * 1024);
+            if ($sizeInMb > 16) {
+                return response()->json([
+                    'message' => 'El tamaño de la imagen no puede ser mayor a 16MB',
+                ], 400);
+            }
+
+            $creado_por = auth()->user()->id;
+            $nombre = $request->input('documento.name');
+
+            DB::beginTransaction();
+
+            $invitacion = Invitacion::where('id', $request->invitacion_id)->first();
+            $invitacion->update([
+                'imagen_nombre' => $nombre,
+                'imagen' => $imagen,
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Imagen del menu actualizada correctamente',
+                'status' => 'success'
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Error al actualizar la imagen del menu: ' . $e->getMessage(),
+            ], 400);
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Error de validación: ' . $e->getMessage(),
+            ], 400);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Error al actualizar la imagen del menu: ' . $th->getMessage(),
+            ], 400);
+        }
     }
 
     public function crearPlantilla(Request $request)
@@ -199,7 +458,7 @@ class InvitacionesController extends Controller
 
         $plantilla = PlatillaMenu::create([
             'name' => $name,
-            'description' => $request->description || 'Sin descripción',
+            'description' => $request->description ?  $request->description : 'Sin descripción',
             'tipo_menu' => $tipoMenu,
             'platos' => $platos,
         ]);
