@@ -86,7 +86,7 @@ a.ck.ck-button:not(.ck-disabled):hover {
     background: #2e2e42 !important;
 }
 
-.form-control {    
+.form-control {
     font-size: 14px !important;
 }
 
@@ -135,4 +135,14 @@ a.ck.ck-button:not(.ck-disabled):hover {
 .delete-button:hover {
     background-color: white;
     color: black;
+}
+
+.grupoDePlatos:hover {
+    background-color: #171622 !important;
+    cursor: pointer;
+}
+
+.grupoDePlatos {
+    padding: 8px;
+    border-radius: 10px;
 }

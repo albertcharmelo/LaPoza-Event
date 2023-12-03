@@ -77,7 +77,7 @@ btn_add_option.click(function () {
             const precio = maskInputPrice.value; //si reempalzas value por typedValue, obtienes el valor sin formato
 
             let badge = $(
-                "<a href='javascript:void(0)' class='badge badge-rounded badge-primary' onclick='eliminarOpcion(event)'></a>"
+                "<a href='javascript:void(0)' class='badge badge-rounded badge-primary' onclick='editarOpcion(event)' ondblclick='eliminarOpcion(event)'></a>"
             );
             badge.text(option + " - " + precio);
             badge.appendTo(listBadges);
@@ -89,7 +89,7 @@ btn_add_option.click(function () {
     } else {
         if (option !== "") {
             let badge = $(
-                "<a href='javascript:void(0)' class='badge badge-rounded badge-primary' onclick='eliminarOpcion(event)'></a>"
+                "<a href='javascript:void(0)' class='badge badge-rounded badge-primary' onclick='editarOpcion(event)' ondblclick='eliminarOpcion(event)'></a>"
             );
             badge.text(option);
             badge.appendTo(listBadges);
@@ -147,7 +147,7 @@ function addPlateOptionsWithPlate() {
                     badgesOptions += `<a href="javascript:void(0)" class="badge badge-rounded badge-primary">${option}</a>`;
                 });
                 html += `
-                <div class="mt-3">
+                <li class="mt-3 grupoDePlatos">
                     <h4 class="d-flex gap-2">
                         <div 
                         onclick="editarPlato('${pregunta}')"
@@ -159,7 +159,7 @@ function addPlateOptionsWithPlate() {
                     <div class="bootstrap-badge mb-3 mt-1">
                         ${badgesOptions}
                     </div>
-                </div>
+                </li>
                 `;
             }
         }
@@ -331,6 +331,15 @@ function checkIfShowSaveTemplate() {
 }
 
 function editarPlato(pregunta) {
+    if (input_add_question.val() !== "" || listBadges.children().length > 0) {
+        SwalShowMessage(
+            "warning",
+            "¡Advertencia!",
+            "Debe agregar el plato actual antes de editar otro"
+        );
+        return;
+    }
+
     let plato = platos_with_options.find((plato) =>
         plato.hasOwnProperty(pregunta)
     );
@@ -338,7 +347,7 @@ function editarPlato(pregunta) {
     input_add_question.val(pregunta);
     opciones.forEach((opcion) => {
         let badge = $(
-            "<a href='javascript:void(0)' class='badge badge-rounded badge-primary' onclick='eliminarOpcion(event)'></a>"
+            "<a href='javascript:void(0)' class='badge badge-rounded badge-primary' onclick='editarOpcion(event)' ondblclick='eliminarOpcion(event)'></a>"
         );
         badge.text(opcion);
         badge.appendTo(listBadges);
@@ -356,13 +365,84 @@ function editarPlato(pregunta) {
 
 // para eliminar una opcion de un plato
 function eliminarOpcion(e) {
-    let index = $(e.target).index();
-    $(e.target).remove();
-    opciones_de_platos.splice(index, 1);
+    Swal.fire({
+        title: "¿Estás seguro de eliminar la opción del grupo de platos?",
+        text: "¡No podrás revertir esto!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "¡Sí, bórralo!",
+        cancelButtonText: "No, cancelar",
+        confirmButtonColor: "#fc410c",
+        cancelButtonColor: "#3085d6",
+    }).then((result) => {
+        if (result.value) {
+            let index = $(e.target).index();
+            $(e.target).remove();
+            opciones_de_platos.splice(index, 1);
+            SwalShowMessage(
+                "success",
+                "¡Éxito!",
+                "Se ha eliminado la opción correctamente, no olvide agregar el grupo de platos al menú"
+            );
+        }
+    });
+}
+
+function editarOpcion(e) {
+    const tipo_menu = select_tipoMenu.val();
+    if (
+        tipo_menu == "Menu a Elegir con Precio" &&
+        input_add_option.val() == ""
+    ) {
+        let index = $(e.target).index();
+        let opcion = opciones_de_platos[index];
+        let precio = opcion.split(" - ")[1];
+        let option = opcion.split(" - ")[0];
+        input_add_option.val(option);
+        maskInputPrice.value = precio;
+        opciones_de_platos.splice(index, 1);
+        $(e.target).remove();
+    }
+
+    if (
+        tipo_menu == "Menu a Elegir sin Precio" &&
+        input_add_option.val() == ""
+    ) {
+        let index = $(e.target).index();
+        let opcion = opciones_de_platos[index];
+        input_add_option.val(opcion);
+        opciones_de_platos.splice(index, 1);
+        $(e.target).remove();
+    }
 }
 
 for (let i = 1; i <= 30; i++) {
     array_name_platos.push(`${i}º`);
+}
+
+function limpiarVariablesYCampos() {
+    // limpiar los platos con opciones
+    platos_with_options = [];
+    // limpiar las opciones de los platos
+    opciones_de_platos = [];
+    // limpiar los badges
+    listBadges.empty();
+    // limpiar el input de pregunta
+    input_add_question.val("");
+    // limpiar el input de opciones
+    input_add_option.val("");
+    // limpiar el input de precio
+    maskInputPrice.value = "";
+    // limpiar el input de nombre de plantilla
+    $("#nombrePlantilla").val("");
+    // limpiar el input de nombre de plantilla
+    listResultsPlates.html("");
+    // llenar el input de tipo de menu
+    select_tipoMenu.val("Menu a Elegir con Precio");
+    // llenar el input de nombre de plantilla
+    actualPlato.text(array_name_platos[platos_with_options.length]);
+    addPlateOptionsWithPlate();
+    checkIfShowSaveTemplate();
 }
 
 function showLoader() {
@@ -371,3 +451,32 @@ function showLoader() {
 function hideLoader() {
     $("#loader_page").hide();
 }
+
+/* ------------------------------------------ SORTEBALE ----------------------------------------- */
+const sorteblaeListPlates = document.getElementById("listResultsPlates");
+const sortable = Sortable.create(sorteblaeListPlates, {
+    sort: true,
+    animation: 150,
+    onChange: function (/**Event*/ evt) {
+        const nuevaPosicion = evt.newIndex;
+        const viejaPosicion = evt.oldIndex;
+        // cambiar el orden de los platos
+        let plato = platos_with_options[viejaPosicion];
+        platos_with_options.splice(viejaPosicion, 1);
+        platos_with_options.splice(nuevaPosicion, 0, plato);
+    },
+});
+
+const sorteableListOptions = document.getElementById("listBadges");
+const sortableOptions = Sortable.create(sorteableListOptions, {
+    sort: true,
+    animation: 150,
+    onEnd: function (/**Event*/ evt) {
+        const nuevaPosicion = evt.newIndex;
+        const viejaPosicion = evt.oldIndex;
+        // cambiar el orden de los platos
+        let opcion = opciones_de_platos[viejaPosicion];
+        opciones_de_platos.splice(viejaPosicion, 1);
+        opciones_de_platos.splice(nuevaPosicion, 0, opcion);
+    },
+});

@@ -297,10 +297,9 @@ class InvitacionesController extends Controller
                 'imagen' => $imagen,
                 'status' => 'success'
             ], 201);
-            
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json([                
+            return response()->json([
                 'message' => 'Error al agregar el documento: ' . $e->getMessage(),
             ], 400);
         } catch (ValidationException $e) {
@@ -401,26 +400,25 @@ class InvitacionesController extends Controller
             }
 
             $creado_por = auth()->user()->id;
-            $nombre = $request->input('documento.name');            
+            $nombre = $request->input('documento.name');
 
             DB::beginTransaction();
-            
+
             $invitacion = Invitacion::where('id', $request->invitacion_id)->first();
             $invitacion->update([
                 'imagen_nombre' => $nombre,
-                'imagen' => $imagen,                
+                'imagen' => $imagen,
             ]);
 
             DB::commit();
 
             return response()->json([
-                'message' => 'Imagen del menu actualizada correctamente',                
+                'message' => 'Imagen del menu actualizada correctamente',
                 'status' => 'success'
             ], 201);
-            
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json([                
+            return response()->json([
                 'message' => 'Error al actualizar la imagen del menu: ' . $e->getMessage(),
             ], 400);
         } catch (ValidationException $e) {
@@ -460,7 +458,7 @@ class InvitacionesController extends Controller
 
         $plantilla = PlatillaMenu::create([
             'name' => $name,
-            'description' => $request->description || 'Sin descripción',
+            'description' => $request->description ?  $request->description : 'Sin descripción',
             'tipo_menu' => $tipoMenu,
             'platos' => $platos,
         ]);
