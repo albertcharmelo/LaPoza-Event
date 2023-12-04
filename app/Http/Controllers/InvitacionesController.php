@@ -142,9 +142,6 @@ class InvitacionesController extends Controller
             }
             DB::table('invitaciones_imagenes')->insert($invitacion_imagenes);
 
-            $url_invitacion = url('/invitaciones/' . $invitacion->id);
-            Mail::to($validatedData['email_org'])->send(new SendUrlInvitacion($url_invitacion));
-
             DB::commit();
             return response()->json([
                 'message' => 'Invitacion agregada correctamente',
