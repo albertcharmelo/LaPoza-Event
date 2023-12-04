@@ -14,7 +14,6 @@ class ArtisanController extends Controller
         $output = new BufferedOutput();
         Artisan::call('migrate', [], $output);
         $outputText = $output->fetch();
-
         echo '<pre>' . $outputText . '</pre>';
     }
 }

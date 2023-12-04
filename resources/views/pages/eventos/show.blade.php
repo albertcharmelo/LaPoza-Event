@@ -1,5 +1,6 @@
 @extends('layouts.dashboard')
 @section('css')
+<link href="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('vendor/datatables/css/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('css/dashboard/eventos.css') }}" rel="stylesheet" type="text/css" />
 @endsection
@@ -168,7 +169,7 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="post-details">
-                                                    <h3 class="mb-2 text-black">{{ $evento->invitacion->titulo }}</h3>
+                                                    <h2 class="mb-2 text-black">{{ $evento->invitacion->titulo }}</h2>
                                                     <ul class="mb-4 post-meta d-flex flex-wrap align-items-center">
                                                         <li class="post-author me-3">Por {{ $evento->nombre }}</li>
                                                         <li class="post-date me-3"><i
@@ -179,10 +180,19 @@
                                                         </li>
                                                         <li class="post-author me-3">
                                                             <a href="{{ route('invitaciones.show', $evento->invitacion->id) }}"
-                                                                class="btn btn-primary light btn-xs mb-1">Ver
-                                                                invitación</a>
+                                                                class="btn btn-primary light btn-xs mb-1">
+                                                                <i class="fa-regular fa-eye"></i>
+                                                                Ver invitación</a>
                                                             </a>
                                                         </li>
+                                                        <li class="post-author me-3">
+                                                            <a href="#" onclick="enviarInvitacionOrganizador()"
+                                                                class="btn btn-primary light btn-xs mb-1">
+                                                                <i class="fa-regular fa-envelope"></i>
+                                                                Enviar invitación al organizador</a>
+                                                            </a>
+                                                        </li>
+
 
                                                     </ul>
                                                     @foreach ($evento->invitacion->imagenes as $imagen)
@@ -249,20 +259,23 @@
                                                         <h4 class="text-primary mb-2">Resumen de platos</h4>
                                                         <div class="card-body p-0">
                                                             <div class="table-responsive">
-                                                                <table id="TableResumenPlatos" class="display" style="min-width: 845px; width: 100% !important;">
+                                                                <table id="TableResumenPlatos" class="display"
+                                                                    style="min-width: 845px; width: 100% !important;">
                                                                     <thead>
                                                                         <tr>
                                                                             <th with="90%">Descripción del plato</th>
-                                                                            <th with="10%" class="text-center">Cantidad</th>
+                                                                            <th with="10%" class="text-center">Cantidad
+                                                                            </th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                
+
                                                                     </tbody>
                                                                     <tfoot>
                                                                         <tr>
                                                                             <th with="90%">Descripción del plato</th>
-                                                                            <th with="10%" class="text-center">Cantidad</th>
+                                                                            <th with="10%" class="text-center">Cantidad
+                                                                            </th>
                                                                         </tr>
                                                                     </tfoot>
                                                                 </table>
@@ -290,7 +303,7 @@
 </div>
 @endsection
 @section('scripts')
-
+<script src="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('vendor/datatables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/dashboard/eventosDetails.js') }}" type="text/javascript"></script>
 @endsection

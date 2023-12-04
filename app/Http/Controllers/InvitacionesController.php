@@ -561,4 +561,29 @@ class InvitacionesController extends Controller
 
         return response()->json($invitados_plato, 200);
     }
+
+
+    static public function enviarInvitacionMail(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'evento_id' => 'required | string',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => $validate->errors(),
+            ], 400);
+        }
+
+        $invitaciones = Invitacion::where('evento_id', $request->evento_id)->get()->first();
+
+        $url_invitacion = url('/invitaciones/' . $invitaciones->id);
+        Mail::to($invitaciones->evento->email_organizador)->send(new SendUrlInvitacion($url_invitacion));
+
+        return response()->json([
+            'message' => 'Invitacion enviada correctamente',
+            'status' => 'success'
+        ], 201);
+    }
 }
