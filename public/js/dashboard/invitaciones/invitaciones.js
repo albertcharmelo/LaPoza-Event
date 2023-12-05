@@ -146,6 +146,8 @@ function iniciarDatos() {
     let dia = fecha.getDate();
     let mes = fecha.getMonth() + 1;
     let anio = fecha.getFullYear();
+    if (dia < 10) dia = '0' + dia;
+    if (mes < 10) mes = '0' + mes;    
     fecha_evento.val(anio + "-" + mes + "-" + dia);
 
     if (invitacion_edit != null) {
@@ -169,12 +171,7 @@ function iniciarDatos() {
             tipoMenu.val() == "Menu Fijo sin Precio"
         ) {
             boxUploadMenu.show();
-            input_file_menu.value = "";
-            document.querySelector("#input_file_menu").files[0] =
-                invitacion_edit.imagen;
-            document.getElementById(
-                "name_menu_uploaded"
-            ).innerHTML = `<br><span class="badge badge-pill badge-primary">${invitacion_edit.imagen_nombre}</span>`;
+            input_file_menu.value = "";            
         } else {
             if (tipoMenu.val() == "Menu a Elegir con Precio") {
                 inputPrice.show();
@@ -190,11 +187,12 @@ function iniciarDatos() {
         nombre_org.val(invitacion_edit.evento.nombre);
         email_org.val(invitacion_edit.evento.email_organizador);
         telefono_org.value = invitacion_edit.evento.telefono_organizador;
-        let fecha = new Date(invitacion_edit.evento.fecha);
-        let dia = fecha.getDate();
-        let mes = fecha.getMonth() + 1;
-        let anio = fecha.getFullYear();
-        fecha_evento.val(anio + "-" + mes + "-" + dia);
+        fecha_evento.val(invitacion_edit.evento.fecha);
+        // let fecha = new Date(invitacion_edit.evento.fecha);
+        // let dia = fecha.getDate();
+        // let mes = fecha.getMonth() + 1;
+        // let anio = fecha.getFullYear();
+        // fecha_evento.val(anio + "-" + mes + "-" + dia);
     }
 }
 
