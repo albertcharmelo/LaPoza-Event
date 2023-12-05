@@ -12,7 +12,9 @@ class ArtisanController extends Controller
     {
         # Se ejecutra una sola vez para instalar el servidor
         $output = new BufferedOutput();
+
         Artisan::call('migrate', [], $output);
+
         $outputText = $output->fetch();
         echo '<pre>' . $outputText . '</pre>';
     }
