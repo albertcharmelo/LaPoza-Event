@@ -76,7 +76,6 @@ class InvitacionesController extends Controller
                 'descripcion' => 'required',
                 'tipoMenu' => 'required',
                 'files' => 'required|array|min:1',
-                'files_menu' => 'required|array|min:1',
                 'nombre_org' => 'required',
                 'email_org' => 'required'
             ]);
@@ -89,7 +88,7 @@ class InvitacionesController extends Controller
                         'message' => 'El tamaño de la imagen no puede ser mayor a 16MB',
                     ], 400);
                 }
-            }            
+            }
 
             $creado_por = auth()->user()->id;
 
@@ -143,28 +142,30 @@ class InvitacionesController extends Controller
                 ];
             }
 
-            foreach ($request->input('files_menu') as $index => $file) {
-                $nombre = $file['name'];
-                $formato = $file['type'];
-                $size = $file['size'];
-                $imagen_base64 = substr($file['base64'], strpos($file['base64'], ",") + 1);
+            if ($request->input('files_menu')) {
+                foreach ($request->input('files_menu') as $index => $file) {
+                    $nombre = $file['name'];
+                    $formato = $file['type'];
+                    $size = $file['size'];
+                    $imagen_base64 = substr($file['base64'], strpos($file['base64'], ",") + 1);
 
-                $imagen = Imagen::create([
-                    'nombre' => $nombre,
-                    'formato' => $formato,
-                    'size' => $size,
-                    'imagen_base64' => $imagen_base64,
-                    'creado_por' => $creado_por,
-                ]);
-                $invitacion_imagenes[] = [
-                    'id' => (string) Str::uuid(),
-                    'invitacion_id' => $invitacion->id,
-                    'imagen_id' => $imagen->id,
-                    'tipo_imagen' => 'menu',
-                    'creado_por' => $creado_por,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
+                    $imagen = Imagen::create([
+                        'nombre' => $nombre,
+                        'formato' => $formato,
+                        'size' => $size,
+                        'imagen_base64' => $imagen_base64,
+                        'creado_por' => $creado_por,
+                    ]);
+                    $invitacion_imagenes[] = [
+                        'id' => (string) Str::uuid(),
+                        'invitacion_id' => $invitacion->id,
+                        'imagen_id' => $imagen->id,
+                        'tipo_imagen' => 'menu',
+                        'creado_por' => $creado_por,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
             }
 
             DB::table('invitaciones_imagenes')->insert($invitacion_imagenes);
@@ -296,7 +297,7 @@ class InvitacionesController extends Controller
 
             $nombre = $request->input('documento.name');
             $formato = $request->input('documento.type');
-            $size = $request->input('documento.size');            
+            $size = $request->input('documento.size');
             $invitacion_imagenes = [];
 
             DB::beginTransaction();
@@ -414,7 +415,7 @@ class InvitacionesController extends Controller
                 'message' => 'Error al eliminar el documento: ' . $th->getMessage(),
             ], 400);
         }
-    }    
+    }
 
     public function crearPlantilla(Request $request)
     {
