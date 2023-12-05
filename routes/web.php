@@ -67,8 +67,7 @@ Route::prefix('/invitaciones')->group(function () {
     Route::post('/getPlatos', [InvitacionesController::class, 'getPlatos'])->middleware('auth');
     Route::post('/getInvitadosByPlatos', [InvitacionesController::class, 'getInvitadosByPlato'])->middleware('auth');    
     Route::post('/eliminarDocumento', [InvitacionesController::class, 'eliminarDocumento'])->middleware('auth');
-    Route::post('/agregarDocumento', [InvitacionesController::class, 'agregarDocumento'])->middleware('auth');    
-    Route::post('/updateImagenMenu', [InvitacionesController::class, 'updateImagenMenu'])->middleware('auth');
+    Route::post('/agregarDocumento', [InvitacionesController::class, 'agregarDocumento'])->middleware('auth');
 });
 /* ------------------------------------------- QRCODES ------------------------------------------ */
 Route::get('/qrcodes/generate', [App\Http\Controllers\QrController::class, 'generate'])->middleware('auth');
