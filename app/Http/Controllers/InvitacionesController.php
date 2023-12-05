@@ -92,9 +92,9 @@ class InvitacionesController extends Controller
 
             $creado_por = auth()->user()->id;
 
-            $imagen = $request->input('file_menu.base64');
-            $imagen = substr($imagen, strpos($imagen, ",") + 1);
-            $imagen_nombre = $request->input('file_menu.nombre');
+            // $imagen = $request->input('file_menu.base64');
+            // $imagen = substr($imagen, strpos($imagen, ",") + 1);
+            // $imagen_nombre = $request->input('file_menu.nombre');
 
             DB::beginTransaction();
             $evento = Evento::create([
@@ -109,8 +109,8 @@ class InvitacionesController extends Controller
             $invitacion = Invitacion::create([
                 'titulo' => $validatedData['titulo'],
                 'texto' =>  $validatedData['descripcion'],
-                'imagen_nombre' => $imagen_nombre,
-                'imagen' => $imagen,
+                // 'imagen_nombre' => $imagen_nombre,
+                // 'imagen' => $imagen,
                 'tipo_menu' => $validatedData['tipoMenu'],
                 'platos_opciones' => $request->platos_opciones,
                 'creado_por' => $creado_por,
@@ -135,11 +135,39 @@ class InvitacionesController extends Controller
                     'id' => (string) Str::uuid(),
                     'invitacion_id' => $invitacion->id,
                     'imagen_id' => $imagen->id,
+                    'tipo_imagen' => 'imagen',
                     'creado_por' => $creado_por,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
             }
+
+            if ($request->input('files_menu')) {
+                foreach ($request->input('files_menu') as $index => $file) {
+                    $nombre = $file['name'];
+                    $formato = $file['type'];
+                    $size = $file['size'];
+                    $imagen_base64 = substr($file['base64'], strpos($file['base64'], ",") + 1);
+
+                    $imagen = Imagen::create([
+                        'nombre' => $nombre,
+                        'formato' => $formato,
+                        'size' => $size,
+                        'imagen_base64' => $imagen_base64,
+                        'creado_por' => $creado_por,
+                    ]);
+                    $invitacion_imagenes[] = [
+                        'id' => (string) Str::uuid(),
+                        'invitacion_id' => $invitacion->id,
+                        'imagen_id' => $imagen->id,
+                        'tipo_imagen' => 'menu',
+                        'creado_por' => $creado_por,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+            }
+
             DB::table('invitaciones_imagenes')->insert($invitacion_imagenes);
 
             DB::commit();
@@ -252,12 +280,13 @@ class InvitacionesController extends Controller
             $validatedData = $request->validate([
                 'invitacion_id' => 'required | string'
             ]);
+            $tipo_imagen = $request->input('tipo_imagen');
             $imagen = $request->input('documento.base64');
             $imagen = substr($imagen, strpos($imagen, ",") + 1);
             $sizeInMb = (strlen($imagen) * 3 / 4) / (1024 * 1024);
             if ($sizeInMb > 16) {
                 return response()->json([
-                    'message' => 'El tamaño de la imagen no puede ser mayor a 16MB',
+                    'message' => $tipo_imagen == 'menu' ? 'El tamaño de la imagen no puede ser mayor a 16MB' : 'El tamaño del documento no puede ser mayor a 16MB',
                 ], 400);
             }
 
@@ -281,6 +310,7 @@ class InvitacionesController extends Controller
                 'id' => (string) Str::uuid(),
                 'invitacion_id' => $validatedData['invitacion_id'],
                 'imagen_id' => $imagen->id,
+                'tipo_imagen' => $tipo_imagen, // 'imagen' o 'menu                
                 'creado_por' => $creado_por,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -290,14 +320,14 @@ class InvitacionesController extends Controller
             DB::commit();
 
             return response()->json([
-                'message' => 'Documento agregado correctamente',
+                'message' => $tipo_imagen == 'menu' ? 'Imagen del menu agregada correctamente' : 'Documento agregado correctamente',
                 'imagen' => $imagen,
                 'status' => 'success'
             ], 201);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
-                'message' => 'Error al agregar el documento: ' . $e->getMessage(),
+                'message' => $tipo_imagen == 'menu' ? 'Error al agregar la imagen del menu: ' . $e->getMessage() : 'Error al agregar el documento: ' . $e->getMessage(),
             ], 400);
         } catch (ValidationException $e) {
             DB::rollBack();
@@ -307,7 +337,7 @@ class InvitacionesController extends Controller
         } catch (\Throwable $th) {
             DB::rollBack();
             return response()->json([
-                'message' => 'Error al agregar el documento: ' . $th->getMessage(),
+                'message' => $tipo_imagen == 'menu' ? 'Error al agregar la imagen del menu: ' . $th->getMessage() : 'Error al agregar el documento: ' . $th->getMessage(),
             ], 400);
         }
     }
@@ -356,6 +386,8 @@ class InvitacionesController extends Controller
                 ], 400);
             }
 
+            $invitacion_imagen_delete = $invitacion_imagen;
+
             $invitacion_imagen = DB::table('invitaciones_imagenes')
                 ->where('invitacion_id', $invitacion_id)
                 ->where('imagen_id', $imagen_id)
@@ -368,6 +400,7 @@ class InvitacionesController extends Controller
             return response()->json([
                 'message' => 'Documento eliminado correctamente',
                 'documento' => $ImagenDelete,
+                'invitacion_imagen_delete' => $invitacion_imagen_delete,
                 'status' => 'success'
             ], 201);
         } catch (\Exception $e) {
@@ -377,56 +410,6 @@ class InvitacionesController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Error al eliminar el documento: ' . $th->getMessage(),
-            ], 400);
-        }
-    }
-
-    public function updateImagenMenu(Request $request)
-    {
-        try {
-            $validatedData = $request->validate([
-                'invitacion_id' => 'required | string'
-            ]);
-            $imagen = $request->input('documento.base64');
-            $imagen = substr($imagen, strpos($imagen, ",") + 1);
-            $sizeInMb = (strlen($imagen) * 3 / 4) / (1024 * 1024);
-            if ($sizeInMb > 16) {
-                return response()->json([
-                    'message' => 'El tamaño de la imagen no puede ser mayor a 16MB',
-                ], 400);
-            }
-
-            $creado_por = auth()->user()->id;
-            $nombre = $request->input('documento.name');
-
-            DB::beginTransaction();
-
-            $invitacion = Invitacion::where('id', $request->invitacion_id)->first();
-            $invitacion->update([
-                'imagen_nombre' => $nombre,
-                'imagen' => $imagen,
-            ]);
-
-            DB::commit();
-
-            return response()->json([
-                'message' => 'Imagen del menu actualizada correctamente',
-                'status' => 'success'
-            ], 201);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'message' => 'Error al actualizar la imagen del menu: ' . $e->getMessage(),
-            ], 400);
-        } catch (ValidationException $e) {
-            DB::rollBack();
-            return response()->json([
-                'message' => 'Error de validación: ' . $e->getMessage(),
-            ], 400);
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            return response()->json([
-                'message' => 'Error al actualizar la imagen del menu: ' . $th->getMessage(),
             ], 400);
         }
     }

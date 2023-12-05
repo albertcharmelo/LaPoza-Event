@@ -120,19 +120,25 @@ a.ck.ck-button:not(.ck-disabled):hover {
 .delete-button {
     background-color: red;
     border: none;
-    color: white;
-    text-align: center;
-    display: inline-block;
-    font-size: 16px;
-    transition-duration: 0.4s;
-    cursor: pointer;
-    width: 22px;
-    border-radius: 15px;
-    height: 20px;
-    padding-bottom: 24px;
+    color: white;    
+    border-radius: 205px;
+    padding: 6px;
+}
+
+.delete-button2 {
+    background-color: red;
+    border: none;
+    color: white;    
+    border-radius: 205px;
+    padding: 6px;
 }
 
 .delete-button:hover {
+    background-color: white;
+    color: black;
+}
+
+.delete-button2:hover {
     background-color: white;
     color: black;
 }
@@ -145,4 +151,9 @@ a.ck.ck-button:not(.ck-disabled):hover {
 .grupoDePlatos {
     padding: 8px;
     border-radius: 10px;
+}
+
+.new-arrivals-img-contnent img {
+    height: 200px !important;
+    object-fit: cover;
 }

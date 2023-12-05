@@ -66,7 +66,7 @@
 
                                                 <input type="file" class="custom-file-input" id="files" lang="es"
                                                     name="files[]" multiple>
-                                                <label for="files" id="listDocumentos"></label>
+                                                <div class="row" for="files" id="listDocumentos" style="display: flex; flex-wrap: wrap;"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -93,7 +93,7 @@
                                             <div onclick="openInputMenu()"
                                                 class="cursor-pointer dropzoneInput w-100 d-flex flex-column  justify-content-center align-items-center border-dotted">
                                                 <input type="file" id="input_file_menu" class="d-none"
-                                                    name="input_file_menu" />
+                                                    name="files_menu[]" multiple>
                                                 <div class="div mb-3">
                                                     <i class="fas fa-upload"
                                                         style="font-size: 30px !important; color:white"></i>
@@ -104,6 +104,8 @@
                                                 <p class="mt-0 p-0" id="name_menu_uploaded"></p>
                                             </div>
                                         </div>
+                                        <div class="row" id="listImagenesMenu" style="display: flex; flex-wrap: wrap;"></div>
+
                                         <div id="boxUploadOptions" class="border border-primary py-4 rounded px-4">
                                             <h3>Agregas los platos y opciones del menú</h3>
                                             <p class="text-muted">Agrega las opciones para los platos pulsando en <span
