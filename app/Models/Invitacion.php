@@ -84,6 +84,7 @@ class Invitacion extends Model
 
     public function imagenes()
     {
-        return $this->belongsToMany(Imagen::class, 'invitaciones_imagenes', 'invitacion_id', 'imagen_id');
+        return $this->belongsToMany(Imagen::class, 'invitaciones_imagenes', 'invitacion_id', 'imagen_id')
+            ->withPivot('tipo_imagen');
     }
 }
