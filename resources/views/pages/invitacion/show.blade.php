@@ -22,6 +22,26 @@
     input:hover {
         background-color: #212130 !important;
     }
+    @media (max-width: 768px) {
+        iframe {
+            width: 100%; /* Ocupa todo el ancho disponible */
+            height: 500px; /* Altura fija para móviles */
+        }
+    }
+
+    /* Estilos para dispositivos de escritorio */
+    @media (min-width: 769px) {
+        iframe {
+            width: 100%;
+            height: 1000px;/* Altura fija para escritorio */
+        }
+    }
+    .alternating_1 {
+        background-color: darkslategray;
+    }
+    .alternating_2 {
+        background-color: black;
+    }
 </style>
 @endsection
 @section('content')
@@ -40,9 +60,11 @@
 
                 </ul>
                 <p class="my-2 py-0">{!! $invitacion->texto !!}</p>
-                @foreach ($invitacion->imagenes as $imagen)
-                <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}" alt="Imagen del evento"
-                    class="img-fluid mb-3 w-100 rounded ">
+                @foreach ($invitacion->imagenes as $imagen)                
+                @if ($imagen->pivot->tipo_imagen == 'imagen')
+                    <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}" alt="Imagen del evento"
+                        class="img-fluid mb-3 w-100 rounded ">
+                @endif
                 @endforeach
             </div>
             <div class="plates-chooise" id="platosBox">
@@ -55,11 +77,14 @@
                     platos
                     pulsando en el <span class="color-global">Seleccionador
                     </span> para cada platillo.</h6>
-                <div class="row">
+                <div class="row" style="background-color: white;">
+                    @php
+                        $alternating = 1;
+                    @endphp
                     @foreach ($invitacion->platos_opciones as $key => $opciones)
                     <div class="my-2 col-12  p-2 platos_select">
                         @foreach ($opciones as $pregunta => $plato)
-                        <div class="border border-primary p-4 rounded">
+                        <div class="border border-primary p-4 rounded {{ $alternating == 1 ? 'alternating_1' : 'alternating_2' }}">
 
                             <h3 class="form-label my-3 plato_question">{{ $pregunta }}</h3>
 
@@ -73,6 +98,9 @@
                                 @endforeach
                             </div>
                         </div>
+                        @php
+                            $alternating = $alternating == 1 ? 2 : 1;
+                        @endphp
                         @endforeach
 
                     </div>
@@ -82,8 +110,19 @@
                 @else
                 <h2>Menu a servir dentro del Evento</h2>
                 <p class="text-muted">El siguiente menú fijo no estará sujeto a modificaciones </p>
-                <img src="data:image/png;base64,{{ $invitacion->imagen }}" alt="Imagen del menu"
-                    class="img-fluid mb-3 w-100 rounded ">
+                {{-- <img src="data:image/png;base64,{{ $invitacion->imagen }}" alt="Imagen del menu"
+                    class="img-fluid mb-3 w-100 rounded "> --}}
+                    @foreach ($invitacion->imagenes as $imagen)                
+                        @if ($imagen->pivot->tipo_imagen == 'menu')
+                            @if ($imagen->formato == 'application/pdf')
+                                <iframe src="data:application/pdf;base64,{{ $imagen->imagen_base64 }}" frameborder="0"
+                                    class="mb-3 rounded"></iframe>
+                            @else
+                                <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}" alt="Imagen del evento"
+                                    class="img-fluid mb-3 w-100 rounded">
+                            @endif
+                        @endif
+                    @endforeach                    
                 @endif
 
             </div>
@@ -113,11 +152,11 @@
                         <input type="text" class="form-control" autocomplete="off" id="telefono" name="telefono"
                             pattern="[0-9]{9}" placeholder="Introduzca su teléfono">
                     </div>
-                    <div class="">
+                    <div class="d-none">
                         <label for="" class="form-label font-w600 text-black">
                             Número de invitados *
                         </label>
-                        <input type="number" class="form-control" id="invitados" name="invitados" min="1" step="1"
+                        <input type="number" class="form-control" id="invitados" value="1" name="invitados" min="1" step="1"
                             placeholder="Introduzca el número de invitados">
                     </div>
                     <div class="">
