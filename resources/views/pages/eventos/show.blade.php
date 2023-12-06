@@ -197,9 +197,14 @@
                                                     </ul>
                                                     @foreach ($evento->invitacion->imagenes as $imagen)
                                                         @if ($imagen->pivot->tipo_imagen == 'imagen')
-                                                            <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}"
-                                                            width="908" height="359" alt="Imagen del evento"
-                                                            class="img-fluid mb-3 w-100 rounded">
+                                                            @if ($imagen->formato == 'application/pdf')
+                                                                <iframe src="data:application/pdf;base64,{{ $imagen->imagen_base64 }}"
+                                                                    class="mb-3 rounded" width="100%" height="500px"></iframe>
+                                                            @else
+                                                                <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}"
+                                                                width="908" height="359" alt="Imagen del evento"
+                                                                class="img-fluid mb-3 w-100 rounded">
+                                                             @endif                                                                
                                                         @endif
                                                     @endforeach
 
