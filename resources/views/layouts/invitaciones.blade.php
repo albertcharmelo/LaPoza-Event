@@ -55,9 +55,20 @@ $action = DzHelper::action();
             background-color: #f2f2f2 !important;
         }
 
+
+        .logoHeader {
+            width: 26%;
+            height: auto;
+        }
+
         @media (max-width: 47.9375rem) {
             .brand-title {
                 display: inline !important;
+            }
+
+            .logoHeader {
+                width: 40%;
+                height: auto;
             }
         }
     </style>
