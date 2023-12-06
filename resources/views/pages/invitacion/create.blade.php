@@ -52,18 +52,16 @@
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="mb-3">
-                                            <h3 for="comment" class="text-black font-w600 form-label">Mensaje de
-                                                invitacion</h3>
+                                            <h3 for="comment" class="text-black font-w600 form-label">Mensaje de la
+                                                invitación</h3>
                                             <textarea class="form-control " id="ckeditorInvitacion"
                                                 name="descripcion"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="mb-3">
-
-                                            <h3 for="comment" class="text-black font-w600 form-label">Archivos</h3>
+                                            <h3 for="comment" class="text-black font-w600 form-label">Documentos de la Invitación</h3>
                                             <div class="custom-file">
-
                                                 <input type="file" class="custom-file-input" id="files" lang="es"
                                                     name="files[]" multiple>
                                                 <div class="row" for="files" id="listDocumentos" style="display: flex; flex-wrap: wrap;"></div>
@@ -73,23 +71,10 @@
                                 </div>
                             </div>
                             <div id="wizard_invitacion_pte2" class="tab-pane" role="tabpanel">
-                                <div class="row">
-                                    <div class="col-12 mb-3">
-                                        <h3 class="text-black font-w600 form-label">Tipo de Menú</h3>
-                                        <select class="  form-control wide" id="tipoMenu" name="tipoMenu">
-                                            <option value="" selected disabled hidden>Selecciona una opción
-                                            </option>
-                                            <option value="Menu Fijo con Precio">Menu Fijo con Precio</option>
-                                            <option value="Menu Fijo sin Precio">Menu Fijo sin Precio</option>
-                                            <option value="Menu a Elegir con Precio">Menu a Elegir con Precio
-                                            </option>
-                                            <option value="Menu a Elegir sin Precio">Menu a Elegir sin Precio
-                                            </option>
-                                        </select>
-                                    </div>
+                                <div class="row">                                    
                                     <div class="col-12">
-                                        <div id="boxUploadMenu" style="min-height: 200px; display:none">
-                                            <label class="text-black font-w600 form-label">Imagen del Menú</label>
+                                        <div id="boxUploadMenu" style="min-height: 200px;">
+                                            <label class="text-black font-w600 form-label">Imagenes del Menú</label>
                                             <div onclick="openInputMenu()"
                                                 class="cursor-pointer dropzoneInput w-100 d-flex flex-column  justify-content-center align-items-center border-dotted">
                                                 <input type="file" id="input_file_menu" class="d-none"
@@ -105,6 +90,20 @@
                                             </div>
                                         </div>
                                         <div class="row" id="listImagenesMenu" style="display: flex; flex-wrap: wrap;"></div>
+
+                                        <div class="col-12 mb-3 mt-3">
+                                            <h3 class="text-black font-w600 form-label">Tipo de Menú</h3>
+                                            <select class="  form-control wide" id="tipoMenu" name="tipoMenu">
+                                                <option value="" selected disabled hidden>Selecciona una opción
+                                                </option>
+                                                <option value="Menu Fijo con Precio">Menu Fijo con Precio</option>
+                                                <option value="Menu Fijo sin Precio">Menu Fijo sin Precio</option>
+                                                <option value="Menu a Elegir con Precio">Menu a Elegir con Precio
+                                                </option>
+                                                <option value="Menu a Elegir sin Precio">Menu a Elegir sin Precio
+                                                </option>
+                                            </select>
+                                        </div>
 
                                         <div id="boxUploadOptions" class="border border-primary py-4 rounded px-4">
                                             <h3>Agregas los platos y opciones del menú</h3>
