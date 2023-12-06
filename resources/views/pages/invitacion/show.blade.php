@@ -124,7 +124,7 @@
                                     class="d-flex flex-wrap gap-3 align-items-center py-2 px-1 rounded {{ $alternating == 1 ? 'alternating_1' : 'alternating_2' }}">
                                     <input type="radio" name="{{ $pregunta }}" class="form-check-input opcion_plato"
                                         value="{{ $plato_opcion }}" id="">
-                                    <h4 class="text-center mb-0">{{ $plato_opcion }}</h4>
+                                    <h4 onclick="selectPlatoH4(event)" class="text-center mb-0">{{ $plato_opcion }}</h4>
                                 </div>
                                 @php
                                 $alternating = $alternating == 1 ? 2 : 1;

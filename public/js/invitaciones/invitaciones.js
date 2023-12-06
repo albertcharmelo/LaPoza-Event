@@ -164,6 +164,11 @@ function selectPlato(e) {
     $(e.target).children(".opcion_plato").prop("checked", true);
 }
 
+function selectPlatoH4(e) {
+    // marcar el input checkbox hermano con clase opcion_plato
+    $(e.target).siblings(".opcion_plato").prop("checked", true);
+}
+
 BtnNext.on("click", nextStep);
 datosFormulario.on("submit", (e) => {
     e.preventDefault();
