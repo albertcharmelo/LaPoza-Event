@@ -17,8 +17,13 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" onclick="savePlantillas()">Crear Plantilla</button>
+                <button type="button" class="btn btn-primary col-12 " onclick="savePlantillas()">Crear
+                    Plantilla</button>
+                <button type="button" class="btn btn-primary col-12 " style="display:none" id="btn_reemplazar_plantilla"
+                    onclick="savePlantillas(true)">Reemplazar
+                    Plantilla</button>
+                <button type="button" class="btn btn-danger light col-12 mt-lg-3"
+                    data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

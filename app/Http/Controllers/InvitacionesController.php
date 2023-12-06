@@ -420,6 +420,7 @@ class InvitacionesController extends Controller
             'tipoMenu' => 'required | string',
             'name' => 'required | string',
             'platos' => 'required | array',
+            'reemplazar' => 'required | string | nullable',
         ]);
 
         if ($validate->fails()) {
@@ -433,6 +434,25 @@ class InvitacionesController extends Controller
         $platos = json_encode($request->platos);
         $tipoMenu = $request->tipoMenu;
         $name = $request->name;
+
+
+
+        // Si se envia el id de una plantilla, se actualiza
+        if ($request->reemplazar != null) {
+            $plantilla = PlatillaMenu::where('id', $request->reemplazar)->first();
+            $plantilla->update([
+                'name' => $name,
+                'description' => $request->description ?  $request->description : 'Sin descripción',
+                'tipo_menu' => $tipoMenu,
+                'platos' => $platos,
+            ]);
+
+            return response()->json([
+                'message' => 'Plantilla actualizada correctamente',
+                'data' => $plantilla,
+                'status' => 'success'
+            ], 201);
+        }
 
 
 
@@ -462,6 +482,28 @@ class InvitacionesController extends Controller
         return response()->json([
             'message' => 'Plantillas obtenidas correctamente',
             'data' => $plantillas,
+            'status' => 'success'
+        ], 201);
+    }
+
+    function getDetallesPlantilla(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'id_pantilla' => 'required | string',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => $validate->errors(),
+            ], 400);
+        }
+
+        $plantilla = PlatillaMenu::where('id', $request->id_pantilla)->first();
+        $plantilla->platos = json_decode($plantilla->platos);
+        return response()->json([
+            'message' => 'Plantilla obtenida correctamente',
+            'data' => $plantilla,
             'status' => 'success'
         ], 201);
     }

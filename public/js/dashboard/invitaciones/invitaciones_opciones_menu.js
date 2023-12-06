@@ -13,7 +13,7 @@ let plantillas = [];
 let array_name_platos = [];
 let opciones_de_platos = [];
 let platos_with_options = []; // variable que guarda el resultado final de los platos con sus opciones
-
+let plantilla_selected = null;
 $(document).ready(function () {
     getPlantillas();
 });
@@ -105,6 +105,46 @@ input_add_option.keyup(function (e) {
         btn_add_option.click();
     }
 });
+
+btn_save_template.click(function () {
+    // verificar si esta con valor la variable plantilla_selected
+    $("#nombrePlantilla").val("");
+    $("#descripcionPlantilla").val("");
+    if (plantilla_selected != null) {
+        $("#btn_reemplazar_plantilla").show();
+
+        $.ajax({
+            url: "/invitaciones/getDetallesPlantilla",
+            type: "POST",
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            data: {
+                id_pantilla: plantilla_selected,
+            },
+            success: function (response) {
+                if (response.status == "success") {
+                    $("#nombrePlantilla").val(response.data.name);
+                    $("#descripcionPlantilla").val(response.data.description);
+                } else {
+                    SwalShowMessage(
+                        "error",
+                        "¡Error!",
+                        "Ha ocurrido un error al obtener los datos de la plantilla"
+                    );
+                }
+            },
+            error: function (error) {
+                SwalShowMessage(
+                    "error",
+                    "¡Error!",
+                    "Ha ocurrido un error al obtener los datos de la plantilla"
+                );
+            },
+        });
+    }
+});
+
 // para agregar un plato a la lista de platos
 btn_add_other_plate.click(function () {
     let list_badges_has_child = listBadges.children().length;
@@ -168,7 +208,7 @@ function addPlateOptionsWithPlate() {
     listResultsPlates.html(html);
 }
 
-function savePlantillas() {
+function savePlantillas(reemplazar = false) {
     let nombrePlantilla = $("#nombrePlantilla").val();
     let descripcionPlantilla = $("#descripcionPlantilla").val();
     if (nombrePlantilla == "") {
@@ -185,6 +225,7 @@ function savePlantillas() {
         description: descripcionPlantilla,
         tipoMenu: select_tipoMenu.val(),
         platos: platos_with_options,
+        reemplazar: reemplazar ? plantilla_selected : null,
     };
 
     showLoader();
@@ -204,7 +245,9 @@ function savePlantillas() {
                 );
                 getPlantillas();
                 $("#nombrePlantilla").val("");
+                $("#descripcionPlantilla").val("");
                 $("#modalSaveTemplate").modal("hide");
+                $("#btn_reemplazar_plantilla").hide();
             } else {
                 SwalShowMessage(
                     "error",
@@ -281,6 +324,8 @@ function createListPlantillas(data = plantillas) {
 function getOnePlantilla(params) {
     // obtener en la varibale plantillas la plantilla seleccionada
     let plantilla = plantillas.find((plantilla) => plantilla.id == params);
+    // guardar el id de la plantilla
+    plantilla_selected = plantilla.id;
     // limpiar los platos con opciones
     platos_with_options = [];
     // limpiar las opciones de los platos
