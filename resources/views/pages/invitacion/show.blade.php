@@ -103,10 +103,10 @@
                 @if ($invitacion->tipo_menu == 'Menu a Elegir con Precio' ||
                 $invitacion->tipo_menu == 'Menu a Elegir sin Precio')
                 <h1>Selecciona los platos del menú</h1>
-                <h4 class="text-muted mb-4">Agrega las opciones para los {{ count($invitacion->platos_opciones) }}
+                {{-- <h4 class="text-muted mb-4">Agrega las opciones para los {{ count($invitacion->platos_opciones) }}
                     platos
                     pulsando en el <span class="color-global">Seleccionador
-                    </span> para cada platillo.</h4>
+                    </span> para cada platillo.</h4> --}}
                 <div class="row" style="background-color: white;">
                     @php
                     $alternating = 1;
