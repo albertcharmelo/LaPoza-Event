@@ -50,11 +50,21 @@ $action = DzHelper::action();
         .bg-global {
             background-color: #FD683E !important;
         }
+
+        .body-color {
+            background-color: #f2f2f2 !important;
+        }
+
+        @media (max-width: 47.9375rem) {
+            .brand-title {
+                display: inline !important;
+            }
+        }
     </style>
     @yield('css')
 </head>
 
-<body>
+<body class="body-color">
 
     <!--*******************
         Preloader start
@@ -95,7 +105,7 @@ $action = DzHelper::action();
         <!--**********************************
             Content body start
         ***********************************-->
-        <div class="content-body mx-1 my-4 mx-lg-5 px-1 px-lg-5">
+        <div class="content-body mx-1 my-4 mx-lg-5 px-1 px-lg-5" style>
             <!-- row -->
             @yield('content')
 
@@ -109,7 +119,7 @@ $action = DzHelper::action();
             Footer start
         ***********************************-->
 
-        @include('elements.footer')
+        {{-- @include('elements.footer') --}}
 
         <!--**********************************
             Footer end
@@ -144,7 +154,7 @@ $action = DzHelper::action();
     <script src="{{ asset($script) }}" type="text/javascript"></script>
     @endforeach
     @endif
-
+    <script src="{{ asset('js/deznav-init-ligth.js') }}"></script>
     @yield('scripts')
 </body>
 
