@@ -15,17 +15,25 @@
         display: none;
     }
 
-    input {
+    /* input {
         background-color: #212130 !important;
     }
 
     input:hover {
         background-color: #212130 !important;
-    }
+    } */
+
     @media (max-width: 768px) {
         iframe {
-            width: 100%; /* Ocupa todo el ancho disponible */
-            height: 500px; /* Altura fija para móviles */
+            width: 100%;
+            /* Ocupa todo el ancho disponible */
+            height: 500px;
+            /* Altura fija para móviles */
+        }
+
+        .opcion_plato {
+            width: 20px;
+            height: 20px;
         }
     }
 
@@ -33,14 +41,33 @@
     @media (min-width: 769px) {
         iframe {
             width: 100%;
-            height: 1000px;/* Altura fija para escritorio */
+            height: 1000px;
+            /* Altura fija para escritorio */
         }
+
+
     }
+
+    .texto_invitacion,
+    .texto_invitacion * {
+        font-size: 2rem;
+        color: #212130;
+    }
+
     .alternating_1 {
-        background-color: darkslategray;
+        background-color: #f2f2f2;
     }
+
+    label {
+        font-size: 1.3rem;
+    }
+
     .alternating_2 {
-        background-color: black;
+        background-color: #fff;
+    }
+
+    .borde-negro {
+        border: 1px solid #b5b5cde3;
     }
 </style>
 @endsection
@@ -49,21 +76,24 @@
     <div class="card">
         <div class="card-body">
             <div class="post-details" id="postBox">
-                <h1 class="mb-2 text-black">{{ $invitacion->titulo }}</h1>
+                <h1 class="mb-2 text-black" style="font-size: 3rem !important">{{ $invitacion->titulo }}</h1>
                 <ul class="mb-0 post-meta d-flex flex-wrap">
-                    <li class="post-author me-3">Por {{ $invitacion->evento->nombre }}</li>
-                    <li class="post-date me-3"><i class="fas fa-calendar-check me-2"></i>
-                        {{
-                        \Carbon\Carbon::parse($invitacion->evento->fecha)->format('d/m/Y') }}
-
+                    <li class="post-author me-3">
+                        <h4>Por {{ $invitacion->evento->nombre }}</h4>
+                    </li>
+                    <li class="post-date me-3">
+                        <h4>
+                            <i class="fas fa-calendar-check me-2"></i>
+                            {{\Carbon\Carbon::parse($invitacion->evento->fecha)->format('d/m/Y') }}
+                        </h4>
                     </li>
 
                 </ul>
-                <p class="my-2 py-0">{!! $invitacion->texto !!}</p>
-                @foreach ($invitacion->imagenes as $imagen)                
+                <div class="my-2 py-0 texto_invitacion">{!! $invitacion->texto !!}</div>
+                @foreach ($invitacion->imagenes as $imagen)
                 @if ($imagen->pivot->tipo_imagen == 'imagen')
-                    <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}" alt="Imagen del evento"
-                        class="img-fluid mb-3 w-100 rounded ">
+                <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}" alt="Imagen del evento"
+                    class="img-fluid mb-3 w-100 rounded ">
                 @endif
                 @endforeach
             </div>
@@ -73,34 +103,36 @@
                 @if ($invitacion->tipo_menu == 'Menu a Elegir con Precio' ||
                 $invitacion->tipo_menu == 'Menu a Elegir sin Precio')
                 <h1>Selecciona los platos del menú</h1>
-                <h6 class="text-muted mb-4">Agrega las opciones para los {{ count($invitacion->platos_opciones) }}
+                <h4 class="text-muted mb-4">Agrega las opciones para los {{ count($invitacion->platos_opciones) }}
                     platos
                     pulsando en el <span class="color-global">Seleccionador
-                    </span> para cada platillo.</h6>
+                    </span> para cada platillo.</h4>
                 <div class="row" style="background-color: white;">
                     @php
-                        $alternating = 1;
+                    $alternating = 1;
                     @endphp
                     @foreach ($invitacion->platos_opciones as $key => $opciones)
                     <div class="my-2 col-12  p-2 platos_select">
                         @foreach ($opciones as $pregunta => $plato)
-                        <div class="border border-primary p-4 rounded {{ $alternating == 1 ? 'alternating_1' : 'alternating_2' }}">
+                        <div class="border border-primary p-4 rounded ">
 
-                            <h3 class="form-label my-3 plato_question">{{ $pregunta }}</h3>
+                            <h2 class="form-label my-3 plato_question">{{ $pregunta }}</h2>
 
                             <div class="d-flex flex-column gap-3 mb-3 opcion_plato_box">
                                 @foreach ($plato as $plato_opcion)
-                                <div class="d-flex gap-3 align-items-center">
+                                <div onclick="selectPlato(event)" style="cursor: pointer"
+                                    class="d-flex flex-wrap gap-3 align-items-center py-2 px-1 rounded {{ $alternating == 1 ? 'alternating_1' : 'alternating_2' }}">
                                     <input type="radio" name="{{ $pregunta }}" class="form-check-input opcion_plato"
                                         value="{{ $plato_opcion }}" id="">
-                                    <h5 class="text-center mb-0">{{ $plato_opcion }}</h5>
+                                    <h4 class="text-center mb-0">{{ $plato_opcion }}</h4>
                                 </div>
+                                @php
+                                $alternating = $alternating == 1 ? 2 : 1;
+                                @endphp
                                 @endforeach
                             </div>
                         </div>
-                        @php
-                            $alternating = $alternating == 1 ? 2 : 1;
-                        @endphp
+
                         @endforeach
 
                     </div>
@@ -112,58 +144,60 @@
                 <p class="text-muted">El siguiente menú fijo no estará sujeto a modificaciones </p>
                 {{-- <img src="data:image/png;base64,{{ $invitacion->imagen }}" alt="Imagen del menu"
                     class="img-fluid mb-3 w-100 rounded "> --}}
-                    @foreach ($invitacion->imagenes as $imagen)                
-                        @if ($imagen->pivot->tipo_imagen == 'menu')
-                            @if ($imagen->formato == 'application/pdf')
-                                <iframe src="data:application/pdf;base64,{{ $imagen->imagen_base64 }}" frameborder="0"
-                                    class="mb-3 rounded"></iframe>
-                            @else
-                                <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}" alt="Imagen del evento"
-                                    class="img-fluid mb-3 w-100 rounded">
-                            @endif
-                        @endif
-                    @endforeach                    
+                @foreach ($invitacion->imagenes as $imagen)
+                @if ($imagen->pivot->tipo_imagen == 'menu')
+                @if ($imagen->formato == 'application/pdf')
+                <iframe src="data:application/pdf;base64,{{ $imagen->imagen_base64 }}" frameborder="0"
+                    class="mb-3 rounded"></iframe>
+                @else
+                <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}" alt="Imagen del evento"
+                    class="img-fluid mb-3 w-100 rounded">
+                @endif
+                @endif
+                @endforeach
                 @endif
 
             </div>
             <div class="datos-chooise" id="datosBox">
-                <h2>Datos de la invitación</h2>
-                <p class="text-muted">A continuación complete los datos requeridos para confirmar su asistencia.</p>
-                <form class="formulario d-flex flex-column gap-2" id="datosFormulario" method="POST">
+                <h1>Datos de la invitación</h1>
+                <h4 class="text-muted">A continuación complete los datos personales requeridos para confirmar su
+                    asistencia.</h4>
+                <form class="formulario d-flex flex-column gap-2 mt-3 py-3" id="datosFormulario" method="POST">
                     @csrf
                     <input type="hidden" name="invitacion_id" value="{{ $invitacion->id }}">
                     <input type="hidden" name="evento_id" value="{{ $invitacion->evento->id }}">
-                    <div class="">
-                        <label class="form-label font-w600 text-black">Nombre *</label>
-                        <input type="text" class="form-control" autocomplete="off" id="nombre" name="nombre"
+                    <div class=" my-2">
+                        <label class="form-label font-w600 text-black">Nombre</label>
+                        <input type="text" class="form-control borde-negro" autocomplete="off" id="nombre" name="nombre"
                             placeholder="Introduzca su nombre">
                     </div>
-                    <div class="">
+                    <div class=" my-2">
                         <label class="form-label font-w600 text-black">
                             Correo electrónico
                         </label>
-                        <input type="email" class="form-control" autocomplete="off" id="email" name="email"
+                        <input type="email" class="form-control borde-negro" autocomplete="off" id="email" name="email"
                             placeholder="Introduzca su correo electrónico">
                     </div>
-                    <div class="">
+                    <div class=" my-2">
                         <label class="form-label font-w600 text-black">
-                            Teléfono *
+                            Teléfono
                         </label>
-                        <input type="text" class="form-control" autocomplete="off" id="telefono" name="telefono"
-                            pattern="[0-9]{9}" placeholder="Introduzca su teléfono">
+                        <input type="text" class="form-control borde-negro" autocomplete="off" id="telefono"
+                            name="telefono" pattern="[0-9]{9}" placeholder="Introduzca su teléfono">
                     </div>
                     <div class="d-none">
                         <label for="" class="form-label font-w600 text-black">
-                            Número de invitados *
+                            Número de invitados
                         </label>
-                        <input type="number" class="form-control" id="invitados" value="1" name="invitados" min="1" step="1"
-                            placeholder="Introduzca el número de invitados">
+                        <input type="number" class="form-control borde-negro" id="invitados" value="1" name="invitados"
+                            min="1" step="1" placeholder="Introduzca el número de invitados">
                     </div>
-                    <div class="">
+                    <div class=" my-2">
                         <label for="" class="form-label font-w600 text-black">
                             Observaciones / Alergias / Intolerancias
                         </label>
-                        <textarea class="form-control" id="observaciones" name="observaciones" rows="4"
+                        <textarea class="form-control borde-negro" id="observaciones" name="observaciones" rows="4"
+                            style="min-height: 120px"
                             placeholder="Introduzca sus observaciones, alergias o intolerancias"></textarea>
                     </div>
 

@@ -159,6 +159,11 @@ const nextStep = async () => {
     }
 };
 
+function selectPlato(e) {
+    // marcar el input checkbox hijo con clase opcion_plato
+    $(e.target).children(".opcion_plato").prop("checked", true);
+}
+
 BtnNext.on("click", nextStep);
 datosFormulario.on("submit", (e) => {
     e.preventDefault();
