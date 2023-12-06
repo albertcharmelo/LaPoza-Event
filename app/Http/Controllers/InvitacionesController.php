@@ -73,28 +73,12 @@ class InvitacionesController extends Controller
         try {
             $validatedData = $request->validate([
                 'titulo' => 'required',
-                'descripcion' => 'required | string | nullable  ',
                 'tipoMenu' => 'required',
-                'files' => 'required|array|min:1',
                 'nombre_org' => 'required',
                 'email_org' => 'required'
             ]);
 
-            foreach ($request->input('files') as $index => $file) {
-                $imagen_base64 = substr($file['base64'], strpos($file['base64'], ",") + 1);
-                $sizeInMb = (strlen($imagen_base64) * 3 / 4) / (1024 * 1024);
-                if ($sizeInMb > 16) {
-                    return response()->json([
-                        'message' => 'El tamaño de la imagen no puede ser mayor a 16MB',
-                    ], 400);
-                }
-            }
-
             $creado_por = auth()->user()->id;
-
-            // $imagen = $request->input('file_menu.base64');
-            // $imagen = substr($imagen, strpos($imagen, ",") + 1);
-            // $imagen_nombre = $request->input('file_menu.nombre');
 
             DB::beginTransaction();
             $evento = Evento::create([
@@ -108,9 +92,7 @@ class InvitacionesController extends Controller
             ]);
             $invitacion = Invitacion::create([
                 'titulo' => $validatedData['titulo'],
-                'texto' =>  $validatedData['descripcion'],
-                // 'imagen_nombre' => $imagen_nombre,
-                // 'imagen' => $imagen,
+                'texto' => $request->descripcion,
                 'tipo_menu' => $validatedData['tipoMenu'],
                 'platos_opciones' => $request->platos_opciones,
                 'creado_por' => $creado_por,
@@ -118,28 +100,30 @@ class InvitacionesController extends Controller
             ]);
 
             $invitacion_imagenes = [];
-            foreach ($request->input('files') as $index => $file) {
-                $nombre = $file['name'];
-                $formato = $file['type'];
-                $size = $file['size'];
-                $imagen_base64 = substr($file['base64'], strpos($file['base64'], ",") + 1);
+            if ($request->input('files')) {
+                foreach ($request->input('files') as $index => $file) {
+                    $nombre = $file['name'];
+                    $formato = $file['type'];
+                    $size = $file['size'];
+                    $imagen_base64 = substr($file['base64'], strpos($file['base64'], ",") + 1);
 
-                $imagen = Imagen::create([
-                    'nombre' => $nombre,
-                    'formato' => $formato,
-                    'size' => $size,
-                    'imagen_base64' => $imagen_base64,
-                    'creado_por' => $creado_por,
-                ]);
-                $invitacion_imagenes[] = [
-                    'id' => (string) Str::uuid(),
-                    'invitacion_id' => $invitacion->id,
-                    'imagen_id' => $imagen->id,
-                    'tipo_imagen' => 'imagen',
-                    'creado_por' => $creado_por,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
+                    $imagen = Imagen::create([
+                        'nombre' => $nombre,
+                        'formato' => $formato,
+                        'size' => $size,
+                        'imagen_base64' => $imagen_base64,
+                        'creado_por' => $creado_por,
+                    ]);
+                    $invitacion_imagenes[] = [
+                        'id' => (string) Str::uuid(),
+                        'invitacion_id' => $invitacion->id,
+                        'imagen_id' => $imagen->id,
+                        'tipo_imagen' => 'imagen',
+                        'creado_por' => $creado_por,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
             }
 
             if ($request->input('files_menu')) {
@@ -167,8 +151,9 @@ class InvitacionesController extends Controller
                     ];
                 }
             }
-
-            DB::table('invitaciones_imagenes')->insert($invitacion_imagenes);
+            if (count($invitacion_imagenes) > 0) {
+                DB::table('invitaciones_imagenes')->insert($invitacion_imagenes);
+            }
 
             DB::commit();
             return response()->json([
@@ -213,7 +198,6 @@ class InvitacionesController extends Controller
         try {
             $validatedData = $request->validate([
                 'titulo' => 'required',
-                'descripcion' => 'required',
                 'tipoMenu' => 'required',
                 'nombre_org' => 'required',
                 'email_org' => 'required',
@@ -225,8 +209,8 @@ class InvitacionesController extends Controller
 
             $invitacion = Invitacion::where('id', $request->invitacion_id)->first();
             $invitacion->update([
-                'titulo' => $validatedData['titulo'],
-                'texto' =>  $validatedData['descripcion'],
+                'titulo' => $validatedData['titulo'],                
+                'texto' => $request->descripcion,
                 'tipo_menu' => $validatedData['tipoMenu'],
                 'platos_opciones' => $request->platos_opciones,
                 'creado_por' => $creado_por,
