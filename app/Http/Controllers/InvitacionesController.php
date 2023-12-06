@@ -73,7 +73,7 @@ class InvitacionesController extends Controller
         try {
             $validatedData = $request->validate([
                 'titulo' => 'required',
-                'descripcion' => 'required',
+                'descripcion' => 'required | string | nullable  ',
                 'tipoMenu' => 'required',
                 'files' => 'required|array|min:1',
                 'nombre_org' => 'required',
