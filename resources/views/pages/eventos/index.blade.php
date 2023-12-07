@@ -18,8 +18,9 @@
                         <table id="eventosTable" class="display" style="min-width: 845px">
                             <thead>
                                 <tr>
-                                    <th with="50%">Nombre</th>
-                                    <th with="35%">Email</th>
+                                    <th with="45%">Nombre del Organizador</th>
+                                    <th with="10%">Teléfono</th>
+                                    <th with="30%">Título de la Invitación</th>
                                     <th with="5%" class="text-center">Comensales</th>
                                     <th with="5%" class="text-center">Fecha</th>
                                     <th with="5%" class="text-center">Activo</th>
@@ -30,8 +31,9 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th with="50%">Nombre</th>
-                                    <th with="35%">Email</th>
+                                    <th with="45%">Nombre del Organizador</th>
+                                    <th with="10%">Teléfono</th>
+                                    <th with="30%">Título de la Invitación</th>
                                     <th with="5%" class="text-center">Comensales</th>
                                     <th with="5%" class="text-center">Fecha</th>
                                     <th with="5%" class="text-center">Activo</th>
