@@ -110,34 +110,10 @@
                 @endif
                 @endforeach
             </div>
-            <div class="plates-chooise" id="platosBox">                
-                @php
-                    $menuImages = $invitacion->imagenes->filter(function ($imagen) {
-                        return $imagen->pivot->tipo_imagen == 'menu';
-                    });
-                @endphp
-                @if ($menuImages->count() > 0)  
-                    <h2>Menu a servir dentro del Evento</h2>
-                @endif                
-                @foreach ($invitacion->imagenes as $imagen)
-                    @if ($imagen->pivot->tipo_imagen == 'menu')
-                        @if ($imagen->formato == 'application/pdf')
-                            <iframe src="data:application/pdf;base64,{{ $imagen->imagen_base64 }}" frameborder="0"
-                            class="mb-3 rounded"></iframe>
-                        @else
-                            <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}" alt="Imagen del evento"
-                            class="img-fluid mb-3 w-100 rounded">
-                        @endif
-                    @endif
-                @endforeach
-
+            <div class="plates-chooise" id="platosBox">
                 @if ($invitacion->tipo_menu == 'Menu a Elegir con Precio' ||
                 $invitacion->tipo_menu == 'Menu a Elegir sin Precio')
-                <h1>Selecciona los platos del menú</h1>
-                {{-- <h4 class="text-muted mb-4">Agrega las opciones para los {{ count($invitacion->platos_opciones) }}
-                    platos
-                    pulsando en el <span class="color-global">Seleccionador
-                    </span> para cada platillo.</h4> --}}
+                <h1>Selecciona los platos del menú</h1>               
                 <div class="row" style="background-color: white;">
                     @php
                     $alternating = 1;
@@ -171,6 +147,26 @@
 
                 </div>                
                 @endif
+
+                @php
+                    $menuImages = $invitacion->imagenes->filter(function ($imagen) {
+                        return $imagen->pivot->tipo_imagen == 'menu';
+                    });
+                @endphp
+                @if ($menuImages->count() > 0)  
+                    <h2>Menu a servir dentro del Evento</h2>
+                @endif                
+                @foreach ($invitacion->imagenes as $imagen)
+                    @if ($imagen->pivot->tipo_imagen == 'menu')
+                        @if ($imagen->formato == 'application/pdf')
+                            <iframe src="data:application/pdf;base64,{{ $imagen->imagen_base64 }}" frameborder="0"
+                            class="mb-3 rounded"></iframe>
+                        @else
+                            <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}" alt="Imagen del evento"
+                            class="img-fluid mb-3 w-100 rounded">
+                        @endif
+                    @endif
+                @endforeach
 
             </div>
             <div class="datos-chooise" id="datosBox">
