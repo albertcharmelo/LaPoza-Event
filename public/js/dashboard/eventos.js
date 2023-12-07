@@ -2,14 +2,11 @@
     "use strict";
     var table = $("#eventosTable").DataTable({
         createdRow: function (row, data) {
-            $(row).addClass("cursor-pointer");
-            // $(row).on("click", function () {
-            //     window.location.href = "/eventos/" + data.id;
-            // });
+            $(row).addClass("cursor-pointer");           
             $(row)
                 .find("td:eq(0), td:eq(1), td:eq(2), td:eq(3)")
                 .on("click", function () {
-                    window.location.href = "/eventos/" + data.id;
+                    window.location.href = "/eventos/" + data.id + "/false";
                 });
         },
         language: {
@@ -31,10 +28,15 @@
             },
             dataType: "json",
             dataSrc: "",
+            dataFilter: function(data){
+                // console.log(data);
+                return data;
+            }
         },
         columns: [
-            { data: "nombre" },
-            { data: "email_organizador" },
+            { data: "nombre" },            
+            { data: "telefono_organizador" },
+            { data: 'invitacion.titulo' },
             { data: "comensales", className: "dt-body-center" },
             { data: "fecha", className: "dt-body-center" },
             {
