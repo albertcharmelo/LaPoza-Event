@@ -90,15 +90,46 @@
 
                 </ul>
                 <div class="my-2 py-0 texto_invitacion">{!! $invitacion->texto !!}</div>
+                @php
+                    $menuImages = $invitacion->imagenes->filter(function ($imagen) {
+                        return $imagen->pivot->tipo_imagen == 'imagen';
+                    });
+                @endphp
+                @if ($menuImages->count() > 0)  
+                    <h2>Imagenes</h2>
+                 @endif
                 @foreach ($invitacion->imagenes as $imagen)
                 @if ($imagen->pivot->tipo_imagen == 'imagen')
-                <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}" alt="Imagen del evento"
-                    class="img-fluid mb-3 w-100 rounded ">
+                    @if ($imagen->formato == 'application/pdf')
+                        <iframe src="data:application/pdf;base64,{{ $imagen->imagen_base64 }}"
+                        class="mb-3 rounded"></iframe>
+                    @else
+                        <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}" alt="Imagen del evento"
+                        class="img-fluid mb-3 w-100 rounded ">
+                    @endif                
                 @endif
                 @endforeach
             </div>
-            <div class="plates-chooise" id="platosBox">
-
+            <div class="plates-chooise" id="platosBox">                
+                @php
+                    $menuImages = $invitacion->imagenes->filter(function ($imagen) {
+                        return $imagen->pivot->tipo_imagen == 'menu';
+                    });
+                @endphp
+                @if ($menuImages->count() > 0)  
+                    <h2>Menu a servir dentro del Evento</h2>
+                @endif                
+                @foreach ($invitacion->imagenes as $imagen)
+                    @if ($imagen->pivot->tipo_imagen == 'menu')
+                        @if ($imagen->formato == 'application/pdf')
+                            <iframe src="data:application/pdf;base64,{{ $imagen->imagen_base64 }}" frameborder="0"
+                            class="mb-3 rounded"></iframe>
+                        @else
+                            <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}" alt="Imagen del evento"
+                            class="img-fluid mb-3 w-100 rounded">
+                        @endif
+                    @endif
+                @endforeach
 
                 @if ($invitacion->tipo_menu == 'Menu a Elegir con Precio' ||
                 $invitacion->tipo_menu == 'Menu a Elegir sin Precio')
@@ -138,23 +169,7 @@
                     </div>
                     @endforeach
 
-                </div>
-                @else
-                <h2>Menu a servir dentro del Evento</h2>
-                <p class="text-muted">El siguiente menú fijo no estará sujeto a modificaciones </p>
-                {{-- <img src="data:image/png;base64,{{ $invitacion->imagen }}" alt="Imagen del menu"
-                    class="img-fluid mb-3 w-100 rounded "> --}}
-                @foreach ($invitacion->imagenes as $imagen)
-                @if ($imagen->pivot->tipo_imagen == 'menu')
-                @if ($imagen->formato == 'application/pdf')
-                <iframe src="data:application/pdf;base64,{{ $imagen->imagen_base64 }}" frameborder="0"
-                    class="mb-3 rounded"></iframe>
-                @else
-                <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}" alt="Imagen del evento"
-                    class="img-fluid mb-3 w-100 rounded">
-                @endif
-                @endif
-                @endforeach
+                </div>                
                 @endif
 
             </div>

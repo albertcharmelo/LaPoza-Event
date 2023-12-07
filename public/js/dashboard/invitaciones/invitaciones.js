@@ -45,24 +45,6 @@ $(document).ready(function () {
                     );
                     return false;
                 }
-
-                if (CKeditor.getData() == "") {
-                    SwalShowMessage(
-                        "warning",
-                        "¡Advertencia!",
-                        "Debe ingresar un mensaje de invitación"
-                    );
-                    return false;
-                }
-
-                if (arrayImagenesFiles.length == 0) {
-                    SwalShowMessage(
-                        "warning",
-                        "¡Advertencia!",
-                        "Debe seleccionar al menos un archivo"
-                    );
-                    return false;
-                }
             }
             if (stepNumber === 1) {
                 if (tipoMenu.val() == null) {
@@ -79,8 +61,7 @@ $(document).ready(function () {
                     tipoMenu.val() == "Menu Fijo sin Precio"
                 ) {
                     if (
-                        document.querySelector("#input_file_menu").files[0] ==
-                        ""
+                        document.querySelector("#input_file_menu").files.length == 0 
                     ) {
                         SwalShowMessage(
                             "warning",
@@ -127,7 +108,6 @@ function iniciarDatos() {
     tipoMenu.val("");
     input_file_menu.value = "";
     name_menu_uploaded.innerHTML = "";
-    boxUploadMenu.hide();
     boxUploadOptions.hide();
     arrayImagenesFiles = [];
     filesArray = [];
@@ -146,13 +126,15 @@ function iniciarDatos() {
     let dia = fecha.getDate();
     let mes = fecha.getMonth() + 1;
     let anio = fecha.getFullYear();
-    if (dia < 10) dia = '0' + dia;
-    if (mes < 10) mes = '0' + mes;    
+    if (dia < 10) dia = "0" + dia;
+    if (mes < 10) mes = "0" + mes;
     fecha_evento.val(anio + "-" + mes + "-" + dia);
 
     if (invitacion_edit != null) {
         titulo.val(invitacion_edit.titulo);
-        CKeditor.setData(invitacion_edit.texto);
+        if (invitacion_edit.texto != null) {
+            CKeditor.setData(invitacion_edit.texto);
+        }
 
         invitacion_edit.imagenes.forEach(function (imagen) {
             if (imagen.pivot.tipo_imagen == "imagen") {
@@ -165,21 +147,18 @@ function iniciarDatos() {
             }
         });
 
-        tipoMenu.val(invitacion_edit.tipo_menu);
+        tipoMenu.val(invitacion_edit.tipo_menu);        
+        input_file_menu.value = "";
         if (
-            tipoMenu.val() == "Menu Fijo con Precio" ||
-            tipoMenu.val() == "Menu Fijo sin Precio"
+            tipoMenu.val() == "Menu a Elegir con Precio" ||
+            tipoMenu.val() == "Menu a Elegir sin Precio"
         ) {
-            boxUploadMenu.show();
-            input_file_menu.value = "";            
-        } else {
             if (tipoMenu.val() == "Menu a Elegir con Precio") {
                 inputPrice.show();
             } else {
                 inputPrice.hide();
             }
             boxUploadOptions.show("slow");
-
             platos_with_options = invitacion_edit.platos_opciones;
             addPlateOptionsWithPlate();
         }
@@ -188,11 +167,6 @@ function iniciarDatos() {
         email_org.val(invitacion_edit.evento.email_organizador);
         telefono_org.value = invitacion_edit.evento.telefono_organizador;
         fecha_evento.val(invitacion_edit.evento.fecha);
-        // let fecha = new Date(invitacion_edit.evento.fecha);
-        // let dia = fecha.getDate();
-        // let mes = fecha.getMonth() + 1;
-        // let anio = fecha.getFullYear();
-        // fecha_evento.val(anio + "-" + mes + "-" + dia);
     }
 }
 
@@ -204,14 +178,21 @@ function mostrarDocumentos() {
         let prefix = setPrefix(formato);
         let formattedData = `${prefix}${base64Data}`;
 
+        let html2;
+        if (formato === "application/pdf") {
+            html2 = ` <object class="img-fluid" data="${formattedData}" type="application/pdf" style="height: 200px !important; object-fit: cover;"></object>`;
+        } else {
+            html2 = `<img class="img-fluid" id="preview${i + 1}" 
+            src="${formattedData}" alt="">`;
+        }
+
         let html = `
             <div class="col-xl-3 col-lg-6 col-sm-6" id="file${i + 1}">
                 <div class="card">
                     <div class="card-body">
                         <div class="new-arrival-product">
                             <div class="new-arrivals-img-contnent"> 
-                                <img class="img-fluid" id="preview${i + 1}" 
-                                src="${formattedData}" alt="">
+                                ${html2}                               
                             </div>
                             <div class="new-arrival-content text-center mt-3">
                                 <h4>${imagen.nombre}</h4>
@@ -396,24 +377,6 @@ btnGuardar.on("click", function () {
         return false;
     }
 
-    if (CKeditor.getData() == "") {
-        SwalShowMessage(
-            "warning",
-            "¡Advertencia!",
-            "Debe ingresar un mensaje de invitación"
-        );
-        return false;
-    }
-
-    if (arrayImagenesFiles.length == 0) {
-        SwalShowMessage(
-            "warning",
-            "¡Advertencia!",
-            "Debe seleccionar al menos un archivo"
-        );
-        return false;
-    }
-
     if (tipoMenu.val() == null) {
         SwalShowMessage(
             "warning",
@@ -487,12 +450,6 @@ btnGuardar.on("click", function () {
         }
     }
 
-    // async function appendFileToFormData(file, data) {
-    //     const base64File = await getBase64(file);
-    //     data.append("file_menu[base64]", base64File);
-    //     data.append("file_menu[nombre]", file.name);
-    // }
-
     agregarInvitacion();
 
     async function agregarInvitacion() {
@@ -503,34 +460,46 @@ btnGuardar.on("click", function () {
         data.append("platos_opciones", JSON.stringify(platos_opciones_obj));
 
         if (invitacion_edit == null) {
-            // const fileMenu =
-            //     document.querySelector("#input_file_menu").files[0];
-            // appendFileToFormData(fileMenu, data);
-
-            const filePromises = filesArray.map((file, index) => {
-                return getBase64(file).then((base64File) => {
-                    data.append(`files[${index}][base64]`, base64File);
-                    data.append(`files[${index}][name]`, file.name);
-                    data.append(`files[${index}][type]`, file.type);
-                    data.append(`files[${index}][size]`, file.size.toString());
-                });
-            });
-            await Promise.all(filePromises);
-
-            const fileMenuPromises = arrayFilesImagenesMenu.map(
-                (file, index) => {
+            if (filesArray.length > 0) {
+                const filePromises = filesArray.map((file, index) => {
                     return getBase64(file).then((base64File) => {
-                        data.append(`files_menu[${index}][base64]`, base64File);
-                        data.append(`files_menu[${index}][name]`, file.name);
-                        data.append(`files_menu[${index}][type]`, file.type);
+                        data.append(`files[${index}][base64]`, base64File);
+                        data.append(`files[${index}][name]`, file.name);
+                        data.append(`files[${index}][type]`, file.type);
                         data.append(
-                            `files_menu[${index}][size]`,
+                            `files[${index}][size]`,
                             file.size.toString()
                         );
                     });
-                }
-            );
-            await Promise.all(fileMenuPromises);
+                });
+                await Promise.all(filePromises);
+            }
+
+            if (arrayFilesImagenesMenu.length > 0) {
+                const fileMenuPromises = arrayFilesImagenesMenu.map(
+                    (file, index) => {
+                        return getBase64(file).then((base64File) => {
+                            data.append(
+                                `files_menu[${index}][base64]`,
+                                base64File
+                            );
+                            data.append(
+                                `files_menu[${index}][name]`,
+                                file.name
+                            );
+                            data.append(
+                                `files_menu[${index}][type]`,
+                                file.type
+                            );
+                            data.append(
+                                `files_menu[${index}][size]`,
+                                file.size.toString()
+                            );
+                        });
+                    }
+                );
+                await Promise.all(fileMenuPromises);
+            }
         }
 
         data.append("nombre_org", nombre_org.val());
@@ -626,6 +595,7 @@ $("#listDocumentos").on("click", ".delete-button", function () {
 document.querySelector("#files").addEventListener("change", function (e) {
     var file = this.files[this.files.length - 1]; // Obtener el último archivo seleccionado
     var fileName = file.name;
+    let formato = file.type;
 
     // verificamos que el tamaño del archivo no sea mayor a 16MB
     if (file.size > 16777216) {
@@ -636,9 +606,14 @@ document.querySelector("#files").addEventListener("change", function (e) {
         );
         return false;
     }
-
     // verificamos que las extensiones del archivo sean solo tipo imagen
-    var extensiones_permitidas = new Array(".png", ".jpg", ".jpeg", ".gif");
+    var extensiones_permitidas = new Array(
+        ".png",
+        ".jpg",
+        ".jpeg",
+        ".gif",
+        ".pdf"
+    );
     var permitida = false;
     for (var i = 0; i < extensiones_permitidas.length; i++) {
         if (fileName.toLowerCase().endsWith(extensiones_permitidas[i])) {
@@ -677,6 +652,16 @@ document.querySelector("#files").addEventListener("change", function (e) {
     }
 
     if (invitacion_edit == null) {
+        let html2;
+        if (formato === "application/pdf") {
+            html2 = ` <object class="img-fluid" id ="preview${
+                arrayImagenesFiles.length - 1
+            }"  data="" type="application/pdf" style="height: 200px !important; object-fit: cover;"></object>`;
+        } else {
+            html2 = `<img class="img-fluid" id="preview${
+                arrayImagenesFiles.length - 1
+            }" alt="">`;
+        }
 
         let html = `
         <div class="col-xl-3 col-lg-6 col-sm-6" id="file${
@@ -686,9 +671,7 @@ document.querySelector("#files").addEventListener("change", function (e) {
                 <div class="card-body">
                     <div class="new-arrival-product">
                         <div class="new-arrivals-img-contnent">
-                            <img class="img-fluid" id="preview${
-                                arrayImagenesFiles.length - 1
-                            }" alt="">
+                            ${html2}                            
                         </div>
                         <div class="new-arrival-content text-center mt-3">
                             <h4>${fileName}</h4> 
@@ -703,13 +686,23 @@ document.querySelector("#files").addEventListener("change", function (e) {
         `;
         $("#listDocumentos").append(html);
 
-        let reader = new FileReader();
-        reader.onload = function (e) {
-            document
-                .querySelector(`#preview${arrayImagenesFiles.length - 1}`)
-                .setAttribute("src", e.target.result);
-        };
-        reader.readAsDataURL(file);
+        if (formato === "application/pdf") {
+            let reader = new FileReader();
+            reader.onload = function (e) {
+                document
+                    .querySelector(`#preview${arrayImagenesFiles.length - 1}`)
+                    .setAttribute("data", e.target.result);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            let reader = new FileReader();
+            reader.onload = function (e) {
+                document
+                    .querySelector(`#preview${arrayImagenesFiles.length - 1}`)
+                    .setAttribute("src", e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
     } else {
         agregarDocumento("imagen");
     }
@@ -780,21 +773,11 @@ async function appendDocumentoToFormData(documento, data, tipo_imagen) {
     return data;
 }
 
-tipoMenu.on("change", function () {
-    name_menu_uploaded.innerHTML = "";
+tipoMenu.on("change", function () {    
     platos_with_options = [];
-    listResultsPlates.html("");
-    input_file_menu.value = "";
+    listResultsPlates.html("");    
     opciones_de_platos = [];
-
-    if (
-        tipoMenu.val() == "Menu Fijo con Precio" ||
-        tipoMenu.val() == "Menu Fijo sin Precio"
-    ) {
-        boxUploadMenu.show("slow");
-    } else {
-        boxUploadMenu.hide("fast");
-    }
+    
     if (
         tipoMenu.val() == "Menu a Elegir con Precio" ||
         tipoMenu.val() == "Menu a Elegir sin Precio"
