@@ -10,7 +10,7 @@
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{!! url('/'); !!}">Eventos</a></li>
-                    <li><a href="{!! url('/invitaciones/index'); !!}">Invitaciones</a></li>
+                    {{-- <li><a href="{!! url('/invitaciones/index'); !!}">Invitaciones</a></li> --}}
 
                     {{-- <li><a href="{!! url('/index-2'); !!}">Dashboard Dark</a></li>
                     <li><a href="{!! url('/order-page-list'); !!}">Orders</a></li>
