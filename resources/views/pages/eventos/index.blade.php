@@ -18,9 +18,9 @@
                         <table id="eventosTable" class="display" style="min-width: 845px">
                             <thead>
                                 <tr>
-                                    <th with="45%">Nombre del Organizador</th>
+                                    <th with="45%">Nombre del organizador</th>
                                     <th with="10%">Teléfono</th>
-                                    <th with="30%">Título de la Invitación</th>
+                                    <th with="30%">Título de la invitación</th>
                                     <th with="5%" class="text-center">Comensales</th>
                                     <th with="5%" class="text-center">Fecha</th>
                                     <th with="5%" class="text-center">Activo</th>

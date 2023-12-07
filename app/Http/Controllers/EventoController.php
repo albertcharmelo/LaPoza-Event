@@ -30,7 +30,9 @@ class EventoController extends Controller
     {
         if (Auth::check()) {
 
-            $eventos = Evento::with('invitacion')->get()->toArray();            
+            $eventos = Evento::with('invitacion')
+                ->orderBy('created_at', 'desc')
+                ->get()->toArray();
             $eventos = array_map(
                 function ($evento) {
                     $evento['fecha'] = date('d-m-Y', strtotime($evento['fecha']));
