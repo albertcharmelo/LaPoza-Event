@@ -13,8 +13,6 @@ let nombre_org = $("#nombre_org");
 let email_org = $("#email_org");
 let telefono_organizador = document.getElementById("telefono_org");
 let fecha_evento = $("#fecha_evento");
-let btn_crear = $("#btn_crear");
-let btn_index = $("#btn_index");
 
 let arrayNombresImagenesMenu = [];
 let arrayFilesImagenesMenu = [];
@@ -95,9 +93,7 @@ $(document).ready(function () {
             }
         }
     );
-    iniciarDatos();
-    btn_crear.hide();
-    btn_index.show();
+    iniciarDatos();    
 });
 
 function iniciarDatos() {
@@ -536,16 +532,17 @@ btnGuardar.on("click", function () {
                     iniciarDatos();
                     $("#smartwizard").smartWizard("goToStep", 0);
                     if (data.status == "success") {
+                        console.log('data:',data);
                         Swal.fire({
                             type: "success",
                             title: "¡Éxito!",
                             text: data.message,
-                            confirmButtonText: "Aceptar",
+                            confirmButtonText: "Aceptarlo",
                             confirmButtonColor: "#fc410c",
                             allowOutsideClick: false,
                         }).then((result) => {
                             if (result.value) {
-                                window.location.href = "/invitaciones/index";
+                                window.location.href = "/eventos/" + data.data.evento_id + "/true";
                             }
                         });
                     }
