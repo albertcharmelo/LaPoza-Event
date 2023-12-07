@@ -5,7 +5,7 @@
     <div class="deznav-scroll" style="background: #0f0e16ea !important">
         <ul class="metismenu" id="menu">
             <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-                    <i class="fa-solid fa-champagne-glasses"></i>
+                    <i class="fa-solid fa-calendar-days"></i>
                     <span class="nav-text">Panel</span>
                 </a>
                 <ul aria-expanded="false">

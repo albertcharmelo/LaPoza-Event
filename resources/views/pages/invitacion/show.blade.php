@@ -91,29 +91,28 @@
                 </ul>
                 <div class="my-2 py-0 texto_invitacion">{!! $invitacion->texto !!}</div>
                 @php
-                    $menuImages = $invitacion->imagenes->filter(function ($imagen) {
-                        return $imagen->pivot->tipo_imagen == 'imagen';
-                    });
+                $menuImages = $invitacion->imagenes->filter(function ($imagen) {
+                return $imagen->pivot->tipo_imagen == 'imagen';
+                });
                 @endphp
-                @if ($menuImages->count() > 0)  
-                    <h2>Imagenes</h2>
-                 @endif
+                @if ($menuImages->count() > 0)
+                <h2>Imágenes</h2>
+                @endif
                 @foreach ($invitacion->imagenes as $imagen)
                 @if ($imagen->pivot->tipo_imagen == 'imagen')
-                    @if ($imagen->formato == 'application/pdf')
-                        <iframe src="data:application/pdf;base64,{{ $imagen->imagen_base64 }}"
-                        class="mb-3 rounded"></iframe>
-                    @else
-                        <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}" alt="Imagen del evento"
-                        class="img-fluid mb-3 w-100 rounded ">
-                    @endif                
+                @if ($imagen->formato == 'application/pdf')
+                <iframe src="data:application/pdf;base64,{{ $imagen->imagen_base64 }}" class="mb-3 rounded"></iframe>
+                @else
+                <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}" alt="Imagen del evento"
+                    class="img-fluid mb-3 w-100 rounded ">
+                @endif
                 @endif
                 @endforeach
             </div>
             <div class="plates-chooise" id="platosBox">
                 @if ($invitacion->tipo_menu == 'Menu a Elegir con Precio' ||
                 $invitacion->tipo_menu == 'Menu a Elegir sin Precio')
-                <h1>Selecciona los platos del menú</h1>               
+                <h1>Selecciona los platos del menú</h1>
                 <div class="row" style="background-color: white;">
                     @php
                     $alternating = 1;
@@ -145,27 +144,27 @@
                     </div>
                     @endforeach
 
-                </div>                
+                </div>
                 @endif
 
                 @php
-                    $menuImages = $invitacion->imagenes->filter(function ($imagen) {
-                        return $imagen->pivot->tipo_imagen == 'menu';
-                    });
+                $menuImages = $invitacion->imagenes->filter(function ($imagen) {
+                return $imagen->pivot->tipo_imagen == 'menu';
+                });
                 @endphp
-                @if ($menuImages->count() > 0)  
-                    <h2>Menu a servir dentro del Evento</h2>
-                @endif                
+                @if ($menuImages->count() > 0)
+                <h2>Menú a servir dentro del Evento</h2>
+                @endif
                 @foreach ($invitacion->imagenes as $imagen)
-                    @if ($imagen->pivot->tipo_imagen == 'menu')
-                        @if ($imagen->formato == 'application/pdf')
-                            <iframe src="data:application/pdf;base64,{{ $imagen->imagen_base64 }}" frameborder="0"
-                            class="mb-3 rounded"></iframe>
-                        @else
-                            <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}" alt="Imagen del evento"
-                            class="img-fluid mb-3 w-100 rounded">
-                        @endif
-                    @endif
+                @if ($imagen->pivot->tipo_imagen == 'menu')
+                @if ($imagen->formato == 'application/pdf')
+                <iframe src="data:application/pdf;base64,{{ $imagen->imagen_base64 }}" frameborder="0"
+                    class="mb-3 rounded"></iframe>
+                @else
+                <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}" alt="Imagen del evento"
+                    class="img-fluid mb-3 w-100 rounded">
+                @endif
+                @endif
                 @endforeach
 
             </div>
@@ -216,11 +215,11 @@
             </div>
             <div class="qr-chooise px-5 py-3" id="QrCodeBox">
                 <div class="d-flex flex-column items-center justify-center w-100">
-                    <h1 class="text-center">Invitacion confirmada con éxito
+                    <h1 class="text-center">Invitación confirmada con éxito
                     </h1>
-                    <p class="text-muted text-center">Con el siguiente codigoQr podra
+                    <p class="text-muted text-center">Con el siguiente codigo Qr podra
                         confirmar su asistencia el día evento. Además de con este poder consumir en el evento.</p>
-                    <p class="text-center">Puede acceder a su codigo qr a
+                    <p class="text-center">Puede acceder a su codigo Qr a
                         través del siguiente enlace <a id="urlToSeeQr" href="" target="_blank"></a>
                     </p>
                     <div class="d-flex justify-content-center w-100 align-items-center h-auto my-5">
