@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
+use Mockery\Undefined;
 
 class InvitacionesController extends Controller
 {
@@ -209,7 +210,7 @@ class InvitacionesController extends Controller
 
             $invitacion = Invitacion::where('id', $request->invitacion_id)->first();
             $invitacion->update([
-                'titulo' => $validatedData['titulo'],                
+                'titulo' => $validatedData['titulo'],
                 'texto' => $request->descripcion,
                 'tipo_menu' => $validatedData['tipoMenu'],
                 'platos_opciones' => $request->platos_opciones,
@@ -404,7 +405,6 @@ class InvitacionesController extends Controller
             'tipoMenu' => 'required | string',
             'name' => 'required | string',
             'platos' => 'required | array',
-            'reemplazar' => 'required | string | nullable',
         ]);
 
         if ($validate->fails()) {
