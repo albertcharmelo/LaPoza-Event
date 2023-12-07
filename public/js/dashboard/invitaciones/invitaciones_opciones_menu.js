@@ -187,7 +187,7 @@ function addPlateOptionsWithPlate() {
                     badgesOptions += `<a href="javascript:void(0)" class="badge badge-rounded badge-primary">${option}</a>`;
                 });
                 html += `
-                <li class="mt-3 grupoDePlatos" onclick="editarPlato('${pregunta}')">
+                <li class="mt-3 grupoDePlatos borde-negro py-3 px-2" onclick="editarPlato('${pregunta}')">
                     <h4 class="d-flex gap-2">
                         <div class="border border-primary rounded-circle d-flex justify-content-center align-items-center"
                         style="width: 24px; height: 24px;cursor:pointer">

@@ -1,8 +1,8 @@
 <!--**********************************
     Sidebar start
 ***********************************-->
-<div class="deznav">
-    <div class="deznav-scroll">
+<div class="deznav" style="background: #0f0e16ea !important">
+    <div class="deznav-scroll" style="background: #0f0e16ea !important">
         <ul class="metismenu" id="menu">
             <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="flaticon-025-dashboard"></i>

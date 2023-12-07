@@ -4,7 +4,7 @@
     }
 
     .template-card:hover {
-        background-color: #353547;
+        background-color: #f2f2f2;
         border: 1px solid #fff;
     }
 </style>
@@ -12,12 +12,12 @@
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Plantilla de Menús</h5>
+                <h3 class="modal-title">Plantilla de Menús</h3>
                 <button type="button" class="btn-close" data-bs-dismiss="modal">
                 </button>
             </div>
             <div class="modal-body">
-                <h6 class="mb-3">Toque alguna opción para obtener la plantilla del menú</h6>
+                <h3 class="mb-3">Toque alguna opción para obtener la plantilla del menú</h3>
                 <ul class="d-flex flex-column gap-4" id="listPlantillas">
 
                 </ul>

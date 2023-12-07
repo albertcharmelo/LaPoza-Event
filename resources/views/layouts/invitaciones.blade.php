@@ -35,7 +35,7 @@ $action = DzHelper::action();
     <link href="{{ asset($style) }}" rel="stylesheet" type="text/css" />
     @endforeach
     @endif
-
+    @include('elements.icons')
     {{-- Global Theme Styles (used by all pages) --}}
     @if(!empty(config('dz.public.global.css')))
     @foreach(config('dz.public.global.css') as $style)

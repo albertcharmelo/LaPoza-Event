@@ -46,8 +46,8 @@
     height: auto !important;
 }
 
-.ck.ck-editor__main > .ck-editor__editable {
-    background: #212130 !important;
+/* .ck.ck-editor__main > .ck-editor__editable {
+    background: #acacac !important;
 }
 
 .ck.ck-reset_all,
@@ -56,12 +56,12 @@
 }
 
 .ck.ck-toolbar {
-    background: #171622 !important;
-    border-color: #2e2e42 !important;
+    background: #f2f2f2 !important;
+    border-color: #c9c9c9 !important;
 }
 
 .ck.ck-editor__main > .ck-editor__editable:not(.ck-focused) {
-    border-color: #2e2e42 !important;
+    border-color: #f2f2f2 !important;
 }
 
 .ck.ck-editor__main > .ck-editor__editable.ck-focused {
@@ -69,22 +69,22 @@
 }
 
 .ck.ck-list {
-    background: #2e2e42;
+    background: #f2f2f2;
 }
 
 .ck.ck-button.ck-on,
 a.ck.ck-button.ck-on {
-    background: #2e2e42 !important;
+    background: #f2f2f2 !important;
 }
 
 .ck.ck-button:not(.ck-disabled):hover,
 a.ck.ck-button:not(.ck-disabled):hover {
-    background: #171622 !important;
+    background: #c9c9c9 !important;
 }
 
 .ck.ck-button {
-    background: #2e2e42 !important;
-}
+    background: #f2f2f2 !important;
+} */
 
 .form-control {
     font-size: 14px !important;
@@ -95,7 +95,7 @@ a.ck.ck-button:not(.ck-disabled):hover {
 }
 
 #invitacionesTable tbody tr:hover {
-    background-color: #171622 !important;
+    background-color: #c9c9c9 !important;
 }
 
 #invitacionesTable tbody tr:hover td {
@@ -120,7 +120,7 @@ a.ck.ck-button:not(.ck-disabled):hover {
 .delete-button {
     background-color: red;
     border: none;
-    color: white;    
+    color: white;
     border-radius: 205px;
     padding: 6px;
 }
@@ -128,7 +128,7 @@ a.ck.ck-button:not(.ck-disabled):hover {
 .delete-button2 {
     background-color: red;
     border: none;
-    color: white;    
+    color: white;
     border-radius: 205px;
     padding: 6px;
 }
@@ -144,7 +144,7 @@ a.ck.ck-button:not(.ck-disabled):hover {
 }
 
 .grupoDePlatos:hover {
-    background-color: #171622 !important;
+    background-color: #f2f2f2 !important;
     cursor: pointer;
 }
 
@@ -156,4 +156,8 @@ a.ck.ck-button:not(.ck-disabled):hover {
 .new-arrivals-img-contnent img {
     height: 200px !important;
     object-fit: cover;
+}
+
+.badge {
+    font-size: 1em !important;
 }

@@ -50,14 +50,34 @@ $action = DzHelper::action();
         .bg-global {
             background-color: #FD683E !important;
         }
+
+        .borde-negro {
+            border: 1px solid #b5b5cde3;
+            width: 100%;
+            min-width: 100%;
+            height: auto;
+
+        }
+
+        .body-color {
+            background-color: #f2f2f2 !important;
+        }
+
+        .line {
+            background: #f2f2f2 !important;
+        }
     </style>
+
+    @include('elements.icons')
+
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     @yield('css')
 </head>
 
-<body>
+<body class="body-color">
 
     <!--*******************
         Preloader start
@@ -84,8 +104,8 @@ $action = DzHelper::action();
         <!--**********************************
             Nav header start
         ***********************************-->
-        <div class="nav-header">
-            <a href="{!! url('/index'); !!}" class="brand-logo">
+        <div class="nav-header" style="background-color: #0f0e16ea">
+            <a href="{!! url('/'); !!}" class="brand-logo">
                 @include('elements.svg_logo')
             </a>
             <div class="nav-control">
@@ -122,10 +142,11 @@ $action = DzHelper::action();
         <!--**********************************
             Content body start
         ***********************************-->
-        <div class="content-body">
+        <div class="content-body" style="min-height: 100vh">
             <!-- row -->
             @yield('content')
-            <div id="loading" style="display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <div id="loading"
+                style="display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
                 <img src="{{ asset('images/loading.gif') }}" alt="Loading..." style="width: 350px; height: 350px;" />
                 <h5 style="text-align: center;">Cargando...</h5>
             </div>
@@ -149,9 +170,9 @@ $action = DzHelper::action();
                     <div class="circle_0 circle-1a"></div>
                     <div class="circle_0 circle-2"></div>
                     <div class="circle_0 circle-3"></div>
-                    <h6 style="padding-top: 60px;">Cargando...</h6>                    
+                    <h6 style="padding-top: 60px;">Cargando...</h6>
                 </div>
-                
+
             </div>
         </div>
         <!--**********************************

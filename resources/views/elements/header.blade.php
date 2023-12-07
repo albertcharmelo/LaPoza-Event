@@ -624,18 +624,18 @@
 <!--**********************************
     Header start
 ***********************************-->
-<div class="header">
+<div class="header" style="background-color: #171622">
 	<div class="header-content">
 		<nav class="navbar navbar-expand">
 			<div class="collapse navbar-collapse justify-content-between">
 				<div class="header-left">
-					<div class="nav-item">
+					{{-- <div class="nav-item">
 						<div class="input-group search-area">
 							<input type="text" class="form-control" placeholder="Encuentra algo aqui...">
 							<span class="input-group-text"><a href="javascript:void(0)"><i
 										class="flaticon-381-search-2"></i></a></span>
 						</div>
-					</div>
+					</div> --}}
 				</div>
 				<ul class="navbar-nav header-right">
 					<li class="nav-item" id="btn_index" style="display: none;">

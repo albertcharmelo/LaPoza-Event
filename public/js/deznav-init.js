@@ -33,7 +33,7 @@ function getUrlParams(dParam) {
 
     dezSettingsOptions = {
         typography: "opensans",
-        version: "dark",
+        version: "ligth",
         layout: "vertical",
         primary: "color_1",
         headerBg: "color_1",

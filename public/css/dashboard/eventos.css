@@ -111,11 +111,11 @@
 }
 
 #eventosTable tbody tr:hover {
-    background-color: #171622 !important;
+    background-color: #f2f2f2 !important;
 }
 
 #eventosTable tbody tr:hover td {
-    color: #fff;
+    color: black;
 }
 
 #TableResumenPlatos tbody tr {
@@ -123,11 +123,11 @@
 }
 
 #TableResumenPlatos tbody tr:hover {
-    background-color: #171622 !important;
+    background-color: #f2f2f2 !important;
 }
 
 #TableResumenPlatos tbody tr:hover td {
-    color: #fff;
+    color: black;
 }
 
 #invitadosTable tbody tr {
@@ -135,19 +135,19 @@
 }
 
 #invitadosTable tbody tr:hover {
-    background-color: #171622 !important;
+    background-color: #f2f2f2 !important;
 }
 
 #invitadosTable tbody tr:hover td {
-    color: #fff;
+    color: black;
 }
 
 #tableInvitadosByPlato tbody tr:hover {
-    background-color: #171622 !important;
+    background-color: #f2f2f2 !important;
 }
 
 #tableInvitadosByPlato tbody tr:hover td {
-    color: #fff;
+    color: black;
 }
 
 .container-fluid {
