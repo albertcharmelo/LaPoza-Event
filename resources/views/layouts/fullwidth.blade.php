@@ -40,11 +40,15 @@ $loginbackground = '';
     @include('layouts.globalCss')
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     @include('elements.icons')
-
+    <style>
+        .body-color {
+            background-color: #f2f2f2 !important;
+        }
+    </style>
 </head>
 
-<body class="vh-100">
-    <div class="authincation h-100" @if(!empty($loginbackground)) style="background-color: #171622;" @endif>
+<body class="vh-100  ">
+    <div class="authincation h-100" @if(!empty($loginbackground)) style="background-color: rgb(226, 226, 226);" @endif>
         <div class="container h-100">
             <div class="row justify-content-center h-100 align-items-center">
                 @yield('content')

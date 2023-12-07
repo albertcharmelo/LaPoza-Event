@@ -60,7 +60,7 @@ $action = DzHelper::action();
         }
 
         .body-color {
-            background-color: #f2f2f2 !important;
+            background-color: rgb(226, 226, 226) !important;
         }
 
         .line {
