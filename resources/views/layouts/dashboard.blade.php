@@ -66,6 +66,10 @@ $action = DzHelper::action();
         .line {
             background: #f2f2f2 !important;
         }
+
+        .form-control {
+            border: 1px solid #9f9c9c !important;
+        }
     </style>
 
     @include('elements.icons')

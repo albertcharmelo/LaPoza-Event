@@ -39,7 +39,7 @@ $loginbackground = '';
     <!-- Style css -->
     @include('layouts.globalCss')
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-
+    @include('elements.icons')
 
 </head>
 

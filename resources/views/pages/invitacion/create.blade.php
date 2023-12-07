@@ -60,18 +60,20 @@
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="mb-3">
-                                            <h3 for="comment" class="text-black font-w600 form-label">Documentos de la Invitación</h3>
+                                            <h3 for="comment" class="text-black font-w600 form-label">Documentos de la
+                                                Invitación</h3>
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" id="files" lang="es"
                                                     name="files[]" multiple>
-                                                <div class="row" for="files" id="listDocumentos" style="display: flex; flex-wrap: wrap;"></div>
+                                                <div class="row" for="files" id="listDocumentos"
+                                                    style="display: flex; flex-wrap: wrap;"></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div id="wizard_invitacion_pte2" class="tab-pane" role="tabpanel">
-                                <div class="row">                                    
+                                <div class="row">
                                     <div class="col-12">
                                         <div id="boxUploadMenu" style="min-height: 200px;">
                                             <label class="text-black font-w600 form-label">Imagenes del Menú</label>
@@ -81,15 +83,16 @@
                                                     name="files_menu[]" multiple>
                                                 <div class="div mb-3">
                                                     <i class="fas fa-upload"
-                                                        style="font-size: 30px !important; color:white"></i>
+                                                        style="font-size: 30px !important; color:black"></i>
                                                 </div>
-                                                <span class="text-white text-center">
+                                                <span class="text-black text-center">
                                                     Haz click aqui para cargar el menú
                                                 </span>
                                                 <p class="mt-0 p-0" id="name_menu_uploaded"></p>
                                             </div>
                                         </div>
-                                        <div class="row" id="listImagenesMenu" style="display: flex; flex-wrap: wrap;"></div>
+                                        <div class="row" id="listImagenesMenu" style="display: flex; flex-wrap: wrap;">
+                                        </div>
 
                                         <div class="col-12 mb-3 mt-3">
                                             <h3 class="text-black font-w600 form-label">Tipo de Menú</h3>
