@@ -122,13 +122,12 @@
                     <div class="profile-tab">
                         <div class="custom-tab-1">
                             <ul class="nav nav-tabs">
-                                <li class="nav-item "><a href="#my-posts" data-bs-toggle="tab"
-                                        class="nav-link show active">Invitados</a>
+                                <li class="nav-item "><a id="invitados-tab" href="#my-posts" data-bs-toggle="tab"
+                                        class="nav-link show">Invitados</a>
                                 </li>
-                                <li class="nav-item"><a href="#about-me" data-bs-toggle="tab" class="nav-link">Detalles
+                                <li class="nav-item"><a id="detalle-tab" href="#about-me" data-bs-toggle="tab" class="nav-link">Detalles
                                         del evento</a>
                                 </li>
-
                             </ul>
                             <div class="tab-content">
                                 <div id="my-posts" class="tab-pane fade active show">
@@ -184,6 +183,13 @@
                                                                 class="btn btn-primary light btn-xs mb-1">
                                                                 <i class="fa-regular fa-eye"></i>
                                                                 Ver invitación</a>
+                                                            </a>
+                                                        </li>
+                                                        <li class="post-author me-3">
+                                                            <a href="{{ route('invitaciones.edit', $evento->invitacion->id) }}"
+                                                                class="btn btn-primary light btn-xs mb-1">
+                                                                <i class="fa-regular fa-eye"></i>
+                                                                Editar Invitación
                                                             </a>
                                                         </li>
                                                         <li class="post-author me-3">
@@ -329,4 +335,15 @@
 <script src="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('vendor/datatables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/dashboard/eventosDetails.js') }}" type="text/javascript"></script>
+<script>
+    $(document).ready(function() {
+        var detalle = "{{ $detalle }}";
+        if (detalle == 'true') {            
+            $('#detalle-tab').tab('show');
+            
+        } else {            
+            $('#invitados-tab').tab('show');
+        }
+    });
+</script>
 @endsection
