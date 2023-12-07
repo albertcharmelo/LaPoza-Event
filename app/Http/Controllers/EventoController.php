@@ -30,7 +30,7 @@ class EventoController extends Controller
     {
         if (Auth::check()) {
 
-            $eventos = Evento::get()->toArray();
+            $eventos = Evento::with('invitacion')->get()->toArray();            
             $eventos = array_map(
                 function ($evento) {
                     $evento['fecha'] = date('d-m-Y', strtotime($evento['fecha']));
@@ -45,7 +45,7 @@ class EventoController extends Controller
                         },
                         0
                     );
-
+                    $evento['invitacion'] = $evento['invitacion'];
                     return $evento;
                 },
                 $eventos
@@ -60,11 +60,11 @@ class EventoController extends Controller
      * @param Evento $evento
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function details(Evento $evento)
+    public function details(Evento $evento, $detalle)
     {
         $page_title = $evento->nombre . ' - Detalles';
         $evento->ingreso_bruto = '€' . number_format($evento->ingreso_bruto, 0, ',', '.');
-        return view('pages.eventos.show', compact('evento', 'page_title'));
+        return view('pages.eventos.show', compact('evento', 'page_title', 'detalle'));
     }
 
     public function changeStatus(Request $request)
