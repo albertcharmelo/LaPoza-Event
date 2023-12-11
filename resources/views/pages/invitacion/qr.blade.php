@@ -18,9 +18,9 @@
         <div class="card-body">
             <div class="qr-chooise px-5 py-3" id="QrCodeBox">
                 <div class="d-flex flex-column items-center justify-center w-100">
-                    <h1 class="text-center">Invitacion de {{ $invitado->nombre }}
+                    <h1 class="text-center">Invitación de {{ $invitado->nombre }}
                     </h1>
-                    <h6 class="text-muted text-center">Con el siguiente codigoQr podra
+                    <h6 class="text-muted text-center">Con el siguiente código Qr podra
                         confirmar su asistencia el día evento. Además de con este poder consumir en el evento.</h6>
                     <h1 class="mb-2 text-black text-center" style="font-size: 3rem !important">{{
                         $invitado->invitacion->titulo }}
