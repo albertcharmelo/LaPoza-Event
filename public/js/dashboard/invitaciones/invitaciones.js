@@ -26,8 +26,14 @@ const telefono_org = IMask(telefono_organizador, maskInputOptions);
 
 $(document).ready(function () {
     // SmartWizard initialize
-    var smartWizard = $("#smartwizard").smartWizard();
-
+    var smartWizard = $("#smartwizard").smartWizard(
+        { keyboardSettings: { keyNavigation: false },
+        lang: {  // Variables de lenguaje
+            next: 'Siguiente', 
+            previous: 'Anterior'  // Cambiar "Previous" a "Anterior"
+        }
+    });
+    
     // Go to step 1
     smartWizard.smartWizard("goToStep", 0);
 
