@@ -211,9 +211,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal-footer my-4">
-                                    {{-- <button type="button" id="btnCerrar"
-                                        class="btn btn-danger light">Cerrar</button> --}}
+                                <div class="modal-footer border-0 mt-5 float-right">
                                     <button type="button" id="btnGuardar" class="btn btn-primary">Guardar</button>
                                 </div>
                             </div>
@@ -243,11 +241,4 @@
 <script src="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/dashboard/invitaciones/invitaciones.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/dashboard/invitaciones/invitaciones_opciones_menu.js') }}" type="text/javascript"></script>
-
-<script>
-    $(document).ready(function() {
-            // SmartWizard initialize
-            $('#smartwizard').smartWizard();
-        });
-</script>
 @endsection
