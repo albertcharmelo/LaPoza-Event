@@ -188,7 +188,7 @@
                                                         <li class="post-author me-3">
                                                             <a href="{{ route('invitaciones.edit', $evento->invitacion->id) }}"
                                                                 class="btn btn-primary light btn-xs mb-1">
-                                                                <i class="fa-regular fa-eye"></i>
+                                                                <i class="fa-regular fa-edit"></i>
                                                                 Editar Invitación
                                                             </a>
                                                         </li>
