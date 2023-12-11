@@ -110,57 +110,21 @@
                 @endif
                 @endforeach
             </div>
+                
             <div class="plates-chooise" id="platosBox">
-                @if ($invitacion->tipo_menu == 'Menu a Elegir con Precio' ||
-                $invitacion->tipo_menu == 'Menu a Elegir sin Precio')
-                <h1>Selecciona los platos del menú</h1>               
-                <div class="row" style="background-color: white;">
-                    @php
-                    $alternating = 1;
-                    @endphp
-                    @foreach ($invitacion->platos_opciones as $key => $opciones)
-                    <div class="my-2 col-12  p-2 platos_select">
-                        @foreach ($opciones as $pregunta => $plato)
-                        <div class="border border-primary p-4 rounded ">
-
-                            <h2 class="form-label my-3 plato_question">{{ $pregunta }}</h2>
-
-                            <div class="d-flex flex-column gap-3 mb-3 opcion_plato_box">
-                                @foreach ($plato as $plato_opcion)
-                                <div onclick="selectPlato(event)" style="cursor: pointer"
-                                    class="d-flex flex-wrap gap-3 align-items-center py-2 px-1 rounded {{ $alternating == 1 ? 'alternating_1' : 'alternating_2' }}">
-                                    <input type="radio" name="{{ $pregunta }}" class="form-check-input opcion_plato"
-                                        value="{{ $plato_opcion }}" id="">
-                                    <h4 onclick="selectPlatoH4(event)" class="text-center mb-0">{{ $plato_opcion }}</h4>
-                                </div>
-                                @php
-                                $alternating = $alternating == 1 ? 2 : 1;
-                                @endphp
-                                @endforeach
-                            </div>
-                        </div>
-
-                        @endforeach
-
-                    </div>
-                    @endforeach
-
-                </div>                
-                @endif
-
                 @php
                     $menuImages = $invitacion->imagenes->filter(function ($imagen) {
                         return $imagen->pivot->tipo_imagen == 'menu';
                     });
                 @endphp
                 @if ($menuImages->count() > 0)  
-                    <h2>Menu a servir dentro del Evento</h2>
+                    <h2>Menú a servir dentro del Evento</h2>
                 @endif                
                 @foreach ($invitacion->imagenes as $imagen)
                     @if ($imagen->pivot->tipo_imagen == 'menu')
                         @if ($imagen->formato == 'application/pdf')
                             <iframe src="data:application/pdf;base64,{{ $imagen->imagen_base64 }}" frameborder="0"
-                            class="mb-3 rounded"></iframe>
+                                class="mb-3 rounded"></iframe>
                         @else
                             <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}" alt="Imagen del evento"
                             class="img-fluid mb-3 w-100 rounded">
@@ -168,7 +132,39 @@
                     @endif
                 @endforeach
 
+                @if ($invitacion->tipo_menu == 'Menu a Elegir con Precio' ||
+                    $invitacion->tipo_menu == 'Menu a Elegir sin Precio')
+                    <h1>Selecciona los platos del menú</h1>               
+                    <div class="row" style="background-color: white;">
+                        @php
+                            $alternating = 1;
+                        @endphp
+                        @foreach ($invitacion->platos_opciones as $key => $opciones)
+                            <div class="my-2 col-12  p-2 platos_select">
+                                @foreach ($opciones as $pregunta => $plato)
+                                    <div class="border border-primary p-4 rounded ">
+                                        <h2 class="form-label my-3 plato_question">{{ $pregunta }}</h2>
+                                        <div class="d-flex flex-column gap-3 mb-3 opcion_plato_box">
+                                            @foreach ($plato as $plato_opcion)
+                                                <div onclick="selectPlato(event)" style="cursor: pointer"
+                                                    class="d-flex flex-wrap gap-3 align-items-center py-2 px-1 rounded {{ $alternating == 1 ? 'alternating_1' : 'alternating_2' }}">
+                                                    <input type="radio" name="{{ $pregunta }}" class="form-check-input opcion_plato"
+                                                        value="{{ $plato_opcion }}" id="">
+                                                    <h4 onclick="selectPlatoH4(event)" class="text-center mb-0">{{ $plato_opcion }}</h4>
+                                                </div>
+                                                @php
+                                                $alternating = $alternating == 1 ? 2 : 1;
+                                                @endphp
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endforeach
+                    </div>                
+                @endif
             </div>
+
             <div class="datos-chooise" id="datosBox">
                 <h1>Datos de la invitación</h1>
                 <h4 class="text-muted">A continuación complete los datos personales requeridos para confirmar su
@@ -216,11 +212,11 @@
             </div>
             <div class="qr-chooise px-5 py-3" id="QrCodeBox">
                 <div class="d-flex flex-column items-center justify-center w-100">
-                    <h1 class="text-center">Invitacion confirmada con éxito
+                    <h1 class="text-center">Invitación confirmada con éxito
                     </h1>
-                    <p class="text-muted text-center">Con el siguiente codigoQr podra
+                    <p class="text-muted text-center">Con el siguiente código Qr podrá
                         confirmar su asistencia el día evento. Además de con este poder consumir en el evento.</p>
-                    <p class="text-center">Puede acceder a su codigo qr a
+                    <p class="text-center">Puede acceder a su código qr a
                         través del siguiente enlace <a id="urlToSeeQr" href="" target="_blank"></a>
                     </p>
                     <div class="d-flex justify-content-center w-100 align-items-center h-auto my-5">
