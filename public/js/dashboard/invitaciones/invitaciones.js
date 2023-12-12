@@ -13,6 +13,8 @@ let nombre_org = $("#nombre_org");
 let email_org = $("#email_org");
 let telefono_organizador = document.getElementById("telefono_org");
 let fecha_evento = $("#fecha_evento");
+let input_file_menu = document.getElementById("input_file_menu");
+let name_menu_uploaded = document.getElementById("name_menu_uploaded");
 
 let arrayNombresImagenesMenu = [];
 let arrayFilesImagenesMenu = [];
@@ -26,7 +28,14 @@ const telefono_org = IMask(telefono_organizador, maskInputOptions);
 
 $(document).ready(function () {
     // SmartWizard initialize
-    var smartWizard = $("#smartwizard").smartWizard();
+    var smartWizard = $("#smartwizard").smartWizard({
+        keyboardSettings: { keyNavigation: false },
+        lang: {
+            // Variables de lenguaje
+            next: "Siguiente",
+            previous: "Anterior", // Cambiar "Previous" a "Anterior"
+        },
+    });
 
     // Go to step 1
     smartWizard.smartWizard("goToStep", 0);
@@ -59,7 +68,8 @@ $(document).ready(function () {
                     tipoMenu.val() == "Menu Fijo sin Precio"
                 ) {
                     if (
-                        document.querySelector("#input_file_menu").files.length == 0 
+                        document.querySelector("#input_file_menu").files
+                            .length == 0
                     ) {
                         SwalShowMessage(
                             "warning",
@@ -93,7 +103,7 @@ $(document).ready(function () {
             }
         }
     );
-    iniciarDatos();    
+    iniciarDatos();
 });
 
 function iniciarDatos() {
@@ -143,8 +153,7 @@ function iniciarDatos() {
             }
         });
 
-        tipoMenu.val(invitacion_edit.tipo_menu);        
-        input_file_menu.value = "";
+        tipoMenu.val(invitacion_edit.tipo_menu);
         if (
             tipoMenu.val() == "Menu a Elegir con Precio" ||
             tipoMenu.val() == "Menu a Elegir sin Precio"
@@ -209,6 +218,9 @@ function mostrarDocumentos() {
 
 function mostrarImagenesMenu() {
     listImagenesMenu.html("");
+    name_menu_uploaded.innerHTML = "";
+    input_file_menu.files = null;
+    let dt = new DataTransfer();
     arrayFilesImagenesMenu.forEach(function (imagen, i) {
         let base64Data = imagen.imagen_base64;
         let formato = imagen.formato;
@@ -249,7 +261,13 @@ function mostrarImagenesMenu() {
                 </div>
             </div>`;
         listImagenesMenu.append(html);
+        name_menu_uploaded.innerHTML = '<br><span class="badge badge-pill badge-primary">' +
+        imagen.nombre + "</span>";
+        if (imagen) {
+            dt.items.add(new File([formattedData], imagen.nombre, { type: imagen.formato }));
+        }
     });
+    input_file_menu.files = dt.files;
 }
 
 function setPrefix(formato) {
@@ -532,7 +550,7 @@ btnGuardar.on("click", function () {
                     iniciarDatos();
                     $("#smartwizard").smartWizard("goToStep", 0);
                     if (data.status == "success") {
-                        console.log('data:',data);
+                        console.log("data:", data);
                         Swal.fire({
                             type: "success",
                             title: "¡Éxito!",
@@ -542,7 +560,8 @@ btnGuardar.on("click", function () {
                             allowOutsideClick: false,
                         }).then((result) => {
                             if (result.value) {
-                                window.location.href = "/eventos/" + data.data.evento_id + "/true";
+                                window.location.href =
+                                    "/eventos/" + data.data.evento_id + "/true";
                             }
                         });
                     }
@@ -770,11 +789,11 @@ async function appendDocumentoToFormData(documento, data, tipo_imagen) {
     return data;
 }
 
-tipoMenu.on("change", function () {    
+tipoMenu.on("change", function () {
     platos_with_options = [];
-    listResultsPlates.html("");    
+    listResultsPlates.html("");
     opciones_de_platos = [];
-    
+
     if (
         tipoMenu.val() == "Menu a Elegir con Precio" ||
         tipoMenu.val() == "Menu a Elegir sin Precio"
