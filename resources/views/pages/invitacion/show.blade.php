@@ -76,7 +76,8 @@
     <div class="card">
         <div class="card-body">
             <div class="post-details" id="postBox">
-                <h1 class="mb-2 text-black" style="font-size: 3rem !important">{{ $invitacion->titulo }}</h1>
+                <h1 class="mb-2 text-black" style="font-size: 3rem !important;font-family: 'Roboto', sans-serif;">{{
+                    $invitacion->titulo }}</h1>
                 <ul class="mb-0 post-meta d-flex flex-wrap">
                     <li class="post-author me-3">
                         <h4>Por {{ $invitacion->evento->nombre }}</h4>
