@@ -44,8 +44,14 @@
             beforeSend: function () {
                 showLoader();
             },
-            complete: function () {
+            complete: function (data) {
                 hideLoader();
+                var data = data.responseJSON;
+                if (data.length > 0) {
+                    data.forEach(function (element) {
+                        showMobile_device_table(element);
+                    });
+                }
             },
         },
         columns: [
@@ -63,6 +69,22 @@
             },
         ],
     });
+
+    function showMobile_device_table(element) {
+        let html = `<div class="card-movil">
+                        <div class="card-body" style="padding: 0.5rem !important;">
+                            <div class="row">                    
+                                <div class="col-6">
+                                    <p class="card-text mb-0"><strong>Nombre:</strong> ${element.nombre}</p>
+                                    <p class="card-text mb-0"><strong>Teléfono:</strong> ${element.telefono}</p>
+                                    <p class="card-text mb-0"><strong>Número de comensales:</strong> ${element.numero_personas}</p>
+                                    <p class="card-text mb-0"><strong>Asistencia confirmada:</strong> ${element.asistencia_confirmada}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+        $("#mobile_device_table").append(html);
+    }
 
     table.on("click", "tbody tr", function () {
         var $row = table.row(this).nodes().to$();
