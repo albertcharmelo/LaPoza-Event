@@ -169,3 +169,81 @@
 table.dataTable thead th {
     text-transform: none;
 }
+
+#TableResumenPlatos {
+    min-width: 845px;
+    width: 100% !important;
+}
+
+/* Estilos para pantallas de tamaño medio */
+@media screen and (max-width: 992px) {
+    #TableResumenPlatos {
+        min-width: 300px !important;
+    }
+}
+
+#tableInvitadosByPlato {
+    min-width: 845px;
+    width: 100% !important;
+}
+
+/* Estilos para pantallas de tamaño medio */
+@media screen and (max-width: 992px) {
+    #tableInvitadosByPlato {
+        min-width: 300px !important;
+    }
+}
+
+#invitadosTable {
+    min-width: 845px;
+    width: 100% !important;
+}
+
+/* Estilos para pantallas de tamaño medio */
+@media screen and (max-width: 992px) {
+    #invitadosTable {
+        min-width: 600px !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #invitadosTable {
+        min-width: 300px !important;
+    }
+}
+
+.d-none {
+    display: none !important;
+}
+
+@media (min-width: 992px) {
+    .d-lg-block {
+        display: block !important;
+    }
+    .d-lg-none {
+        display: none !important;
+    }
+}
+
+.card-movil {
+    display: flex;
+    flex-direction: row;
+    border: 2px solid #e1e1e1;
+    border-radius: 5px;
+    margin-bottom: 3px;
+}
+
+.card-movil .col-6 {
+    width: 50%;
+}
+
+/* Estilos para pantallas pequeñas (teléfonos móviles, etc.) */
+@media screen and (max-width: 480px) {
+    .card-movil {
+        flex-direction: column;
+    }
+
+    .card-movil .col-6 {
+        width: 100%;
+    }
+}
