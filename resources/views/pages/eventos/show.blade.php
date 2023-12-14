@@ -136,14 +136,14 @@
                                         <div class="">
                                             <h4 class="card-title">Todos los invitados</h4>
                                         </div>
-                                        <div class="card-body p-0">
+                                        <div class="card-body d-none d-lg-block p-0">
                                             <div class="table-responsive">
                                                 <table id="invitadosTable" class="display" style="min-width: 845px">
                                                     <thead>
                                                         <tr>
                                                             <th>Nombre</th>
                                                             <th>Teléfono</th>
-                                                            <th class="text-center">N° Comensales</th>
+                                                            <th class="text-center">N° Comensales</th>                                                            
                                                             <th class="text-center">Asistencia</th>
                                                         </tr>
                                                     </thead>
@@ -154,7 +154,7 @@
                                                         <tr>
                                                             <th>Nombre</th>
                                                             <th>Teléfono</th>
-                                                            <th class="text-center">N° Comensales</th>
+                                                            <th class="text-center">N° Comensales</th>                                                            
                                                             <th class="text-center">Asistencia</th>
                                                         </tr>
                                                     </tfoot>
@@ -162,6 +162,13 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="d-lg-none p-0 pl-0">
+                                        <div class="col-12 p-0" id="mobile_device_table">
+                                        </div>
+                                    </div>
+
+                                    
                                 </div>
                                 <div id="about-me" class="tab-pane fade">
                                     <div class="col-xl-12">
@@ -288,8 +295,7 @@
                                                         <h4 class="text-primary mb-2">Resumen de platos</h4>
                                                         <div class="card-body p-0">
                                                             <div class="table-responsive">
-                                                                <table id="TableResumenPlatos" class="display"
-                                                                    style="min-width: 845px; width: 100% !important;">
+                                                                <table id="TableResumenPlatos" class="display">
                                                                     <thead>
                                                                         <tr>
                                                                             <th with="90%">Descripción del plato</th>
