@@ -48,8 +48,8 @@
         <ul>
             @foreach ($menu['platos'] as $plato)
             <li class="plato">
-                <p><span class="">Nombre</span>:{{ $plato['plato'] }}</p>
-                <p><span class="">Canrtidad</span>: {{ $plato['cantidad'] }}</p>
+                <p><span class="">Nombre</span>: {{ $plato['plato'] }}</p>
+                <p><span class="">Cantidad</span>: {{ $plato['cantidad'] }}</p>
             </li>
             @endforeach
         </ul>
