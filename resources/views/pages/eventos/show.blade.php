@@ -295,9 +295,9 @@
                                                     <div class="mt-5 mb-5" id="resumenPlatos">
                                                         <h4 class="text-primary mb-2">Resumen de platos</h4>
                                                         <a href="{{ route('exportar.platos',$evento->id) }}"
-                                                            class="btn btn-sm btn-success"><i
-                                                                class="fa-regular fa-file-excel"></i> Exportar
-                                                            Excel</a>
+                                                            class="btn btn-sm btn-primary mb-2"><i
+                                                                class="fa-solid fa-file-pdf"></i> Exportar
+                                                            Platos en pdf</a>
                                                         <div class="card-body p-0">
                                                             <div class="table-responsive">
                                                                 <table id="TableResumenPlatos" class="display">
