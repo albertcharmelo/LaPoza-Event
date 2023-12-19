@@ -101,6 +101,7 @@ $(document).ready(function () {
                     }
                 }
             }
+            scrollWindowsTop();
         }
     );
     iniciarDatos();
@@ -261,10 +262,16 @@ function mostrarImagenesMenu() {
                 </div>
             </div>`;
         listImagenesMenu.append(html);
-        name_menu_uploaded.innerHTML = '<br><span class="badge badge-pill badge-primary">' +
-        imagen.nombre + "</span>";
+        name_menu_uploaded.innerHTML =
+            '<br><span class="badge badge-pill badge-primary">' +
+            imagen.nombre +
+            "</span>";
         if (imagen) {
-            dt.items.add(new File([formattedData], imagen.nombre, { type: imagen.formato }));
+            dt.items.add(
+                new File([formattedData], imagen.nombre, {
+                    type: imagen.formato,
+                })
+            );
         }
     });
     input_file_menu.files = dt.files;

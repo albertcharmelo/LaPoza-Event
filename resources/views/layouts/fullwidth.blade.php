@@ -80,6 +80,7 @@ $loginbackground = '';
     <script src="{{ asset($script) }}" type="text/javascript"></script>
     @endforeach
     @endif
+    <script src="{{ asset('js/utils.js') }}"></script>
 
     @yield('scripts')
 

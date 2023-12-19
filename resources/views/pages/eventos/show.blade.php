@@ -125,7 +125,8 @@
                                 <li class="nav-item "><a id="invitados-tab" href="#my-posts" data-bs-toggle="tab"
                                         class="nav-link show">Invitados</a>
                                 </li>
-                                <li class="nav-item"><a id="detalle-tab" href="#about-me" data-bs-toggle="tab" class="nav-link">Detalles
+                                <li class="nav-item"><a id="detalle-tab" href="#about-me" data-bs-toggle="tab"
+                                        class="nav-link">Detalles
                                         del evento</a>
                                 </li>
                             </ul>
@@ -143,7 +144,7 @@
                                                         <tr>
                                                             <th>Nombre</th>
                                                             <th>Teléfono</th>
-                                                            <th class="text-center">N° Comensales</th>                                                            
+                                                            <th class="text-center">N° Comensales</th>
                                                             <th class="text-center">Asistencia</th>
                                                         </tr>
                                                     </thead>
@@ -154,7 +155,7 @@
                                                         <tr>
                                                             <th>Nombre</th>
                                                             <th>Teléfono</th>
-                                                            <th class="text-center">N° Comensales</th>                                                            
+                                                            <th class="text-center">N° Comensales</th>
                                                             <th class="text-center">Asistencia</th>
                                                         </tr>
                                                     </tfoot>
@@ -168,7 +169,7 @@
                                         </div>
                                     </div>
 
-                                    
+
                                 </div>
                                 <div id="about-me" class="tab-pane fade">
                                     <div class="col-xl-12">
@@ -293,6 +294,10 @@
                                                     </div>
                                                     <div class="mt-5 mb-5" id="resumenPlatos">
                                                         <h4 class="text-primary mb-2">Resumen de platos</h4>
+                                                        <a href="{{ route('exportar.platos',$evento->id) }}"
+                                                            class="btn btn-sm btn-success"><i
+                                                                class="fa-regular fa-file-excel"></i> Exportar
+                                                            Excel</a>
                                                         <div class="card-body p-0">
                                                             <div class="table-responsive">
                                                                 <table id="TableResumenPlatos" class="display">

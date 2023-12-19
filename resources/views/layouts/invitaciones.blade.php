@@ -166,6 +166,7 @@ $action = DzHelper::action();
     @endforeach
     @endif
     <script src="{{ asset('js/deznav-init-ligth.js') }}"></script>
+    <script src="{{ asset('js/utils.js') }}"></script>
     @yield('scripts')
 </body>
 
