@@ -10,6 +10,10 @@
 
     }
 
+    .titulo:first-letter {
+        text-transform: capitalize;
+    }
+
     .stack-plato {
         padding: 10px;
         margin: 10px;
