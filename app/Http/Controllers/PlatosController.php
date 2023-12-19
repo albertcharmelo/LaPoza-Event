@@ -44,7 +44,9 @@ class PlatosController extends Controller
         })->values();
 
         // agrupar platos por titulo 
-        $platos = collect($platos)->groupBy('titulo')->map(function ($row) {
+        $platos = collect($platos)->groupBy(function ($row) {
+            return strtolower($row['titulo']);
+        })->map(function ($row) {
             return [
                 'titulo' => $row[0]['titulo'],
                 'platos' => $row,
