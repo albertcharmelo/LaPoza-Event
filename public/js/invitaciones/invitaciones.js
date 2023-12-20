@@ -6,6 +6,7 @@ const QrCodeBox = $("#QrCodeBox");
 const qrImageBase64 = $("#qrImageBase64"); // img tag
 const urlToSeeQr = $("#urlToSeeQr"); // a tag
 const BtnNext = $("#BtnNext");
+const datosSonRequeridos = $("#datos_requeridos");
 let telefono = document.getElementById("telefono");
 let patos_seleccionados = [];
 let currentStep = 1;
@@ -86,11 +87,23 @@ const enviarInforamcion = async (e) => {
 
     // verificar que no existan campos vacios
     const { nombre, telefono, invitados } = data;
-    if (!nombre || !telefono || !invitados) {
+    if (
+        (!nombre || !telefono || !invitados) &&
+        datosSonRequeridos.val() == "1"
+    ) {
         SwalShowMessage(
             "warning",
             "¡Advertencia!",
-            "Debe llenar los campos de nombre, teléfono y numero invitados"
+            "Debe llenar los campos de nombre y teléfono"
+        );
+        return;
+    }
+
+    if (datosSonRequeridos.val() != "1" && !nombre) {
+        SwalShowMessage(
+            "warning",
+            "¡Advertencia!",
+            "Debe llenar el campo de nombre"
         );
         return;
     }
@@ -120,6 +133,7 @@ const enviarInforamcion = async (e) => {
             await datosBox.hide("fast");
             mostrarQrCode(dataResponse);
             await QrCodeBox.show("slow");
+            scrollWindowsTop();
             currentStep++;
         }
     } catch (error) {
@@ -140,7 +154,7 @@ const nextStep = async () => {
             await platosBox.show("slow");
             currentStep++;
             BtnNext.text("Acepto");
-
+            scrollWindowsTop();
             break;
         case 2:
             const platos = verificarPlatos();
@@ -150,11 +164,14 @@ const nextStep = async () => {
                 currentStep++;
                 BtnNext.text("Enviar");
             }
+            scrollWindowsTop();
             break;
         case 3:
             datosFormulario.submit();
+
             break;
         default:
+            scrollWindowsTop();
             break;
     }
 };

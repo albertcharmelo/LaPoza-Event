@@ -73,6 +73,8 @@ Route::prefix('/invitaciones')->group(function () {
     Route::post('/agregarDocumento', [InvitacionesController::class, 'agregarDocumento'])->middleware('auth');
     Route::post('/updateImagenMenu', [InvitacionesController::class, 'updateImagenMenu'])->middleware('auth');
     Route::post('/enviarInvitacionMail', [InvitacionesController::class, 'enviarInvitacionMail'])->middleware('auth');
+
+    Route::get('/organizador/{invitacion}', [InvitacionesController::class, 'organizador'])->middleware('auth')->name('invitaciones.organizador');
 });
 
 /* ------------------------------------------- PLATOS ------------------------------------------- */

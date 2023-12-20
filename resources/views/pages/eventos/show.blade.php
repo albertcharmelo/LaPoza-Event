@@ -251,7 +251,7 @@
                                                             id="reply-title">Datos del Organizador </h4>
                                                         <form class="comment-form" id="commentform" method="post">
                                                             <div class="row">
-                                                                <div class=" col-12 col-lg-4">
+                                                                <div class=" col-12 col-lg-6">
                                                                     <div class="mb-3">
                                                                         <label for="author"
                                                                             class="text-black font-w600 form-label">Nombre
@@ -263,7 +263,7 @@
                                                                             id="author">
                                                                     </div>
                                                                 </div>
-                                                                <div class=" col-12 col-lg-4">
+                                                                <div class=" col-12 col-lg-6">
                                                                     <div class="mb-3">
                                                                         <label for="email"
                                                                             class="text-black font-w600 form-label">Email
@@ -275,7 +275,7 @@
                                                                             id="email">
                                                                     </div>
                                                                 </div>
-                                                                <div class=" col-12 col-lg-4">
+                                                                <div class=" col-12 col-lg-6">
                                                                     <div class="mb-3">
                                                                         <label for="email"
                                                                             class="text-black font-w600 form-label">Teléfono
@@ -285,6 +285,21 @@
                                                                             value="{{ $evento->telefono_organizador }}"
                                                                             placeholder="Teléfono" readonly
                                                                             name="telefono" id="telefono">
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class=" col-12 col-lg-6">
+                                                                    <div class="mb-3">
+                                                                        <label for="email"
+                                                                            class="text-black font-w600 form-label">Datos
+                                                                            personales requeridos
+
+                                                                        </label>
+                                                                        <input type="text" class="form-control"
+                                                                            value="{{ $evento->invitacion->datos_requeridos ? 'Si, Solicitar datos de forma obligatoria' : 'No, Los datos no son un campo obligatorio' }}"
+                                                                            placeholder="Los datos son requeridos?"
+                                                                            readonly name="datos_requeridos"
+                                                                            id="datos_requeridos">
                                                                     </div>
                                                                 </div>
 

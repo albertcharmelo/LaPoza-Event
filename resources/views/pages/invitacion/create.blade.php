@@ -7,7 +7,7 @@
 @section('content')
 @include('pages.invitacion.modalPlantillasInvitacion')
 @include('pages.invitacion.modalSavePlantilla')
-<div class="container-fluid p-3">   
+<div class="container-fluid p-3">
     <div class="row">
         <div class="col-xl-12 col-xxl-12">
             <div class="card">
@@ -174,8 +174,8 @@
                             </div>
                             <div id="wizard_invitacion_pte3" class="tab-pane" role="tabpanel">
                                 <div class="row">
-                                    <div class="row col-12 mb-5">
-                                        <div class="col-12 col-md-6">
+                                    <div class="row col-12 mb-2 mb-lg-3">
+                                        <div class="col-12 col-md-6 mb-2 mb-lg-0">
                                             <div class="form-group">
                                                 <label class="text-black font-w600 form-label" for="nombre_org">Nombre
                                                     del organizador</label>
@@ -183,7 +183,7 @@
                                                     name="nombre_org" placeholder="introduzca el nombre aquí" required>
                                             </div>
                                         </div>
-                                        <div class="col-12 col-md-6">
+                                        <div class="col-12 col-md-6 mb-2 mb-lg-0">
                                             <div class="form-group">
                                                 <label class="text-black font-w600 form-label" for="email_org">Email
                                                     del organizador</label>
@@ -193,7 +193,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-12 col-md-6">
+                                        <div class="col-12 col-md-4 mb-2 mb-lg-0">
                                             <div class="form-group">
                                                 <label class="text-black font-w600 form-label"
                                                     for="telefon_org">Teléfono del organizador</label>
@@ -201,7 +201,7 @@
                                                     name="telefono_org" placeholder="introduzca el teléfono quí">
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-12 col-md-4 mb-2 mb-lg-0">
                                             <div class="form-group">
                                                 <label class="text-black font-w600 form-label" for="fecha_evento">Fecha
                                                     del Evento</label>
@@ -209,7 +209,19 @@
                                                     name="fecha_evento" placeholder="introduzca la fecha del evento">
                                             </div>
                                         </div>
+                                        <div class="col-12 col-md-4 mb-2 mb-lg-0">
+                                            <div class="form-group">
+                                                <label class="text-black font-w600 form-label"
+                                                    for="telefon_org">Solicitar datos a los invitados?</label>
+                                                <select class="form-control" type="text" id="datos_requeridos"
+                                                    name="datos_requeridos">
+                                                    <option value="1">Si, Solicitar datos de forma obligatoria</option>
+                                                    <option value="0">No, Los datos no son un campo obligatorio</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
+
                                 </div>
                                 <div class="modal-footer border-0 mt-5 float-right">
                                     <button type="button" id="btnGuardar" class="btn btn-primary">Guardar</button>

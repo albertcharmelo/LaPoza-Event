@@ -11,6 +11,7 @@ let arrayImagenesFiles = [];
 let filesArray = [];
 let nombre_org = $("#nombre_org");
 let email_org = $("#email_org");
+let datos_requeridos = $("#datos_requeridos");
 let telefono_organizador = document.getElementById("telefono_org");
 let fecha_evento = $("#fecha_evento");
 let input_file_menu = document.getElementById("input_file_menu");
@@ -527,7 +528,7 @@ btnGuardar.on("click", function () {
         data.append("email_org", email_org.val());
         data.append("telefono_org", telefono_org.value);
         data.append("fecha_evento", fecha_evento.val());
-
+        data.append("datos_requeridos", datos_requeridos.val());
         let URL = "/invitaciones/agregarInvitacion";
         if (invitacion_edit != null) {
             URL = "/invitaciones/actualizarInvitacion";

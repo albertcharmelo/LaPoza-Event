@@ -11,16 +11,33 @@ class InvitadoController extends Controller
 {
     public function create(Request $request)
     {
+        $telefono = '';
+        if ($request->datos_requeridos == 1 || $request->datos_requeridos == 'true' || $request->datos_requeridos == '1') {
+            $validation = Validator::make($request->all(), [
+                'datos_requeridos' => 'required | boolean',
+                'nombre' =>  ' required | string',
+                'telefono' => 'required |string',
+                'invitados' => 'required | integer | min:1',
+                'evento_id' => 'required | string',
+                'invitacion_id' => 'required | string',
+                'platos' => '  array',
+            ]);
 
-        $validation = Validator::make($request->all(), [
-            'nombre' => 'required | string',
-            'telefono' => 'required |string',
-            'invitados' => 'required | integer | min:1',
-            'evento_id' => 'required | string',
-            'invitacion_id' => 'required | string',
-            'platos' => '  array',
+            $telefono = $request->telefono;
+        } else {
+            $validation = Validator::make($request->all(), [
+                'datos_requeridos' => 'required | boolean',
+                'nombre' =>  ' required | string',
+                'invitados' => 'required | integer | min:1',
+                'evento_id' => 'required | string',
+                'invitacion_id' => 'required | string',
+                'platos' => '  array',
+            ]);
 
-        ]);
+            $telefono = 'No disponible';
+        }
+
+
 
 
         if ($validation->fails()) {
@@ -32,11 +49,12 @@ class InvitadoController extends Controller
         $platos_elegidos  = json_encode($request->platos);
 
 
+
         $invitado = Invitado::create([
             'nombre' => $request->nombre,
             'email' => $request->email,
             'nif' => '30798427',
-            'telefono' => $request->telefono,
+            'telefono' => $telefono,
             'numero_personas' => $request->invitados,
             'observaciones' => $request->observaciones,
             'evento_id' => $request->evento_id,

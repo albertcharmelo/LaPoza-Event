@@ -21,6 +21,7 @@ class Invitacion extends Model
         'platos_opciones',
         'evento_id',
         'creado_por',
+        'datos_requeridos',
         'created_at',
         'updated_at',
     ];

@@ -76,7 +76,8 @@ class InvitacionesController extends Controller
                 'titulo' => 'required',
                 'tipoMenu' => 'required',
                 'nombre_org' => 'required',
-                'email_org' => 'required'
+                'email_org' => 'required',
+                'datos_requeridos => required | integer | min:0 | max:1',
             ]);
 
             $creado_por = auth()->user()->id;
@@ -98,6 +99,7 @@ class InvitacionesController extends Controller
                 'platos_opciones' => $request->platos_opciones,
                 'creado_por' => $creado_por,
                 'evento_id' => $evento->id,
+                'datos_requeridos' => $request->datos_requeridos,
             ]);
 
             $invitacion_imagenes = [];
@@ -591,5 +593,12 @@ class InvitacionesController extends Controller
             'message' => 'Invitacion enviada correctamente',
             'status' => 'success'
         ], 201);
+    }
+
+    public static function organizador(Invitacion $invitacion)
+    {
+        $page_title = $invitacion->titulo;
+        $invitacion->platos_opciones = json_decode($invitacion->platos_opciones);
+        return view('pages.invitacion.organizador', compact('invitacion', 'page_title'));
     }
 }
