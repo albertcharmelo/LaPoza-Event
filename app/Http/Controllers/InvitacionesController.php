@@ -204,7 +204,8 @@ class InvitacionesController extends Controller
                 'tipoMenu' => 'required',
                 'nombre_org' => 'required',
                 'email_org' => 'required',
-                'invitacion_id' => 'required | string'
+                'invitacion_id' => 'required | string',
+                'datos_requeridos => required | integer | min:0 | max:1'
             ]);
             $creado_por = auth()->user()->id;
 
@@ -216,6 +217,7 @@ class InvitacionesController extends Controller
                 'texto' => $request->descripcion,
                 'tipo_menu' => $validatedData['tipoMenu'],
                 'platos_opciones' => $request->platos_opciones,
+                'datos_requeridos' => $request->datos_requeridos,
                 'creado_por' => $creado_por,
             ]);
 
