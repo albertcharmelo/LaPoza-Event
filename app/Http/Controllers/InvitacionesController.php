@@ -108,13 +108,18 @@ class InvitacionesController extends Controller
                     $nombre = $file['name'];
                     $formato = $file['type'];
                     $size = $file['size'];
-                    $imagen_base64 = substr($file['base64'], strpos($file['base64'], ",") + 1);
+                    $url = $file['url'];
+                    $imagen_base64 = "";
+                    if ($url == null) {
+                        $imagen_base64 = substr($file['base64'], strpos($file['base64'], ",") + 1);
+                    }                   
 
                     $imagen = Imagen::create([
                         'nombre' => $nombre,
                         'formato' => $formato,
                         'size' => $size,
                         'imagen_base64' => $imagen_base64,
+                        'url' => $url,
                         'creado_por' => $creado_por,
                     ]);
                     $invitacion_imagenes[] = [
@@ -134,13 +139,17 @@ class InvitacionesController extends Controller
                     $nombre = $file['name'];
                     $formato = $file['type'];
                     $size = $file['size'];
-                    $imagen_base64 = substr($file['base64'], strpos($file['base64'], ",") + 1);
-
+                    $imagen_base64 = "";
+                    $url = $file['url'];
+                    if ($url == null) {
+                        $imagen_base64 = substr($file['base64'], strpos($file['base64'], ",") + 1);
+                    }
                     $imagen = Imagen::create([
                         'nombre' => $nombre,
                         'formato' => $formato,
                         'size' => $size,
                         'imagen_base64' => $imagen_base64,
+                        'url' => $url,
                         'creado_por' => $creado_por,
                     ]);
                     $invitacion_imagenes[] = [
@@ -270,14 +279,18 @@ class InvitacionesController extends Controller
                 'invitacion_id' => 'required | string'
             ]);
             $tipo_imagen = $request->input('tipo_imagen');
-            $imagen = $request->input('documento.base64');
-            $imagen = substr($imagen, strpos($imagen, ",") + 1);
-            $sizeInMb = (strlen($imagen) * 3 / 4) / (1024 * 1024);
-            if ($sizeInMb > 16) {
-                return response()->json([
-                    'message' => $tipo_imagen == 'menu' ? 'El tamaño de la imagen no puede ser mayor a 16MB' : 'El tamaño del documento no puede ser mayor a 16MB',
-                ], 400);
+            $url = $request->input('documento.url');
+            $imagen = "";           
+            if ($url == null) {
+               $imagen = $request->input('documento.base64');
+               $imagen = substr($imagen, strpos($imagen, ",") + 1);
             }
+            // $sizeInMb = (strlen($imagen) * 3 / 4) / (1024 * 1024);
+            // if ($sizeInMb > 16) {
+            //     return response()->json([
+            //         'message' => $tipo_imagen == 'menu' ? 'El tamaño de la imagen no puede ser mayor a 16MB' : 'El tamaño del documento no puede ser mayor a 16MB',
+            //     ], 400);
+            // }
 
             $creado_por = auth()->user()->id;
 
@@ -293,6 +306,7 @@ class InvitacionesController extends Controller
                 'formato' => $formato,
                 'size' => $size,
                 'imagen_base64' => $imagen,
+                'url' => $url,
                 'creado_por' => $creado_por,
             ]);
             $invitacion_imagenes[] = [
