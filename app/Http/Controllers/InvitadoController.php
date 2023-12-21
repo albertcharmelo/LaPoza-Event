@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Invitacion;
 use App\Models\Invitado;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -93,5 +94,14 @@ class InvitadoController extends Controller
             $invitados,
             200
         );
+    }
+
+    public function editarPlatoView(Invitado $invitado, Invitacion $invitacion)
+    {
+        $page_title = $invitado->nombre;
+        $invitacion->platos_opciones = json_decode($invitacion->platos_opciones);
+        $invitado->platos_elegidos = json_decode($invitado->platos_elegidos);
+        // dd($invitado->platos_elegidos, $invitacion->platos_opciones);
+        return view('pages.invitado.editarPlato', compact('invitado', 'invitacion'));
     }
 }

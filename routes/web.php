@@ -53,7 +53,7 @@ Route::post('/eventos/changeStatus', [EventoController::class, 'changeStatus'])-
 /* ------------------------------------------ INVITADOS ----------------------------------------- */
 Route::post('/invitados', [App\Http\Controllers\InvitadoController::class, 'getInvitados'])->middleware('auth');
 Route::post('/invitados/create', [App\Http\Controllers\InvitadoController::class, 'create']);
-
+Route::get('/invitados/editarplato/{invitado}/{invitacion}', [App\Http\Controllers\InvitadoController::class, 'editarPlatoView'])->name('invitados.editarplato');
 
 /* ------------------------------------------- INVITACIONES  ------------------------------------------ */
 Route::prefix('/invitaciones')->group(function () {

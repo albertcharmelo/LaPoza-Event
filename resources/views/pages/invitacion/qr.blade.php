@@ -43,6 +43,13 @@
                     </div>
                     @if ($invitado->invitacion->tipo_menu != 'Menu Fijo con Precio' && $invitado->invitacion->tipo_menu
                     != 'Menu Fijo sin Precio')
+
+                    <div class="w-100">
+                        <a href="{{ route('invitados.editarplato',[$invitado->id,$invitado->invitacion->id]) }}"
+                            class="btn btn-primary btn-block">
+                            Editar Selección de Platos
+                        </a>
+                    </div>
                     <div class="my-3 d-flex flex-column gap-3">
                         @foreach ($invitado->platos_elegidos as $plato)
                         @foreach ($plato as $pregunta => $opcion_elegida)
