@@ -212,6 +212,8 @@ $action = DzHelper::action();
         Scripts
     ***********************************-->
 
+
+
     @if(!empty(config('dz.public.global.js.top')))
     @foreach(config('dz.public.global.js.top') as $script)
     <script src="{{ asset($script) }}" type="text/javascript"></script>
@@ -227,6 +229,8 @@ $action = DzHelper::action();
     <script src="{{ asset($script) }}" type="text/javascript"></script>
     @endforeach
     @endif
+    <script src="{{ asset('vendor/toastr/js/toastr.min.js') }}"></script>
+    <script src="{{ asset('js/plugins-init/toastr-init.js') }}"></script>
     <script src="{{ asset('js/utils.js') }}"></script>
     @yield('scripts')
 </body>

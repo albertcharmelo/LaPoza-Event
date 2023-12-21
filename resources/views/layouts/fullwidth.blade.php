@@ -65,6 +65,7 @@ $loginbackground = '';
     $action = isset($action) ? $controller.'_'.$action : 'dashboard_1';
     @endphp
 
+
     @if(!empty(config('dz.public.global.js.top')))
     @foreach(config('dz.public.global.js.top') as $script)
     <script src="{{ asset($script) }}" type="text/javascript"></script>
@@ -80,6 +81,8 @@ $loginbackground = '';
     <script src="{{ asset($script) }}" type="text/javascript"></script>
     @endforeach
     @endif
+    <script src="{{ asset('vendor/toastr/js/toastr.min.js') }}"></script>
+    <script src="{{ asset('js/plugins-init/toastr-init.js') }}"></script>
     <script src="{{ asset('js/utils.js') }}"></script>
 
     @yield('scripts')

@@ -10,6 +10,7 @@ $action = DzHelper::action();
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <meta name="keywords" content="" />
     <meta name="author" content="" />
     <meta name="robots" content="" />
@@ -42,6 +43,10 @@ $action = DzHelper::action();
     <link href="{{ asset($style) }}" rel="stylesheet" type="text/css" />
     @endforeach
     @endif
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         .color-global {
             color: #FD683E !important;
@@ -166,6 +171,9 @@ $action = DzHelper::action();
     @endforeach
     @endif
     <script src="{{ asset('js/deznav-init-ligth.js') }}"></script>
+
+    <script src="{{ asset('vendor/toastr/js/toastr.min.js') }}"></script>
+    <script src="{{ asset('js/plugins-init/toastr-init.js') }}"></script>
     <script src="{{ asset('js/utils.js') }}"></script>
     @yield('scripts')
 </body>

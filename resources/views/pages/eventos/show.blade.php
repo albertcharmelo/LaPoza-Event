@@ -185,6 +185,8 @@
                                                             \Carbon\Carbon::parse($evento->fecha)->format('d/m/Y') }}
 
                                                         </li>
+                                                    </ul>
+                                                    <ul class="mb-4 post-meta d-flex flex-wrap align-items-center">
                                                         <li class="post-author me-3">
                                                             <a target="_blank"
                                                                 href="{{ route('invitaciones.show', $evento->invitacion->id) }}"
@@ -194,12 +196,32 @@
                                                             </a>
                                                         </li>
                                                         <li class="post-author me-3">
-                                                            <a href="{{ route('invitaciones.edit', $evento->invitacion->id) }}"
+                                                            <span href="#"
+                                                                onclick="copiarEnPortapapeles('{{ route('invitaciones.show', $evento->invitacion->id) }}')"
                                                                 class="btn btn-primary light btn-xs mb-1">
-                                                                <i class="fa-regular fa-edit"></i>
-                                                                Editar Invitación
+                                                                <i class="fa-regular fa-copy"></i>
+                                                                Copiar enlace de Invitación
+                                                            </span>
+
+                                                        </li>
+                                                        <li class="post-author me-3">
+                                                            <a target="_blank"
+                                                                href="{{ route('invitaciones.organizador', $evento->invitacion->id) }}"
+                                                                class="btn btn-primary light btn-xs mb-1">
+                                                                <i class="fa-regular fa-eye"></i>
+                                                                Ver panel organizador</a>
                                                             </a>
                                                         </li>
+                                                        <li class="post-author me-3">
+                                                            <span href="#"
+                                                                onclick="copiarEnPortapapeles('{{ route('invitaciones.organizador', $evento->invitacion->id) }}')"
+                                                                class="btn btn-primary light btn-xs mb-1">
+                                                                <i class="fa-regular fa-copy"></i>
+                                                                Copiar enlace del panel organizador
+                                                            </span>
+
+                                                        </li>
+
                                                         <li class="post-author me-3">
                                                             <a href="#" onclick="enviarInvitacionOrganizador()"
                                                                 class="btn btn-primary light btn-xs mb-1">
@@ -207,6 +229,15 @@
                                                                 Enviar invitación al organizador</a>
                                                             </a>
                                                         </li>
+                                                        <li class="post-author me-3">
+                                                            <a href="{{ route('invitaciones.edit', $evento->invitacion->id) }}"
+                                                                class="btn btn-primary light btn-xs mb-1">
+                                                                <i class="fa-regular fa-edit"></i>
+                                                                Editar Invitación
+                                                            </a>
+                                                        </li>
+
+
 
 
                                                     </ul>
