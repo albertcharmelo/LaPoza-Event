@@ -1,9 +1,5 @@
 @extends('layouts.invitaciones')
 @section('css')
-
-<link href="{{ asset('vendor/carrusel/dist/assets/owl.carousel.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('vendor/carrusel/dist/assets/owl.theme.default.css') }}" rel="stylesheet" type="text/css" />
-
 <link href="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
 <style>
     /* input {
@@ -75,7 +71,7 @@
                 });
                 @endphp
                 @if ($menuImages->count() > 0)
-                <h2>Menú a servir dentro del Evento</h2>
+                <h2>Menú a servir dentro del Evento - {{ $invitacion->titulo }}</h2>
                 @endif
                 @foreach ($invitacion->imagenes as $imagen)
                 @if ($imagen->pivot->tipo_imagen == 'menu')
@@ -128,16 +124,6 @@
                 </div>
                 @endif
             </div>
-            <div class="owl-carousel owl-theme">
-                <div class="item">
-                    <img
-                        src="https://multimarca.com.ve/wp-content/uploads/2022/11/Captura-de-Pantalla-2022-11-21-a-las-6.50.59-p.-m.png" />
-                </div>
-                <div class="item">
-                    <img src="https://eldiario.com/wp-content/uploads/2023/01/tsize-600x400-VEHICULOS-SAIPA-IR.jpg" />
-                </div>
-
-            </div>
 
             <div class="card-footer">
                 <button class="btn btn-primary btn-block" id="btnActualizarPlatos">actualizar platos</button>
@@ -150,8 +136,6 @@
     <script src="https://unpkg.com/imask"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.js') }}" type="text/javascript"></script>
-
-    <script src="{{ asset('vendor/carrusel/dist/owl.carousel.js') }}"></script>
     <script src="{{ asset('js/invitado/editarPlato.js') }}" type="text/javascript"></script>
 
     @endsection

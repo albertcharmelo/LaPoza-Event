@@ -47,68 +47,25 @@ const actualizarPlatos = async () => {
 
     const idInvitado = $("#idInvitado").val();
 
-    const data = {
-        idInvitado,
-        respuestas,
+    const url = `/invitados/editarPlato`;
+    const options = {
+        method: "PUT",
+        body: JSON.stringify({
+            invitado_id: idInvitado,
+            platos_elegidos: respuestas,
+        }),
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
     };
 
-    console.log(data);
+    const res = await fetch(url, options);
+    const { status } = res;
 
-    // const url = `${window.location.origin}/invitado/editarPlato`;
-    // const options = {
-    //     method: "POST",
-    //     body: JSON.stringify(data),
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //     },
-    // };
-
-    // const res = await fetch(url, options);
-    // const { status } = res;
-
-    // if (status === 200) {
-    //     SwalShowMessage(
-    //         "success",
-    //         "¡Éxito!",
-    //         "Se han actualizado los platos del invitado"
-    //     );
-    // } else {
-    //     SwalShowMessage(
-    //         "error",
-    //         "¡Error!",
-    //         "Ha ocurrido un error al actualizar los platos del invitado"
-    //     );
-    // }
+    if (status === 200) {
+        window.location.href = `/qrcode/invitacion/${idInvitado}`;
+    } else {
+        console.log("error");
+    }
 };
-
-$(document).ready(function () {
-    jQuery(".owl-carousel").owlCarousel({
-        loop: true,
-        autoplay: true,
-        margin: 20,
-        nav: true,
-        rtl: true,
-        dots: true,
-        responsive: {
-            0: {
-                items: 1,
-            },
-            450: {
-                items: 1,
-            },
-            600: {
-                items: 1,
-            },
-            991: {
-                items: 1,
-            },
-
-            1200: {
-                items: 1,
-            },
-            1601: {
-                items: 1,
-            },
-        },
-    });
-});

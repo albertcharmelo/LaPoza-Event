@@ -44,12 +44,7 @@
                     @if ($invitado->invitacion->tipo_menu != 'Menu Fijo con Precio' && $invitado->invitacion->tipo_menu
                     != 'Menu Fijo sin Precio')
 
-                    <div class="w-100">
-                        <a href="{{ route('invitados.editarplato',[$invitado->id,$invitado->invitacion->id]) }}"
-                            class="btn btn-primary btn-block">
-                            Editar Selección de Platos
-                        </a>
-                    </div>
+
                     <div class="my-3 d-flex flex-column gap-3">
                         @foreach ($invitado->platos_elegidos as $plato)
                         @foreach ($plato as $pregunta => $opcion_elegida)
@@ -67,14 +62,23 @@
                         @if ($invitado->observaciones != null || $invitado->observaciones != '')
                         <div>
                             <h3 class="text-center"> Observaciones / Alergias / Intolerancias</h3>
-                            <textarea name="observaciones" readonly id="" cols="30" rows="10" class="form-control"
+                            <textarea name="observaciones" readonly id="" cols="30" rows="10"
+                                class="form-control text-center"
                                 style="font-size: 18px">{{ $invitado->observaciones }}</textarea>
                         </div>
                         @endif
 
                     </div>
                     @endif
-
+                    @if ($invitado->invitacion->tipo_menu == 'Menu a Elegir con Precio' ||
+                    $invitado->invitacion->tipo_menu == 'Menu a Elegir sin Precio')
+                    <div class="w-100">
+                        <a href="{{ route('invitados.editarplato',[$invitado->id,$invitado->invitacion->id]) }}"
+                            class="btn btn-primary btn-block">
+                            Editar Selección de Platos
+                        </a>
+                    </div>
+                    @endif
 
 
                 </div>

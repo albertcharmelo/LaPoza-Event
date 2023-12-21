@@ -96,6 +96,7 @@ class InvitadoController extends Controller
         );
     }
 
+
     public function editarPlatoView(Invitado $invitado, Invitacion $invitacion)
     {
         $page_title = $invitado->nombre;
@@ -103,5 +104,29 @@ class InvitadoController extends Controller
         $invitado->platos_elegidos = json_decode($invitado->platos_elegidos);
         // dd($invitado->platos_elegidos, $invitacion->platos_opciones);
         return view('pages.invitado.editarPlato', compact('invitado', 'invitacion'));
+    }
+
+
+    public function editarPlatoUpdate(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'invitado_id' => 'required | string',
+            'platos_elegidos' => 'required | array',
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json([
+                'message' => $validation->errors()->first()
+            ], 400);
+        }
+
+        $invitado = Invitado::find($request->invitado_id);
+        $invitado->platos_elegidos = json_encode($request->platos_elegidos);
+        $invitado->save();
+
+        return response()->json(
+            $invitado,
+            200
+        );
     }
 }
