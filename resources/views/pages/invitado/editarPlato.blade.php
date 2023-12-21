@@ -1,5 +1,9 @@
 @extends('layouts.invitaciones')
 @section('css')
+
+<link href="{{ asset('vendor/carrusel/dist/assets/owl.carousel.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('vendor/carrusel/dist/assets/owl.theme.default.css') }}" rel="stylesheet" type="text/css" />
+
 <link href="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
 <style>
     /* input {
@@ -60,6 +64,7 @@
 @endsectio
 @endsection
 @section('content')
+<input id="idInvitado" value="{{ $invitado->id }}" type="hidden" />
 <div class="col-xl-12">
     <div class="card">
         <div class="card-body">
@@ -106,10 +111,10 @@
                                 @endphp
                                 <div onclick="selectPlato(event)" style="cursor: pointer"
                                     class="d-flex flex-wrap gap-3 align-items-center py-2 px-1 rounded {{ $alternating == 1 ? 'alternating_1' : 'alternating_2' }}">
-                                    <input type="radio" name="{{ $pregunta }}" class="form-check-input opcion_plato"
+                                    <input type="radio" {{ $plato_seleccionado ? 'checked' : '' }}
+                                        name="{{ $pregunta }}" class="form-check-input opcion_plato"
                                         value="{{ $plato_opcion }}" id="">
-                                    <h4 onclick="selectPlatoH4(event)" class="text-center mb-0">{{ $plato_opcion }} {{
-                                        $plato_seleccionado ? 'seleccionado' : 'ps no' }}</h4>
+                                    <h4 onclick="selectPlatoH4(event)" class="text-center mb-0">{{ $plato_opcion }}</h4>
                                 </div>
                                 @php
                                 $alternating = $alternating == 1 ? 2 : 1;
@@ -123,8 +128,19 @@
                 </div>
                 @endif
             </div>
+            <div class="owl-carousel owl-theme">
+                <div class="item">
+                    <img
+                        src="https://multimarca.com.ve/wp-content/uploads/2022/11/Captura-de-Pantalla-2022-11-21-a-las-6.50.59-p.-m.png" />
+                </div>
+                <div class="item">
+                    <img src="https://eldiario.com/wp-content/uploads/2023/01/tsize-600x400-VEHICULOS-SAIPA-IR.jpg" />
+                </div>
+
+            </div>
+
             <div class="card-footer">
-                <button class="btn btn-primary btn-block" id="BtnNext">Continuar</button>
+                <button class="btn btn-primary btn-block" id="btnActualizarPlatos">actualizar platos</button>
             </div>
         </div>
     </div>
@@ -134,6 +150,8 @@
     <script src="https://unpkg.com/imask"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.js') }}" type="text/javascript"></script>
+
+    <script src="{{ asset('vendor/carrusel/dist/owl.carousel.js') }}"></script>
     <script src="{{ asset('js/invitado/editarPlato.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/invitaciones/invitaciones.js') }}" type="text/javascript"></script>
+
     @endsection
