@@ -185,10 +185,13 @@ function mostrarDocumentos() {
         let prefix = setPrefix(formato);
 
         let html2;
-        if (formato === "application/pdf") {
-            let url = imagen.url;
+        let url = imagen.url;
+        if (formato === "application/pdf" && url != null) {
             html2 = ` <img class="img-fluid" id="preview${i + 1}"
             src="${url}" alt="">`;
+        } else if (formato === "application/pdf" && url == null) {
+            html2 = ` <object class="img-fluid" data="${prefix}${base64Data}" type="application/pdf" 
+            style="height: 200px !important; object-fit: cover;"></object>`;
         } else {
             let formattedData = `${prefix}${base64Data}`;
             html2 = `<img class="img-fluid" id="preview${i + 1}"
@@ -232,13 +235,14 @@ function mostrarImagenesMenu() {
         let prefix = setPrefix(formato);
         let formattedData = `${prefix}${base64Data}`;
         let html2;
-
-        if (formato === "application/pdf") {
-            let url = imagen.url;
+        let url = imagen.url;
+        if (formato === "application/pdf" && url != null) {
             html2 = ` <img class="img-fluid" id="preview${
                 i + 1
             }" src="${url}" alt="" style="height: 200px !important;">`;
-            // html2 = ` <object class="img-fluid" data="${formattedData}" type="application/pdf" style="height: 200px !important; object-fit: cover;"></object>`;
+        } else if (formato === "application/pdf" && url == null) {
+            html2 = ` <object class="img-fluid" data="${formattedData}" type="application/pdf" 
+            style="height: 200px !important; object-fit: cover;"></object>`;
         } else {
             html2 = `<img class="img-fluid" id="preview${
                 i + 1
@@ -496,14 +500,17 @@ btnGuardar.on("click", function () {
                         data.append(`files[${index}][base64]`, base64File);
                         data.append(`files[${index}][name]`, file.name);
                         data.append(`files[${index}][type]`, file.type);
-                        data.append(`files[${index}][size]`, file.size.toString());
+                        data.append(
+                            `files[${index}][size]`,
+                            file.size.toString()
+                        );
                         data.append(`files[${index}][url]`, file.url);
                     });
                 });
                 await Promise.all(filePromises);
             }
 
-            if (arrayFilesImagenesMenu.length > 0) {                
+            if (arrayFilesImagenesMenu.length > 0) {
                 const fileMenuPromises = arrayFilesImagenesMenu.map(
                     (file, index) => {
                         return getBase64(file).then((base64File) => {
@@ -564,7 +571,7 @@ btnGuardar.on("click", function () {
                     invitacion_edit = null;
                     iniciarDatos();
                     $("#smartwizard").smartWizard("goToStep", 0);
-                    if (data.status == "success") {                        
+                    if (data.status == "success") {
                         Swal.fire({
                             type: "success",
                             title: "¡Éxito!",
@@ -626,7 +633,7 @@ document.querySelector("#files").addEventListener("change", function (e) {
     var file = this.files[this.files.length - 1];
 
     nuevoDocumento(file, e);
-    async function nuevoDocumento(archivo, e) {               
+    async function nuevoDocumento(archivo, e) {
         var fileName = archivo.name;
         let formato = archivo.type;
 
@@ -755,10 +762,10 @@ async function agregarDocumento(tipo_imagen) {
     }
     let url = "";
     if (tipo === "application/pdf") {
-        url = await pdfToImage(fileInput);        
+        url = await pdfToImage(fileInput);
         if (url.length > 0) {
             url = url[0];
-        }        
+        }
     }
     let data = new FormData();
     data.append("invitacion_id", invitacion_edit.id);
@@ -1006,7 +1013,6 @@ function hideLoader() {
 }
 
 async function pdfToImage(fileInput) {
-    // let fileInput = document.getElementById(inputID);
     var myHeaders = new Headers();
     myHeaders.append(
         "Authorization",
@@ -1023,6 +1029,7 @@ async function pdfToImage(fileInput) {
         body: formdata,
         redirect: "follow",
     };
+    showLoader();
 
     let response = await fetch(
         "https://storage.worki.es/api/convertirPdfToImg",
@@ -1032,7 +1039,10 @@ async function pdfToImage(fileInput) {
         .then((result) => {
             let nombres_archivos = result.map((item) => item.name);
             return nombres_archivos;
+        })
+        .catch((error) => console.log("error", error))
+        .finally(() => {
+            hideLoader();
         });
-
     return response;
 }
