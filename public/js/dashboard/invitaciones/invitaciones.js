@@ -1,5 +1,6 @@
 let btnGuardar = $("#btnGuardar");
 let titulo = $("#titulo");
+let restaurante = $("#restaurant");
 let files = $("#files");
 let ckeditorInvitacion = $("#ckeditorInvitacion");
 let listDocumentos = $("#listDocumentos");
@@ -45,11 +46,11 @@ $(document).ready(function () {
         "leaveStep",
         function (e, anchorObject, stepNumber, stepDirection) {
             if (stepNumber === 0) {
-                if (titulo.val() == "") {
+                if (titulo.val() == "" || restaurante.val() == null) {
                     SwalShowMessage(
                         "warning",
                         "¡Advertencia!",
-                        "Debe ingresar un título"
+                        "Debe ingresar un título y restaurante"
                     );
                     return false;
                 }
@@ -140,6 +141,9 @@ function iniciarDatos() {
 
     if (invitacion_edit != null) {
         titulo.val(invitacion_edit.titulo);
+        if (invitacion_edit.evento.restaurante_id != null) {
+            restaurante.val(invitacion_edit.evento.restaurante_id);
+        }
         if (invitacion_edit.texto != null) {
             CKeditor.setData(invitacion_edit.texto);
         }
@@ -476,6 +480,7 @@ btnGuardar.on("click", function () {
 
     async function agregarInvitacion() {
         const data = new FormData();
+        data.append("restaurante_id", restaurante.val());
         data.append("titulo", titulo.val());
         data.append("descripcion", CKeditor.getData());
         data.append("tipoMenu", tipoMenu.val());
@@ -558,7 +563,6 @@ btnGuardar.on("click", function () {
                     iniciarDatos();
                     $("#smartwizard").smartWizard("goToStep", 0);
                     if (data.status == "success") {
-                        console.log("data:", data);
                         Swal.fire({
                             type: "success",
                             title: "¡Éxito!",

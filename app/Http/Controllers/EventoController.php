@@ -26,13 +26,19 @@ class EventoController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function getEventos()
+    public static function getEventos(Request $request)
     {
         if (Auth::check()) {
 
             $eventos = Evento::with('invitacion')
-                ->orderBy('created_at', 'desc')
-                ->get()->toArray();
+                ->orderBy('created_at', 'desc');
+
+            if ($request->restaurante_id != 'all' &&  $request->restaurante_id != null) {
+                $eventos = $eventos->where('restaurante_id', $request->restaurante_id);
+            }
+
+
+            $eventos = $eventos->get()->toArray();
             $eventos = array_map(
                 function ($evento) {
                     $evento['fecha'] = date('d-m-Y', strtotime($evento['fecha']));

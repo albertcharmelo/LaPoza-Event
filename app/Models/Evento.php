@@ -21,6 +21,7 @@ class Evento extends Model
         'fecha',
         'created_at',
         'updated_at',
+        'restaurante_id',
     ];
 
     /**
@@ -74,5 +75,16 @@ class Evento extends Model
     public function menuOpciones()
     {
         return $this->hasMany(MenuOpcion::class, 'evento_id', 'id');
+    }
+
+    /**
+     * Obtener el restaurante asociado al evento
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+
+    public function restaurante()
+    {
+        return $this->hasOne(Restaurante::class, 'id', 'restaurante_id');
     }
 }

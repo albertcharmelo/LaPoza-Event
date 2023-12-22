@@ -109,7 +109,7 @@ const enviarInforamcion = async (e) => {
     }
 
     data.platos = verificarPlatos();
-    console.log(data);
+
     BtnNext.prop("disabled", true);
     BtnNext.innerHTML = `<div class='d-flex gap-2'>
                 <div class="spinner-border text-dark" role="status">

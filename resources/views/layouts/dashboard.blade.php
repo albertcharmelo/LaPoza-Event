@@ -229,10 +229,14 @@ $action = DzHelper::action();
     <script src="{{ asset($script) }}" type="text/javascript"></script>
     @endforeach
     @endif
-    <script src="{{ asset('vendor/OwlCarousel2-2.3.4/dist/owl.carousel.min.js') }}"></script>
+
     <script src="{{ asset('vendor/toastr/js/toastr.min.js') }}"></script>
     <script src="{{ asset('js/plugins-init/toastr-init.js') }}"></script>
     <script src="{{ asset('js/utils.js') }}"></script>
+    <script>
+        const currentRestaurante = getCurrentRestautante();
+    document.getElementById("select_restaurant").value = currentRestaurante;
+    </script>
     @yield('scripts')
 </body>
 

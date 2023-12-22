@@ -45,6 +45,17 @@
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="mb-3">
+                                            <h3 class="text-black font-w600 form-label">Restaurante</h3>
+                                            <select class="form-control" aria-label="Restaurante" id="restaurant">
+                                                @foreach ($restaurantes_array as $restaurante)
+                                                <option value="{{ $restaurante->id }}">{{ $restaurante->nombre }}
+                                                </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="mb-3">
                                             <h3 for="comment" class="text-black font-w600 form-label">Mensaje de la
                                                 invitación</h3>
                                             <textarea class="form-control " id="ckeditorInvitacion"
@@ -240,6 +251,7 @@
 <script>
     var _token = '{{ csrf_token() }}';
     var invitacion_edit = {!! json_encode($invitacion) !!};
+  
 </script>
 <script src="https://unpkg.com/imask"></script>
 <!-- jsDelivr :: Sortable :: Latest (https://www.jsdelivr.com/package/npm/sortablejs) -->

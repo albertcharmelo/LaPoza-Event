@@ -80,11 +80,18 @@
                 <h1 class="mb-2 text-black  font-roboto" style="font-size: 3rem !important">{{
                     $invitacion->titulo }}</h1>
                 <ul class="mb-0 post-meta d-flex flex-wrap">
-                    <li class="post-author me-3">
+                    <li class="post-author me-2">
                         <h4>Por {{ $invitacion->evento->nombre }}</h4>
                     </li>
-                    <li class="post-date me-3">
+                    @if ( $invitacion->evento->restaurante)
+                    <li class="post-author me-2">
+                        <h4>| Ubicación {{
+                            $invitacion->evento->restaurante->nombre }}</h4>
+                    </li>
+                    @endif
+                    <li class="post-date me-2">
                         <h4>
+                            |
                             <i class="fas fa-calendar-check me-2"></i>
                             {{\Carbon\Carbon::parse($invitacion->evento->fecha)->format('d/m/Y') }}
                         </h4>

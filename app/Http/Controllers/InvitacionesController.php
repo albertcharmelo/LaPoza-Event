@@ -39,8 +39,11 @@ class InvitacionesController extends Controller
 
             $invitaciones = Invitacion::select('id', 'titulo', 'tipo_menu', 'updated_at', 'evento_id')
                 ->with('evento:id,nombre,fecha')
-                ->orderBy('updated_at', 'desc')
-                ->get();
+                ->orderBy('updated_at', 'desc');
+
+
+
+            $invitaciones = $invitaciones->get();
 
             // Formatea updated_at para cada invitacion
             $invitaciones->map(function ($invitacion) {
@@ -78,6 +81,7 @@ class InvitacionesController extends Controller
                 'nombre_org' => 'required',
                 'email_org' => 'required',
                 'datos_requeridos => required | integer | min:0 | max:1',
+                'restaurante_id' => 'required | string',
             ]);
 
             $creado_por = auth()->user()->id;
@@ -91,6 +95,7 @@ class InvitacionesController extends Controller
                 'ingreso_bruto' => 0,
                 'fecha' => $request->fecha_evento,
                 'creado_por' => $creado_por,
+                'restaurante_id' => $validatedData['restaurante_id'],
             ]);
             $invitacion = Invitacion::create([
                 'titulo' => $validatedData['titulo'],
@@ -186,7 +191,7 @@ class InvitacionesController extends Controller
     {
         $invitacion = Invitacion::where('id', $id)
             ->with(['evento' => function ($query) {
-                $query->select('id', 'nombre', 'email_organizador', 'telefono_organizador', 'fecha');
+                $query->select('id', 'nombre', 'email_organizador', 'telefono_organizador', 'fecha', 'restaurante_id');
             }])
             ->with('imagenes')
             ->first();
@@ -205,7 +210,8 @@ class InvitacionesController extends Controller
                 'nombre_org' => 'required',
                 'email_org' => 'required',
                 'invitacion_id' => 'required | string',
-                'datos_requeridos => required | integer | min:0 | max:1'
+                'datos_requeridos => required | integer | min:0 | max:1',
+                'restaurante_id' => 'required | string',
             ]);
             $creado_por = auth()->user()->id;
 
@@ -219,6 +225,7 @@ class InvitacionesController extends Controller
                 'platos_opciones' => $request->platos_opciones,
                 'datos_requeridos' => $request->datos_requeridos,
                 'creado_por' => $creado_por,
+
             ]);
 
             $evento = Evento::where('id', $invitacion->evento_id)->first();
@@ -228,6 +235,7 @@ class InvitacionesController extends Controller
                 'telefono_organizador' => $request->telefono_org,
                 'fecha' => $request->fecha_evento,
                 'creado_por' => $creado_por,
+                'restaurante_id' => $validatedData['restaurante_id'],
             ]);
 
             DB::commit();

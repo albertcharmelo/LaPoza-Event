@@ -1,8 +1,8 @@
 (function ($) {
-    "use strict";
+    ("use strict");
     var table = $("#eventosTable").DataTable({
         createdRow: function (row, data) {
-            $(row).addClass("cursor-pointer");           
+            $(row).addClass("cursor-pointer");
             $(row)
                 .find("td:eq(0), td:eq(1), td:eq(2), td:eq(3)")
                 .on("click", function () {
@@ -23,20 +23,22 @@
         ajax: {
             url: "/eventos",
             type: "POST",
+            data: {
+                restaurante_id: getCurrentRestautante(),
+            },
             headers: {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
             },
             dataType: "json",
             dataSrc: "",
-            dataFilter: function(data){
-                // console.log(data);
+            dataFilter: function (data) {
                 return data;
-            }
+            },
         },
         columns: [
-            { data: "nombre" },            
+            { data: "nombre" },
             { data: "telefono_organizador" },
-            { data: 'invitacion.titulo' },
+            { data: "invitacion.titulo" },
             { data: "comensales", className: "dt-body-center" },
             { data: "fecha", className: "dt-body-center" },
             {

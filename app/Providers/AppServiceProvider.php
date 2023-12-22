@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\RestauranteController;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $restaurantes = RestauranteController::getRestaurantes();
+        View::share('restaurantes_array', $restaurantes);
         Schema::defaultStringLength(191);
     }
 }

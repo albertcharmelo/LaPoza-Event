@@ -60,3 +60,17 @@ async function pdfToImage(inputID) {
 
     return response;
 }
+
+function getCurrentRestautante() {
+    const restaurante_id = sessionStorage.getItem("restaurante_id");
+    return restaurante_id;
+}
+
+function setCurrentRestaurante(
+    restaurante_id = document.getElementById("select_restaurant").value
+) {
+    const select_restaurante = document.getElementById("select_restaurant");
+    select_restaurante.value = restaurante_id;
+    sessionStorage.setItem("restaurante_id", restaurante_id);
+    window.location = "/";
+}
