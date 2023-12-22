@@ -12,3 +12,5 @@
 <link href="{{ asset('icons/bootstrap-icons/font/bootstrap-icons.css')}}" rel="stylesheet" type="text/css" /> --}}
 
 <link href="{{ asset('vendor/toastr/css/toastr.min.css')}}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('vendor/carrusel/dist/assets/owl.carousel.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('vendor/carrusel/dist/assets/owl.theme.default.css') }}" rel="stylesheet" type="text/css" />
