@@ -100,38 +100,38 @@
                 @if ($menuImages->count() > 0)
                 <h2>Imágenes</h2>
                 @endif
-                @foreach ($invitacion->imagenes as $imagen)
-                @if ($imagen->pivot->tipo_imagen == 'imagen')
-                @if ($imagen->formato == 'application/pdf')
-                <iframe src="data:application/pdf;base64,{{ $imagen->imagen_base64 }}" class="mb-3 rounded"></iframe>
-                @else
-                <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}" alt="Imagen del evento"
-                    class="img-fluid mb-3 w-100 rounded ">
-                @endif
-                @endif
-                @endforeach
+
+                <div class="owl-carousel owl-theme">
+                    @foreach ($invitacion->imagenes as $imagen)
+                        @if ($imagen->pivot->tipo_imagen == 'imagen')
+                            <div class="item">
+                                @if ($imagen->formato == 'application/pdf' && $imagen->url == null)
+                                    <iframe src="data:application/pdf;base64,{{ $imagen->imagen_base64 }}"
+                                        class="mb-3 rounded"></iframe>
+                                @elseif ($imagen->formato == 'application/pdf' && $imagen->url != null)                                 
+                                    <img src="{{ $imagen->url }}">
+                                @else
+                                    <img
+                                        src="data:image/png;base64,{{ $imagen->imagen_base64 }}">
+                                @endif
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
             </div>
 
             <div class="plates-chooise" id="platosBox">
                 @php
-                $menuImages = $invitacion->imagenes->filter(function ($imagen) {
-                return $imagen->pivot->tipo_imagen == 'menu';
-                });
+                    $imagenesDelMenus = $invitacion->imagenes->filter(function ($imagen) {
+                    return $imagen->pivot->tipo_imagen == 'menu';
+                    });
                 @endphp
-                @if ($menuImages->count() > 0)
-                <h2>Menú a servir dentro del Evento</h2>
+                @if ($imagenesDelMenus->count() > 0)
+                    <h2>Menú a servir dentro del Evento</h2>
                 @endif
-                @foreach ($invitacion->imagenes as $imagen)
-                @if ($imagen->pivot->tipo_imagen == 'menu')
-                @if ($imagen->formato == 'application/pdf')
-                <iframe src="data:application/pdf;base64,{{ $imagen->imagen_base64 }}" frameborder="0"
-                    class="mb-3 rounded"></iframe>
-                @else
-                <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}" alt="Imagen del evento"
-                    class="img-fluid mb-3 w-100 rounded">
-                @endif
-                @endif
-                @endforeach
+
+                <div class="owl-carousel owl-theme" id = "carouselMenu">
+                </div>                
 
                 @if ($invitacion->tipo_menu == 'Menu a Elegir con Precio' ||
                 $invitacion->tipo_menu == 'Menu a Elegir sin Precio')
@@ -290,7 +290,58 @@
     @section('scripts')
     <script src="https://unpkg.com/imask"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.js') }}" type="text/javascript">
-    </script>
+    <script src="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/invitaciones/invitaciones.js') }}" type="text/javascript"></script>
-    @endsection
+    <script>
+        const imagenesDelMenus = @json($imagenesDelMenus);
+
+        $(document).ready(function() {
+            jQuery(".owl-carousel").owlCarousel({
+                loop: true,
+                autoplay: true,
+                margin: 20,
+                nav: true,
+                rtl: true,
+                dots: true,
+                autoHeight: true,
+                navText: [
+                    "<i class='fas fa-chevron-left'></i>",
+                    "<i class='fas fa-chevron-right'></i>"
+                ],
+                responsive: {
+                    0: {
+                        items: 1,
+                    },
+                    450: {
+                        items: 1,
+                    },
+                    600: {
+                        items: 1,
+                    },
+                    991: {
+                        items: 1,
+                    },
+
+                    1200: {
+                        items: 1,
+                    },
+                    1601: {
+                        items: 1,
+                    },
+                },
+
+            });            
+            let isPaused = false;
+
+            $('.owl-carousel').on('click', '.owl-item', function() {
+                if (isPaused) {
+                    $('.owl-carousel').trigger('play.owl.autoplay');                    
+                    isPaused = false;
+                } else {
+                    $('.owl-carousel').trigger('stop.owl.autoplay');                    
+                    isPaused = true;
+                }
+            });
+        });
+    </script>
+@endsection
