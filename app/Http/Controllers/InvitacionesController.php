@@ -268,6 +268,7 @@ class InvitacionesController extends Controller
         $page_title = $invitacion->titulo;
         $invitacion->platos_opciones = json_decode($invitacion->platos_opciones);
 
+
         return view('pages.invitacion.show', compact('invitacion', 'page_title'));
     }
 

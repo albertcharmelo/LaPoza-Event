@@ -154,11 +154,21 @@
                             <h2 class="form-label my-3 plato_question">{{ $pregunta }}</h2>
                             <div class="d-flex flex-column gap-3 mb-3 opcion_plato_box">
                                 @foreach ($plato as $plato_opcion)
+                                @php
+                                if ($invitacion->tipo_menu == 'Menu a Elegir con Precio') {
+                                $plato_opcion_array = explode('-', $plato_opcion);
+                                $plato_opcion_show = $plato_opcion_array[1]. " - " . $plato_opcion_array[0];
+                                }else{
+                                $plato_opcion_show = $plato_opcion;
+                                }
+
+                                @endphp
                                 <div onclick="selectPlato(event)" style="cursor: pointer"
                                     class="d-flex flex-wrap gap-3 align-items-center py-2 px-1 rounded {{ $alternating == 1 ? 'alternating_1' : 'alternating_2' }}">
                                     <input type="radio" name="{{ $pregunta }}" class="form-check-input opcion_plato"
                                         value="{{ $plato_opcion }}" id="">
-                                    <h4 onclick="selectPlatoH4(event)" class="text-center mb-0">{{ $plato_opcion }}</h4>
+                                    <h4 onclick="selectPlatoH4(event)" class="text-center mb-0">{{ $plato_opcion_show }}
+                                    </h4>
                                 </div>
                                 @php
                                 $alternating = $alternating == 1 ? 2 : 1;
