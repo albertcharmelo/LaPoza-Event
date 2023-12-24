@@ -72,13 +72,20 @@
                     @endif
                     @if ($invitado->invitacion->tipo_menu == 'Menu a Elegir con Precio' ||
                     $invitado->invitacion->tipo_menu == 'Menu a Elegir sin Precio')
-                    <div class="w-100">
-                        <a href="{{ route('invitados.editarplato',[$invitado->id,$invitado->invitacion->id]) }}"
-                            class="btn btn-primary btn-block">
-                            Editar Selección de Platos
-                        </a>
-                    </div>
-                    @endif
+                    @php
+                    $fechaEvento = \Carbon\Carbon::parse($invitado->evento->fecha);
+                    $diasRestantes = $fechaEvento->diffInDays(\Carbon\Carbon::now());
+
+                    @endphp
+                    @if ($diasRestantes < 4 && $diasRestantes>= 0)
+                        <div class="w-100">
+                            <a href="{{ route('invitados.editarplato',[$invitado->id,$invitado->invitacion->id]) }}"
+                                class="btn btn-primary btn-block">
+                                Editar Selección de Platos
+                            </a>
+                        </div>
+                        @endif
+                        @endif
 
 
                 </div>
