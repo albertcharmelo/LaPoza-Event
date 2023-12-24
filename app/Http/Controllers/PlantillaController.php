@@ -34,4 +34,14 @@ class PlantillaController extends Controller
         $page_title = $plantilla->name;
         return view('pages.plantillas.platos', compact('plantilla', 'page_title'));
     }
+
+    public function crearPlantilla(Request $request, $tipo)
+    {
+        $page_title = 'Crear Plantilla';
+        if ($tipo == 'platos') {
+            return view('pages.plantillas.crear_plantilla_platos', compact('page_title'));
+        } else {
+            return view('pages.plantillas.crear_plantilla_evento', compact('page_title'));
+        }
+    }
 }

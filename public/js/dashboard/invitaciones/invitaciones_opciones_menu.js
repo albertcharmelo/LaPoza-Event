@@ -247,6 +247,9 @@ function savePlantillas(reemplazar = false) {
                 $("#descripcionPlantilla").val("");
                 $("#modalSaveTemplate").modal("hide");
                 $("#btn_reemplazar_plantilla").hide();
+                if (window.location.pathname === "/plantillas/crear/platos") {
+                    window.location.href = "/plantillas";
+                }
             } else {
                 SwalShowMessage(
                     "error",

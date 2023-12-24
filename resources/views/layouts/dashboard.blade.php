@@ -234,10 +234,7 @@ $action = DzHelper::action();
     <script src="{{ asset('vendor/toastr/js/toastr.min.js') }}"></script>
     <script src="{{ asset('js/plugins-init/toastr-init.js') }}"></script>
     <script src="{{ asset('js/utils.js') }}"></script>
-    <script>
-        const currentRestaurante = getCurrentRestautante();
-    document.getElementById("select_restaurant").value = currentRestaurante ? currentRestaurante : 'all';
-    </script>
+
     @yield('scripts')
 </body>
 

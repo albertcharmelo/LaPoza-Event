@@ -67,4 +67,8 @@
 <!-- Datatable -->
 <script src="{{ asset('vendor/datatables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/dashboard/eventos.js') }}" type="text/javascript"></script>
+<script>
+    const currentRestaurante = getCurrentRestautante();
+document.getElementById("select_restaurant").value = currentRestaurante ? currentRestaurante : 'all';
+</script>
 @endsection

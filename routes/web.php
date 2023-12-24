@@ -90,7 +90,7 @@ Route::get('/qrcode/invitacion/{invitado}', [App\Http\Controllers\QrController::
 Route::get('/plantillas', [App\Http\Controllers\PlantillaController::class, 'index'])->middleware('auth');
 Route::get('/plantillas/get', [App\Http\Controllers\PlantillaController::class, 'getAllPlantillas'])->middleware('auth');
 Route::get('/plantillas/platos/{plantilla}', [App\Http\Controllers\PlantillaController::class, 'plantillaPlatos'])->middleware('auth');
-
+Route::get('/plantillas/crear/{tipo}', [App\Http\Controllers\PlantillaController::class, 'crearPlantilla'])->middleware('auth')->name('plantillas.crear');
 /* ------------------------------------------- ARTISAN ------------------------------------------ */
 Route::get('/artisan_2486migrate', [App\Http\Controllers\ArtisanController::class, 'migrate']);
 

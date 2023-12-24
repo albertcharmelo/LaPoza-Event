@@ -16,7 +16,8 @@
 
                 <div class="card-body px-3">
                     <div class="mb-2 w-100 d-flex gap-2 justify-content-center justify-content-lg-end">
-                        <button class="btn btn-primary btn-sm">Crear Plantilla de Platos</button>
+                        <a href="{{ route('plantillas.crear','platos') }}" class="btn btn-primary btn-sm">Crear
+                            Plantilla de Platos</a>
                         <button class="btn btn-secondary btn-sm">Crear Plantilla de Evento</button>
                     </div>
                     <div class="table-responsive">
