@@ -10,10 +10,25 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Todos los eventos</h4>
+                <div class="card-header row">
+                    <h4 class="card-title col-12 col-md-8 mb-2 mb-lg-0">Todos los eventos</h4>
+                    <div class="col-12 col-md-4 px-3">
+                        <select class="form-select form-control " style="height: 40px;"
+                            aria-label="Default select example" id="select_restaurant"
+                            onchange="setCurrentRestaurante(this.value)">
+
+                            <option disabled value=""> --- Seleccione un Restaurante ---</option>
+                            <option selected value="all">Todos los Restaurantes</option>
+                            @foreach ($restaurantes_array as $restaurante)
+                            <option value="{{ $restaurante->id }}">{{ $restaurante->nombre }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
                 </div>
                 <div class="card-body px-3">
+
+
                     <div class="table-responsive">
                         <table id="eventosTable" class="display" style="min-width: 845px">
                             <thead>

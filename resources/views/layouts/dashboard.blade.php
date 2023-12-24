@@ -113,7 +113,7 @@ $action = DzHelper::action();
                 @include('elements.svg_logo')
             </a>
             <div class="nav-control">
-                <div class="hamburger">
+                <div class="hamburger" id="hamburger">
                     <span class="line"></span><span class="line"></span><span class="line"></span>
                 </div>
             </div>
@@ -235,7 +235,7 @@ $action = DzHelper::action();
     <script src="{{ asset('js/utils.js') }}"></script>
     <script>
         const currentRestaurante = getCurrentRestautante();
-    document.getElementById("select_restaurant").value = currentRestaurante;
+    document.getElementById("select_restaurant").value = currentRestaurante ? currentRestaurante : 'all';
     </script>
     @yield('scripts')
 </body>

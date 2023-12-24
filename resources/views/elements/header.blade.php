@@ -642,17 +642,6 @@
 						<a href="{{ route('invitaciones.create') }}" class="btn btn-primary btn-rounded">Crear
 							invitación</a>
 					</li>
-					<li class="nav-item">
-						<select class="form-select" style="min-height: 50px" aria-label="Default select example"
-							id="select_restaurant" onchange="setCurrentRestaurante(this.value)">
-
-							<option disabled value=""> --- Seleccione un Restaurante ---</option>
-							<option selected value="all">Todos los Restaurantes</option>
-							@foreach ($restaurantes_array as $restaurante)
-							<option value="{{ $restaurante->id }}">{{ $restaurante->nombre }}</option>
-							@endforeach
-						</select>
-					</li>
 					{{-- <li class="nav-item dropdown notification_dropdown">
 						<a class="nav-link  ai-icon" href="javascript:void(0);" role="button" data-bs-toggle="dropdown">
 							<svg width="28" height="28" viewBox="0 0 28 28" fill="none"

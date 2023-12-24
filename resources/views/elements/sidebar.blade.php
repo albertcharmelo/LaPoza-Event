@@ -2,14 +2,15 @@
     Sidebar start
 ***********************************-->
 <div class="deznav" style="background: #0f0e16ea !important">
-    <div class="deznav-scroll" style="background: #0f0e16ea !important">
-        <ul class="metismenu" id="menu">
+    <div class="deznav-scroll relative" style="background: #0f0e16ea !important">
+        <ul class="metismenu " id="menu">
             <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
                     <i class="fa-solid fa-calendar-days"></i>
                     <span class="nav-text">Panel</span>
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{!! url('/'); !!}">Eventos</a></li>
+                    <li><a href="{!! url('/plantillas'); !!}">Plantillas</a></li>
                     {{-- <li><a href="{!! url('/invitaciones/index'); !!}">Invitaciones</a></li> --}}
 
                     {{-- <li><a href="{!! url('/index-2'); !!}">Dashboard Dark</a></li>
@@ -146,13 +147,13 @@
                 </ul>
             </li> --}}
         </ul>
-        {{-- <div class="plus-box">
-            <img src="{{ asset('images/plus.png') }}" alt="">
-            <h5 class="fs-18 font-w700">Add Menus</h5>
-            <p class="fs-14 font-w400">Manage your food <br>and beverages menus<i class="fas fa-arrow-right ms-3"></i>
-            </p>
-        </div>
-        <div class="copyright">
+        {{-- <div class="plus-box px-3 d-flex justify-center align-items-center bottom-0"
+            style="flex-direction: column">
+
+
+
+        </div> --}}
+        {{-- <div class="copyright">
             <p><strong>Lezato Restaurant Admin</strong> © 2023 All Rights Reserved</p>
             <p class="fs-12">Made with <span class="heart"></span> by DexignZone</p>
         </div> --}}

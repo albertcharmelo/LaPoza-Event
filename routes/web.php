@@ -86,6 +86,11 @@ Route::get('exportPlatos/{evento_id}', [App\Http\Controllers\PlatosController::c
 Route::get('/qrcodes/generate', [App\Http\Controllers\QrController::class, 'generate'])->middleware('auth');
 Route::get('/qrcode/invitacion/{invitado}', [App\Http\Controllers\QrController::class, 'invitacion']);
 
+/* ----------------------------------------- PLANTILLAS ----------------------------------------- */
+Route::get('/plantillas', [App\Http\Controllers\PlantillaController::class, 'index'])->middleware('auth');
+Route::get('/plantillas/get', [App\Http\Controllers\PlantillaController::class, 'getAllPlantillas'])->middleware('auth');
+Route::get('/plantillas/platos/{plantilla}', [App\Http\Controllers\PlantillaController::class, 'plantillaPlatos'])->middleware('auth');
+
 /* ------------------------------------------- ARTISAN ------------------------------------------ */
 Route::get('/artisan_2486migrate', [App\Http\Controllers\ArtisanController::class, 'migrate']);
 
