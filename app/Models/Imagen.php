@@ -16,6 +16,7 @@ class Imagen extends Model
         'formato',
         'size',
         'imagen_base64',
+        'url',
         'creado_por',
         'created_at',
         'updated_at',

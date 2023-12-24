@@ -3,6 +3,8 @@
 <link href="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('vendor/datatables/css/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('css/dashboard/eventos.css') }}" rel="stylesheet" type="text/css" />
+{{-- <link href="{{ asset('vendor/carrusel/dist/assets/owl.carousel.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('vendor/carrusel/dist/assets/owl.theme.default.css') }}" rel="stylesheet" type="text/css" /> --}}
 @endsection
 
 @section('content')
@@ -16,7 +18,7 @@
         </ol>
     </div>
     <div class="row">
-        <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
+        <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6"> 
             <div class="widget-stat card">
                 <div class="card-body p-4">
                     <div class="media ai-icon">
@@ -241,24 +243,25 @@
                                                                 Editar Invitación
                                                             </a>
                                                         </li>
-
-
-
-
                                                     </ul>
-                                                    @foreach ($evento->invitacion->imagenes as $imagen)
-                                                    @if ($imagen->pivot->tipo_imagen == 'imagen')
-                                                    @if ($imagen->formato == 'application/pdf')
-                                                    <iframe
-                                                        src="data:application/pdf;base64,{{ $imagen->imagen_base64 }}"
-                                                        class="mb-3 rounded" width="100%" height="500px"></iframe>
-                                                    @else
-                                                    <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}"
-                                                        width="908" height="359" alt="Imagen del evento"
-                                                        class="img-fluid mb-3 w-100 rounded">
-                                                    @endif
-                                                    @endif
-                                                    @endforeach
+
+                                                         <div class="owl-carousel owl-theme">
+                                                            @foreach ($evento->invitacion->imagenes as $imagen)
+                                                                @if ($imagen->pivot->tipo_imagen == 'imagen')
+                                                                    <div class="item">
+                                                                        @if ($imagen->formato == 'application/pdf' && $imagen->url == null)
+                                                                            <iframe src="data:application/pdf;base64,{{ $imagen->imagen_base64 }}"
+                                                                                width="100%" height="500px"></iframe>
+                                                                        @elseif($imagen->formato == 'application/pdf' && $imagen->url != null)
+                                                                            <img src="{{ $imagen->url }}">
+                                                                        @else
+                                                                            <img
+                                                                                src="data:image/png;base64,{{ $imagen->imagen_base64 }}">
+                                                                        @endif
+                                                                    </div>
+                                                                @endif
+                                                            @endforeach
+                                                        </div>
 
                                                     <p>{!! $evento->invitacion->texto !!}</p>
                                                     <div class="profile-skills mt-5 mb-5">
@@ -267,21 +270,26 @@
                                                             class="btn btn-primary light btn-xs mb-1">{{
                                                             $evento->invitacion->tipo_menu }}</a>
 
+                                                    </div>                                                    
+
+                                                    <div class="owl-carousel owl-theme">
+                                                        @foreach ($evento->invitacion->imagenes as $imagen)
+                                                            @if ($imagen->pivot->tipo_imagen == 'menu')
+                                                                <div class="item">
+                                                                    @if ($imagen->formato == 'application/pdf' && $imagen->url == null)
+                                                                        <iframe src="data:application/pdf;base64,{{ $imagen->imagen_base64 }}"
+                                                                            width="100%" height="500px"></iframe>
+                                                                    @elseif($imagen->formato == 'application/pdf' && $imagen->url != null)
+                                                                        <img src="{{ $imagen->url }}">
+                                                                    @else
+                                                                        <img
+                                                                            src="data:image/png;base64,{{ $imagen->imagen_base64 }}">
+                                                                    @endif
+                                                                </div>
+                                                            @endif
+                                                        @endforeach
                                                     </div>
 
-                                                    @foreach ($evento->invitacion->imagenes as $imagen)
-                                                    @if ($imagen->pivot->tipo_imagen == 'menu')
-                                                    @if ($imagen->formato == 'application/pdf')
-                                                    <iframe
-                                                        src="data:application/pdf;base64,{{ $imagen->imagen_base64 }}"
-                                                        class="mb-3 rounded" width="100%" height="500px"></iframe>
-                                                    @else
-                                                    <img src="data:image/png;base64,{{ $imagen->imagen_base64 }}"
-                                                        width="908" height="359" alt="Imagen del evento"
-                                                        class="img-fluid mb-3 w-100 rounded">
-                                                    @endif
-                                                    @endif
-                                                    @endforeach
                                                     <div class="comment-respond" id="respond">
                                                         <h4 class="comment-reply-title text-primary mb-3"
                                                             id="reply-title">Datos del Organizador </h4>
@@ -397,6 +405,7 @@
 <script src="{{ asset('vendor/sweetalert2/dist/sweetalert2.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('vendor/datatables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('js/dashboard/eventosDetails.js') }}" type="text/javascript"></script>
+{{-- <script src="{{ asset('vendor/carrusel/dist/owl.carousel.js') }}"></script> --}}
 <script>
     $(document).ready(function() {
         var detalle = "{{ $detalle }}";
@@ -406,6 +415,52 @@
         } else {            
             $('#invitados-tab').tab('show');
         }
+        jQuery(".owl-carousel").owlCarousel({
+                loop: true,
+                autoplay: true,
+                margin: 20,
+                nav: true,
+                rtl: true,
+                dots: true,
+                autoHeight: true,
+                navText: [
+                    "<i class='fas fa-chevron-left'></i>",
+                    "<i class='fas fa-chevron-right'></i>"
+                ],
+                responsive: {
+                    0: {
+                        items: 1,
+                    },
+                    450: {
+                        items: 1,
+                    },
+                    600: {
+                        items: 1,
+                    },
+                    991: {
+                        items: 1,
+                    },
+
+                    1200: {
+                        items: 1,
+                    },
+                    1601: {
+                        items: 1,
+                    },
+                },
+
+        });
+        let isPaused = false;
+
+            $('.owl-carousel').on('click', '.owl-item', function() {
+                if (isPaused) {
+                    $('.owl-carousel').trigger('play.owl.autoplay');
+                    isPaused = false;
+                } else {
+                    $('.owl-carousel').trigger('stop.owl.autoplay');
+                    isPaused = true;
+                }
+            });
     });
 </script>
 @endsection

@@ -187,13 +187,18 @@ function mostrarDocumentos() {
         let base64Data = imagen.imagen_base64;
         let formato = imagen.formato;
         let prefix = setPrefix(formato);
-        let formattedData = `${prefix}${base64Data}`;
 
         let html2;
-        if (formato === "application/pdf") {
-            html2 = ` <object class="img-fluid" data="${formattedData}" type="application/pdf" style="height: 200px !important; object-fit: cover;"></object>`;
+        let url = imagen.url;
+        if (formato === "application/pdf" && url != null) {
+            html2 = ` <img class="img-fluid" id="preview${i + 1}"
+            src="${url}" alt="">`;
+        } else if (formato === "application/pdf" && url == null) {
+            html2 = ` <object class="img-fluid" data="${prefix}${base64Data}" type="application/pdf" 
+            style="height: 200px !important; object-fit: cover;"></object>`;
         } else {
-            html2 = `<img class="img-fluid" id="preview${i + 1}" 
+            let formattedData = `${prefix}${base64Data}`;
+            html2 = `<img class="img-fluid" id="preview${i + 1}"
             src="${formattedData}" alt="">`;
         }
 
@@ -227,15 +232,21 @@ function mostrarImagenesMenu() {
     name_menu_uploaded.innerHTML = "";
     input_file_menu.files = null;
     let dt = new DataTransfer();
+
     arrayFilesImagenesMenu.forEach(function (imagen, i) {
         let base64Data = imagen.imagen_base64;
         let formato = imagen.formato;
         let prefix = setPrefix(formato);
         let formattedData = `${prefix}${base64Data}`;
-
         let html2;
-        if (formato === "application/pdf") {
-            html2 = ` <object class="img-fluid" data="${formattedData}" type="application/pdf" style="height: 200px !important; object-fit: cover;"></object>`;
+        let url = imagen.url;
+        if (formato === "application/pdf" && url != null) {
+            html2 = ` <img class="img-fluid" id="preview${
+                i + 1
+            }" src="${url}" alt="" style="height: 200px !important;">`;
+        } else if (formato === "application/pdf" && url == null) {
+            html2 = ` <object class="img-fluid" data="${formattedData}" type="application/pdf" 
+            style="height: 200px !important; object-fit: cover;"></object>`;
         } else {
             html2 = `<img class="img-fluid" id="preview${
                 i + 1
@@ -271,6 +282,7 @@ function mostrarImagenesMenu() {
             '<br><span class="badge badge-pill badge-primary">' +
             imagen.nombre +
             "</span>";
+
         if (imagen) {
             dt.items.add(
                 new File([formattedData], imagen.nombre, {
@@ -497,6 +509,7 @@ btnGuardar.on("click", function () {
                             `files[${index}][size]`,
                             file.size.toString()
                         );
+                        data.append(`files[${index}][url]`, file.url);
                     });
                 });
                 await Promise.all(filePromises);
@@ -522,6 +535,7 @@ btnGuardar.on("click", function () {
                                 `files_menu[${index}][size]`,
                                 file.size.toString()
                             );
+                            data.append(`files_menu[${index}][url]`, file.url);
                         });
                     }
                 );
@@ -621,131 +635,146 @@ $("#listDocumentos").on("click", ".delete-button", function () {
 });
 
 document.querySelector("#files").addEventListener("change", function (e) {
-    var file = this.files[this.files.length - 1]; // Obtener el último archivo seleccionado
-    var fileName = file.name;
-    let formato = file.type;
+    var file = this.files[this.files.length - 1];
 
-    // verificamos que el tamaño del archivo no sea mayor a 16MB
-    if (file.size > 16777216) {
-        SwalShowMessage(
-            "warning",
-            "¡Advertencia!",
-            "El archivo " + fileName + " es demasiado grande."
-        );
-        return false;
-    }
-    // verificamos que las extensiones del archivo sean solo tipo imagen
-    var extensiones_permitidas = new Array(
-        ".png",
-        ".jpg",
-        ".jpeg",
-        ".gif",
-        ".pdf"
-    );
-    var permitida = false;
-    for (var i = 0; i < extensiones_permitidas.length; i++) {
-        if (fileName.toLowerCase().endsWith(extensiones_permitidas[i])) {
-            permitida = true;
-            break;
+    nuevoDocumento(file, e);
+    async function nuevoDocumento(archivo, e) {
+        var fileName = archivo.name;
+        let formato = archivo.type;
+
+        // verificamos que el tamaño del archivo no sea mayor a 16MB
+        if (archivo.size > 16777216) {
+            SwalShowMessage(
+                "warning",
+                "¡Advertencia!",
+                "El archivo " + fileName + " es demasiado grande."
+            );
+            return false;
         }
-    }
-    if (!permitida) {
-        SwalShowMessage(
-            "warning",
-            "¡Advertencia!",
-            "El archivo " + fileName + " tiene una extensión no permitida."
+        // verificamos que las extensiones del archivo sean solo tipo imagen
+        var extensiones_permitidas = new Array(
+            ".png",
+            ".jpg",
+            ".jpeg",
+            ".gif",
+            ".pdf"
         );
-        $("#files").val("");
-        return false;
-    }
+        var permitida = false;
+        for (var i = 0; i < extensiones_permitidas.length; i++) {
+            if (fileName.toLowerCase().endsWith(extensiones_permitidas[i])) {
+                permitida = true;
+                break;
+            }
+        }
+        if (!permitida) {
+            SwalShowMessage(
+                "warning",
+                "¡Advertencia!",
+                "El archivo " + fileName + " tiene una extensión no permitida."
+            );
+            $("#files").val("");
+            return false;
+        }
 
-    if (
-        arrayImagenesFiles.filter((imagen) => imagen.nombre == fileName)
-            .length == 0
-    ) {
-        filesArray.push(file);
+        if (
+            arrayImagenesFiles.filter((imagen) => imagen.nombre == fileName)
+                .length == 0
+        ) {
+            filesArray.push(archivo);
+
+            if (invitacion_edit == null) {
+                arrayImagenesFiles.push({
+                    nombre: fileName,
+                });
+            }
+        } else {
+            SwalShowMessage(
+                "warning",
+                "¡Advertencia!",
+                "El archivo " + fileName + " ya ha sido seleccionado."
+            );
+            return false;
+        }
 
         if (invitacion_edit == null) {
-            arrayImagenesFiles.push({
-                nombre: fileName,
-            });
-        }
-    } else {
-        SwalShowMessage(
-            "warning",
-            "¡Advertencia!",
-            "El archivo " + fileName + " ya ha sido seleccionado."
-        );
-        return false;
-    }
-
-    if (invitacion_edit == null) {
-        let html2;
-        if (formato === "application/pdf") {
-            html2 = ` <object class="img-fluid" id ="preview${
-                arrayImagenesFiles.length - 1
-            }"  data="" type="application/pdf" style="height: 200px !important; object-fit: cover;"></object>`;
-        } else {
-            html2 = `<img class="img-fluid" id="preview${
-                arrayImagenesFiles.length - 1
-            }" alt="">`;
-        }
-
-        let html = `
-        <div class="col-xl-3 col-lg-6 col-sm-6" id="file${
-            arrayImagenesFiles.length - 1
-        }">
-            <div class="card">
-                <div class="card-body">
-                    <div class="new-arrival-product">
-                        <div class="new-arrivals-img-contnent">
-                            ${html2}                            
-                        </div>
-                        <div class="new-arrival-content text-center mt-3">
-                            <h4>${fileName}</h4> 
-                            <button class="delete-button" data-index="${
-                                arrayImagenesFiles.length - 1
-                            }">Eliminar</button>                           
+            let html2;
+            if (formato === "application/pdf") {
+                let fileInput = document.getElementById("files");
+                let url = await pdfToImage(fileInput);
+                if (url.length > 0) {
+                    url = url[0];
+                }
+                filesArray[filesArray.length - 1].url = url;
+                html2 = ` <img class="img-fluid" id="preview${
+                    arrayImagenesFiles.length - 1
+                }" src="${url}" alt="" style="height: 200px !important;">`;
+            } else {
+                filesArray[filesArray.length - 1].url = "";
+                html2 = `<img class="img-fluid" id="preview${
+                    arrayImagenesFiles.length - 1
+                }" alt="">`;
+            }
+            let html = `
+                <div class="col-xl-3 col-lg-6 col-sm-6" 
+                    id="file${arrayImagenesFiles.length - 1}">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="new-arrival-product">
+                                <div class="new-arrivals-img-contnent">
+                                    ${html2}                            
+                                </div>
+                                <div class="new-arrival-content text-center mt-3">
+                                    <h4>${fileName}</h4> 
+                                    <button class="delete-button" data-index="${
+                                        arrayImagenesFiles.length - 1
+                                    }">Eliminar</button>                           
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        `;
-        $("#listDocumentos").append(html);
+                </div>`;
+            $("#listDocumentos").append(html);
 
-        if (formato === "application/pdf") {
-            let reader = new FileReader();
-            reader.onload = function (e) {
-                document
-                    .querySelector(`#preview${arrayImagenesFiles.length - 1}`)
-                    .setAttribute("data", e.target.result);
-            };
-            reader.readAsDataURL(file);
+            if (formato != "application/pdf") {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    document
+                        .querySelector(
+                            `#preview${arrayImagenesFiles.length - 1}`
+                        )
+                        .setAttribute("src", e.target.result);
+                };
+                reader.readAsDataURL(archivo);
+            }
         } else {
-            let reader = new FileReader();
-            reader.onload = function (e) {
-                document
-                    .querySelector(`#preview${arrayImagenesFiles.length - 1}`)
-                    .setAttribute("src", e.target.result);
-            };
-            reader.readAsDataURL(file);
+            agregarDocumento("imagen");
         }
-    } else {
-        agregarDocumento("imagen");
     }
 });
 
 async function agregarDocumento(tipo_imagen) {
-    let data = new FormData();
     let documento = "";
-    data.append("invitacion_id", invitacion_edit.id);
+    let fileInput = "";
+    let tipo = "";
     if (tipo_imagen == "imagen") {
         documento = document.querySelector("#files").files[0];
+        fileInput = document.getElementById("files");
+        tipo = documento.type;
     } else {
         documento = document.querySelector("#input_file_menu").files[0];
+        fileInput = document.getElementById("input_file_menu");
+        tipo = documento.type;
     }
-    data = await appendDocumentoToFormData(documento, data, tipo_imagen);
+    let url = "";
+    if (tipo === "application/pdf") {
+        url = await pdfToImage(fileInput);
+        if (url.length > 0) {
+            url = url[0];
+        }
+    }
+    let data = new FormData();
+    data.append("invitacion_id", invitacion_edit.id);
+    data = await appendDocumentoToFormData(documento, data, tipo_imagen, url);
 
     const URL = "/invitaciones/agregarDocumento";
     try {
@@ -791,12 +820,13 @@ async function agregarDocumento(tipo_imagen) {
     }
 }
 
-async function appendDocumentoToFormData(documento, data, tipo_imagen) {
+async function appendDocumentoToFormData(documento, data, tipo_imagen, url) {
     const base64File = await getBase64(documento);
     data.append("documento[base64]", base64File);
     data.append("documento[name]", documento.name);
     data.append("documento[type]", documento.type);
     data.append("documento[size]", documento.size.toString());
+    data.append("documento[url]", url);
     data.append("tipo_imagen", tipo_imagen);
     return data;
 }
@@ -850,7 +880,7 @@ $("#listImagenesMenu").on("click", ".delete-button", function () {
     });
 });
 
-function ShowNameMenuUploaded(e) {
+async function ShowNameMenuUploaded(e) {
     var fileName = "";
     var file;
     var nombre_archivo = "";
@@ -924,10 +954,16 @@ function ShowNameMenuUploaded(e) {
     if (invitacion_edit == null) {
         let html2;
         if (formato === "application/pdf") {
-            html2 = ` <object class="img-fluid" id ="preview2${
+            let url = await pdfToImage(input_file_menu);
+            if (url.length > 0) {
+                url = url[0];
+            }
+            html2 = ` <img class="img-fluid" id="preview2${
                 arrayNombresImagenesMenu.length - 1
-            }"  data="" type="application/pdf" style="height: 200px !important; object-fit: cover;"></object>`;
+            }" src="${url}" alt="" style="height: 200px !important;">`;
+            arrayFilesImagenesMenu[arrayFilesImagenesMenu.length - 1].url = url;
         } else {
+            arrayFilesImagenesMenu[arrayFilesImagenesMenu.length - 1].url = "";
             html2 = `<img class="img-fluid" id="preview2${
                 arrayNombresImagenesMenu.length - 1
             }" alt="">`;
@@ -955,17 +991,7 @@ function ShowNameMenuUploaded(e) {
             </div>`;
         $("#listImagenesMenu").append(html);
 
-        if (formato === "application/pdf") {
-            let reader = new FileReader();
-            reader.onload = function (e) {
-                document
-                    .querySelector(
-                        `#preview2${arrayNombresImagenesMenu.length - 1}`
-                    )
-                    .setAttribute("data", e.target.result);
-            };
-            reader.readAsDataURL(file);
-        } else {
+        if (formato != "application/pdf") {
             let reader = new FileReader();
             reader.onload = function (e) {
                 document
@@ -989,4 +1015,39 @@ function showLoader() {
 }
 function hideLoader() {
     $("#loader_page").hide();
+}
+
+async function pdfToImage(fileInput) {
+    var myHeaders = new Headers();
+    myHeaders.append(
+        "Authorization",
+        "Bearer 15|50kBFXqp1lZo7hfYo5TKooRFi5HkorOLdIvkkiUn"
+    );
+
+    var formdata = new FormData();
+    formdata.append("carpeta", "1vS2td1goublvEU7Y5R7ILZNFhvqKWuP0");
+    formdata.append("pdf", fileInput.files[0], "[PROXY]");
+
+    var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: formdata,
+        redirect: "follow",
+    };
+    showLoader();
+
+    let response = await fetch(
+        "https://storage.worki.es/api/convertirPdfToImg",
+        requestOptions
+    )
+        .then((response) => response.json())
+        .then((result) => {
+            let nombres_archivos = result.map((item) => item.name);
+            return nombres_archivos;
+        })
+        .catch((error) => console.log("error", error))
+        .finally(() => {
+            hideLoader();
+        });
+    return response;
 }

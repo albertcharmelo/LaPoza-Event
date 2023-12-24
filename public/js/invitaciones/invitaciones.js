@@ -10,6 +10,7 @@ const datosSonRequeridos = $("#datos_requeridos");
 let telefono = document.getElementById("telefono");
 let patos_seleccionados = [];
 let currentStep = 1;
+const carouselMenu = $("#carouselMenu");
 
 const maskInputOptions = {
     mask: "000-00-00-00",
@@ -155,11 +156,38 @@ const nextStep = async () => {
             currentStep++;
             BtnNext.text("Acepto");
             scrollWindowsTop();
+
+            let html = "";
+            Object.values(imagenesDelMenus).forEach((imagen) => {
+                if (imagen.pivot.tipo_imagen == "menu") {
+                    let itemHtml = `<div class="item">`;
+
+                    if (
+                        imagen.formato == "application/pdf" &&
+                        imagen.url == null
+                    ) {
+                        itemHtml += `<iframe src="data:application/pdf;base64,${imagen.imagen_base64}"></iframe>`;
+                    } else if (
+                        imagen.formato == "application/pdf" &&
+                        imagen.url != null
+                    ) {
+                        itemHtml += `<img src="${imagen.url}">`;
+                    } else {
+                        itemHtml += `<img src="data:image/png;base64,${imagen.imagen_base64}">`;
+                    }
+                    itemHtml += `</div>`;
+                    html += itemHtml;
+                }
+            });
+            carouselMenu.html(html);
+            iniciarCarousel();
+
             break;
         case 2:
             const platos = verificarPlatos();
             if (platos !== undefined) {
                 await platosBox.hide("fast");
+                await carouselMenu.hide("fast");
                 await datosBox.show("slow");
                 currentStep++;
                 BtnNext.text("Enviar");
@@ -175,6 +203,57 @@ const nextStep = async () => {
             break;
     }
 };
+
+function iniciarCarousel() {
+    // como ya habia un primer carousel inicializado, lo destruyo
+    jQuery(".owl-carousel").owlCarousel("destroy");
+    // inicializo el nuevo carousel
+    jQuery(".owl-carousel").owlCarousel({
+        loop: true,
+        autoplay: true,
+        margin: 20,
+        nav: true,
+        rtl: true,
+        dots: true,
+        autoHeight: true,
+        navText: [
+            "<i class='fas fa-chevron-left'></i>",
+            "<i class='fas fa-chevron-right'></i>",
+        ],
+        responsive: {
+            0: {
+                items: 1,
+            },
+            450: {
+                items: 1,
+            },
+            600: {
+                items: 1,
+            },
+            991: {
+                items: 1,
+            },
+
+            1200: {
+                items: 1,
+            },
+            1601: {
+                items: 1,
+            },
+        },
+    });
+    let isPaused = false;
+
+    $(".owl-carousel").on("click", ".owl-item", function () {
+        if (isPaused) {
+            $(".owl-carousel").trigger("play.owl.autoplay");
+            isPaused = false;
+        } else {
+            $(".owl-carousel").trigger("stop.owl.autoplay");
+            isPaused = true;
+        }
+    });
+}
 
 function selectPlato(e) {
     // marcar el input checkbox hijo con clase opcion_plato

@@ -171,7 +171,7 @@ $action = DzHelper::action();
     @endforeach
     @endif
     <script src="{{ asset('js/deznav-init-ligth.js') }}"></script>
-
+    @include('layouts.globalJs')
     <script src="{{ asset('vendor/toastr/js/toastr.min.js') }}"></script>
     <script src="{{ asset('js/plugins-init/toastr-init.js') }}"></script>
     <script src="{{ asset('js/utils.js') }}"></script>
