@@ -114,16 +114,17 @@ class InvitacionesController extends Controller
                     $formato = $file['type'];
                     $size = $file['size'];
                     $url = $file['url'];
+                    $pag = $file['pag'];
                     $imagen_base64 = "";
                     if ($url == null) {
                         $imagen_base64 = substr($file['base64'], strpos($file['base64'], ",") + 1);
-                    }                   
+                    }
 
                     $imagen = Imagen::create([
                         'nombre' => $nombre,
                         'formato' => $formato,
                         'size' => $size,
-                        'imagen_base64' => $imagen_base64,
+                        'imagen_base64' => $imagen_base64 ? $imagen_base64 : $pag,
                         'url' => $url,
                         'creado_por' => $creado_por,
                     ]);
@@ -139,13 +140,14 @@ class InvitacionesController extends Controller
                 }
             }
 
-            if ($request->input('files_menu')) {
-                foreach ($request->input('files_menu') as $index => $file) {
+            if ($request->input('filesMenu')) {
+                foreach ($request->input('filesMenu') as $index => $file) {
                     $nombre = $file['name'];
                     $formato = $file['type'];
                     $size = $file['size'];
                     $imagen_base64 = "";
                     $url = $file['url'];
+                    $pag = $file['pag'];
                     if ($url == null) {
                         $imagen_base64 = substr($file['base64'], strpos($file['base64'], ",") + 1);
                     }
@@ -153,7 +155,7 @@ class InvitacionesController extends Controller
                         'nombre' => $nombre,
                         'formato' => $formato,
                         'size' => $size,
-                        'imagen_base64' => $imagen_base64,
+                        'imagen_base64' => $imagen_base64 ? $imagen_base64 : $pag,
                         'url' => $url,
                         'creado_por' => $creado_por,
                     ]);
@@ -285,55 +287,53 @@ class InvitacionesController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'invitacion_id' => 'required | string'
+                'invitacion_id' => 'required | string',
+                'tipo_imagen' => 'required | string'
             ]);
-            $tipo_imagen = $request->input('tipo_imagen');
-            $url = $request->input('documento.url');
-            $imagen = "";           
-            if ($url == null) {
-               $imagen = $request->input('documento.base64');
-               $imagen = substr($imagen, strpos($imagen, ",") + 1);
-            }
-            // $sizeInMb = (strlen($imagen) * 3 / 4) / (1024 * 1024);
-            // if ($sizeInMb > 16) {
-            //     return response()->json([
-            //         'message' => $tipo_imagen == 'menu' ? 'El tamaño de la imagen no puede ser mayor a 16MB' : 'El tamaño del documento no puede ser mayor a 16MB',
-            //     ], 400);
-            // }
-
             $creado_por = auth()->user()->id;
+            $tipo_imagen = $validatedData['tipo_imagen'];
 
-            $nombre = $request->input('documento.name');
-            $formato = $request->input('documento.type');
-            $size = $request->input('documento.size');
-            $invitacion_imagenes = [];
-
-            DB::beginTransaction();
-
-            $imagen = Imagen::create([
-                'nombre' => $nombre,
-                'formato' => $formato,
-                'size' => $size,
-                'imagen_base64' => $imagen,
-                'url' => $url,
-                'creado_por' => $creado_por,
-            ]);
-            $invitacion_imagenes[] = [
-                'id' => (string) Str::uuid(),
-                'invitacion_id' => $validatedData['invitacion_id'],
-                'imagen_id' => $imagen->id,
-                'tipo_imagen' => $tipo_imagen, // 'imagen' o 'menu                
-                'creado_por' => $creado_por,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
+            if ($request->input('documento')) {
+                foreach ($request->input('documento') as $index => $file) {
+                    $nombre = $file['name'];
+                    $formato = $file['type'];
+                    $size = $file['size'];
+                    $imagen = "";
+                    $pag = $file['pag'];
+                    $url = $file['url'];                    
+                    if ($url == null) {
+                        $imagen = substr($file['base64'], strpos($file['base64'], ",") + 1);
+                    }
+                    $imagen = Imagen::create([
+                        'nombre' => $nombre,
+                        'formato' => $formato,
+                        'size' => $size,
+                        'imagen_base64' => $imagen ? $imagen : $pag,
+                        'url' => $url,
+                        'creado_por' => $creado_por,
+                    ]);
+                    $invitacion_imagenes[] = [
+                        'id' => (string) Str::uuid(),
+                        'invitacion_id' => $validatedData['invitacion_id'],
+                        'imagen_id' => $imagen->id,
+                        'tipo_imagen' => $validatedData['tipo_imagen'],
+                        'creado_por' => $creado_por,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+            }
             DB::table('invitaciones_imagenes')->insert($invitacion_imagenes);
+
+            $imagenes = Invitacion::where('id', $validatedData['invitacion_id'])
+                ->with('imagenes')
+                ->first();
 
             DB::commit();
 
             return response()->json([
                 'message' => $tipo_imagen == 'menu' ? 'Imagen del menu agregada correctamente' : 'Documento agregado correctamente',
-                'imagen' => $imagen,
+                'imagenes' => $imagenes->imagenes,
                 'status' => 'success'
             ], 201);
         } catch (\Exception $e) {
