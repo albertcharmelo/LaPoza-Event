@@ -16,7 +16,7 @@ $action = DzHelper::action();
     <meta name="robots" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="@yield('page_description', $page_description ?? '')" />
-    <meta property="og:title" content="Lezato : Restaurant Admin Laravel Template" />
+    <meta property="og:title" content="Eventos LaPoza" />
     <meta property="og:description" content="{{ config('dz.name') }} | @yield('title', $page_title ?? '')" />
     <meta name="format-detection" content="telephone=no">
 
@@ -176,6 +176,9 @@ $action = DzHelper::action();
     <script src="{{ asset('js/plugins-init/toastr-init.js') }}"></script>
     <script src="{{ asset('js/utils.js') }}"></script>
     @yield('scripts')
+
+
+
 </body>
 
 </html>
