@@ -11,6 +11,7 @@
 <div class="container-fluid">
     <input type="text" class="d-none" readonly id="evento_id" value="{{ $evento->id }}">
     <input type="text" class="d-none" readonly id="tipo_menu" value="{{ $evento->invitacion->tipo_menu }}">
+    <input type="text" class="d-none" readonly id="fecha_evento" value="{{ $evento->fecha }}">    
     <div class="row page-titles">
         <ol class="breadcrumb">
             <li class="breadcrumb-item active"><a href="{{ url('/') }}">Eventos</a></li>
@@ -148,7 +149,7 @@
                                                             <th>Teléfono</th>
                                                             <th class="text-center">N° Comensales</th>
                                                             <th class="text-center">Asistencia</th>
-                                                            <th class="text-center">Opción</th>
+                                                            <th class="text-center">Opciones</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -160,7 +161,7 @@
                                                             <th>Teléfono</th>
                                                             <th class="text-center">N° Comensales</th>
                                                             <th class="text-center">Asistencia</th>
-                                                            <th class="text-center">Opción</th>
+                                                            <th class="text-center">Opciones</th>
                                                         </tr>
                                                     </tfoot>
                                                 </table>
