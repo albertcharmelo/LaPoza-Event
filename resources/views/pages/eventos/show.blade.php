@@ -148,6 +148,7 @@
                                                             <th>Teléfono</th>
                                                             <th class="text-center">N° Comensales</th>
                                                             <th class="text-center">Asistencia</th>
+                                                            <th class="text-center">Opción</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -159,6 +160,7 @@
                                                             <th>Teléfono</th>
                                                             <th class="text-center">N° Comensales</th>
                                                             <th class="text-center">Asistencia</th>
+                                                            <th class="text-center">Opción</th>
                                                         </tr>
                                                     </tfoot>
                                                 </table>
@@ -170,8 +172,7 @@
                                         <div class="col-12 p-0" id="mobile_device_table">
                                         </div>
                                     </div>
-
-
+                                    @include('pages.eventos.modal_EditarInvitado')
                                 </div>
                                 <div id="about-me" class="tab-pane fade">
                                     <div class="col-xl-12">
