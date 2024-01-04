@@ -2,6 +2,7 @@
     "use strict";
     const evento_id = $("#evento_id").val();
     const tipo_menu = $("#tipo_menu").val();
+    const fecha_evento = $("#fecha_evento").val();
     var nombre_plato = $("#nombre_plato");
     let resumenPlatos = $("#resumenPlatos");
     resumenPlatos.hide();
@@ -84,8 +85,17 @@
                 data: "id",
                 className: "dt-body-center",
                 render: function (data) {
-                    return `<button type="button" class="btn btn-danger shadow btn-xs sharp" onclick="eliminarInvitado('${data}')" data-toggle="tooltip" data-placement="top" title="Eliminar invitado"><i class="fa fa-trash"></i></button>
-                            <button type="button" class="btn btn-info shadow btn-xs sharp" onclick="editarInvitado('${data}')" data-toggle="tooltip" data-placement="top" title="Editar invitado"><i class="fa fa-edit"></i></button>`;
+                    var today = new Date();
+                    var eventDate = new Date(fecha_evento);
+                    var timeDiff = Math.abs(eventDate.getTime() - today.getTime());
+                    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));                     
+            
+                    if(diffDays > 4) {
+                        return `<button type="button" class="btn btn-danger shadow btn-xs sharp" onclick="eliminarInvitado('${data}')" title="Eliminar invitado"><i class="fa fa-trash"></i></button>
+                                <button type="button" class="btn btn-info shadow btn-xs sharp" onclick="editarInvitado('${data}')" title="Editar invitado"><i class="fa fa-edit"></i></button>`;
+                    } else {
+                        return '';
+                    }
                 },
             },
         ],
@@ -100,14 +110,29 @@
     });
 
     function showMobile_device_table(element) {
+        let today = new Date();
+        let eventDate = new Date(fecha_evento);
+        let timeDiff = Math.abs(eventDate.getTime() - today.getTime());
+        let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));        
+        let htmlOptionsButton = '';
+        if (diffDays > 4) {
+            htmlOptionsButton = `<div class="btn-group" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-danger shadow btn-xs sharp" onclick="eliminarInvitado('${element.id}')" title="Eliminar invitado" style="margin-right: 5px;"><i class="fa fa-trash"></i></button>
+                                    <button type="button" class="btn btn-info shadow btn-xs sharp" onclick="editarInvitado('${element.id}')" title="Editar invitado"><i class="fa fa-edit"></i></button>
+                                </div>`;
+        }
+
         let html = `<div class="card-movil">
                         <div class="card-body" style="padding: 0.5rem !important;">
-                            <div class="row">                    
+                            <div class="row">
                                 <div class="col-6">
-                                    <p class="card-text mb-0"><strong>Nombre:</strong> ${element.nombre}</p>
-                                    <p class="card-text mb-0"><strong>Teléfono:</strong> ${element.telefono}</p>
-                                    <p class="card-text mb-0"><strong>Número de comensales:</strong> ${element.numero_personas}</p>
-                                    <p class="card-text mb-0"><strong>Asistencia confirmada:</strong> ${element.asistencia_confirmada}</p>
+                                    <div class="card-text mb-0" onclick="window.location.href = '/qrcode/invitacion/${element.id}'" style="cursor: pointer;">
+                                        <p class="mb-0 mt-0">Nombre: <strong>${element.nombre}</strong></p>                                  
+                                        <p class="mb-0 mt-0">Teléfono: <strong>${element.telefono}</strong></p>
+                                        <p class="mb-0 mt-0">Número de comensales: <strong>${element.numero_personas}</strong></p>
+                                        <p class="mb-0 mt-0">Asistencia confirmada: <strong>${element.asistencia_confirmada}</strong></p>
+                                    </div>                                    
+                                    ${htmlOptionsButton}
                                 </div>
                             </div>
                         </div>
