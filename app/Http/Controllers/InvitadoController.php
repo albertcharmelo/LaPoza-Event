@@ -129,4 +129,72 @@ class InvitadoController extends Controller
             200
         );
     }
+
+    public function eliminarInvitado(Request $request)
+    {        
+        $validation = Validator::make($request->all(), [
+            'invitado_id' => 'required | string',
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json([
+                'message' => $validation->errors()->first()
+            ], 400);
+        }
+
+        $invitado = Invitado::find($request->invitado_id);
+        $invitado->delete();
+
+        return response()->json([
+            'message' => 'Invitado eliminado correctamente',
+            'status' => 'success'
+        ], 200);
+    }
+
+    public function getInvitado(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'invitado_id' => 'required | string',
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json([
+                'message' => $validation->errors()->first()
+            ], 400);
+        }
+
+        $invitado = Invitado::find($request->invitado_id);
+        return response()->json([
+            'invitado' => $invitado,
+            'status' => 'success'
+        ], 200);
+    }
+
+    public function updateInvitado(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'invitado_id' => 'required | string',
+            'nombre' => 'required | string'
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json([
+                'message' => $validation->errors()->first()
+            ], 400);
+        }
+
+        $invitado = Invitado::find($request->invitado_id);
+        if ($invitado) {
+            $invitado->nombre = $request->nombre;
+            $invitado->email = $request->email;
+            $invitado->telefono = $request->telefono;        
+            $invitado->observaciones = $request->observaciones;
+            $invitado->save();
+        }        
+
+        return response()->json([
+            'message' => 'Invitado actualizado correctamente',
+            'status' => 'success'
+        ], 200);
+    }
 }
