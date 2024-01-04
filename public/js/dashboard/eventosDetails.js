@@ -14,10 +14,7 @@
 
     var table = $("#invitadosTable").DataTable({
         createdRow: function (row, data) {
-            $(row).addClass("cursor-pointer");
-            $(row).on("click", function () {
-                window.location.href = "/qrcode/invitacion/" + data.id;
-            });
+            $(row).addClass("cursor-pointer");            
         },
         language: {
             paginate: {
@@ -55,19 +52,51 @@
             },
         },
         columns: [
-            { data: "nombre" },
-            { data: "telefono" },
-            { data: "numero_personas", className: "dt-body-center" },
+            {
+                data: "nombre",
+                render: function (data) {
+                    return `<span class="clickable-cell">${data}</span>`;
+                },
+            },
+            {
+                data: "telefono",
+                render: function (data) {
+                    return `<span class="clickable-cell">${data}</span>`;
+                },
+            },
+            {
+                data: "numero_personas",
+                className: "dt-body-center",
+                render: function (data) {
+                    return `<span class="clickable-cell">${data}</span>`;
+                },
+            },
             {
                 data: "asistencia_confirmada",
+                className: "dt-body-center",
                 render: function (data) {
                     var text = data === 1 ? "Activo" : "Inactivo";
                     var color = data === 1 ? "text-success" : "text-warning";
-                    return `<span class="${color}">${text}</span>`;
+                    return `<span class="clickable-cell ${color}">${text}</span>`;
                 },
+            },
+            {
+                data: "id",
                 className: "dt-body-center",
+                render: function (data) {
+                    return `<button type="button" class="btn btn-danger shadow btn-xs sharp" onclick="eliminarInvitado('${data}')" data-toggle="tooltip" data-placement="top" title="Eliminar invitado"><i class="fa fa-trash"></i></button>
+                            <button type="button" class="btn btn-info shadow btn-xs sharp" onclick="editarInvitado('${data}')" data-toggle="tooltip" data-placement="top" title="Editar invitado"><i class="fa fa-edit"></i></button>`;
+                },
             },
         ],
+    });
+
+    $(document).on("click", ".clickable-cell", function () {
+        var tr = $(this).closest("tr");
+        var row = table.row(tr);
+        var data = row.data();
+        var id = data.id;
+        window.location.href = "/qrcode/invitacion/" + id;
     });
 
     function showMobile_device_table(element) {
@@ -264,3 +293,169 @@ function showLoader() {
 function hideLoader() {
     $("#loader_page").hide();
 }
+
+function eliminarInvitado(id) {
+    Swal.fire({
+        title: "¿Estás seguro?",
+        text: "El invitado será eliminado",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Si, eliminar",
+        confirmButtonColor: "#fd683e",        
+        cancelButtonText: "Cancelar",
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                url: "/invitados/eliminar",
+                type: "POST",
+                data: {
+                    invitado_id: id,
+                },
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                beforeSend: function () {
+                    showLoader();
+                },
+                complete: function () {
+                    hideLoader();
+                },
+                success: function (response) {
+                    hideLoader();
+                    if (response.status == "success") {
+                        Swal.fire({
+                            title: "Exito!",
+                            text: "El invitado ha sido eliminado",
+                            icon: "success",
+                            confirmButtonText: "Aceptar",
+                        });
+                        $("#invitadosTable").DataTable().ajax.reload();
+                    } else {
+                        Swal.fire({
+                            title: "Error!",
+                            text: "No se ha podido eliminar el invitado",
+                            icon: "error",
+                            confirmButtonText: "Aceptar",
+                        });
+                    }
+                },
+                error: function (error) {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "No se ha podido eliminar el invitado",
+                        icon: "error",
+                        confirmButtonText: "Aceptar",
+                    });
+                },
+            });
+        }
+    });
+}
+
+function editarInvitado(id) {
+    $.ajax({
+        url: "/invitados/getInvitado",
+        type: "POST",
+        data: {
+            invitado_id: id,
+        },
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        beforeSend: function () {
+            showLoader();
+        },
+        complete: function () {
+            hideLoader();
+        },
+        success: function (response) {
+            hideLoader();
+            if (response.status == "success") {
+                showEditInvitado(response.invitado);
+            } else {
+                Swal.fire({
+                    title: "Error!",
+                    text: "No se ha podido obtener el invitado",
+                    icon: "error",
+                    confirmButtonText: "Aceptar",
+                });
+            }
+        },
+        error: function (error) {
+            Swal.fire({
+                title: "Error!",
+                text: "No se ha podido obtener el invitado",
+                icon: "error",
+                confirmButtonText: "Aceptar",
+            });
+        },
+    });
+}
+
+function showEditInvitado(invitado) {    
+    $("#editIdInv").val(invitado.id);
+    $("#editNombreInv").val(invitado.nombre);
+    $("#editTlfInv").val(invitado.telefono);
+    $("#editEmailInv").val(invitado.email);
+    $("#editObsInv").val(invitado.observaciones);
+    $("#editInvitado").modal("show");
+}
+
+$("#btnGuardarEdit").click(function () {
+    const id = $("#editIdInv").val();
+    const nombre = $("#editNombreInv").val();
+    const telefono = $("#editTlfInv").val();
+    const email = $("#editEmailInv").val();
+    const observaciones = $("#editObsInv").val();
+
+    $.ajax({
+        url: "/invitados/updateInvitado",
+        type: "POST",
+        data: {
+            invitado_id: id,
+            nombre: nombre,
+            telefono: telefono,
+            email: email,
+            observaciones: observaciones,
+        },
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        beforeSend: function () {
+            showLoader();
+        },
+        complete: function () {
+            hideLoader();
+        },
+        success: function (response) {
+            hideLoader();
+            if (response.status == "success") {
+                Swal.fire({
+                    title: "Exito!",
+                    text: "El invitado ha sido actualizado",
+                    icon: "success",
+                    confirmButtonText: "Aceptar",
+                });
+                $("#invitadosTable").DataTable().ajax.reload();
+                $("#editInvitado").modal("hide");
+            } else {
+                Swal.fire({
+                    title: "Error!",
+                    text: "No se ha podido actualizar el invitado",
+                    icon: "error",
+                    confirmButtonText: "Aceptar",
+                });
+            }
+        },
+        error: function (error) {
+            Swal.fire({
+                title: "Error!",
+                text: "No se ha podido actualizar el invitado",
+                icon: "error",
+                confirmButtonText: "Aceptar",
+            });
+        },
+    });
+});
