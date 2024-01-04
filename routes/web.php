@@ -55,6 +55,9 @@ Route::post('/invitados', [App\Http\Controllers\InvitadoController::class, 'getI
 Route::post('/invitados/create', [App\Http\Controllers\InvitadoController::class, 'create']);
 Route::get('/invitados/editarplato/{invitado}/{invitacion}', [App\Http\Controllers\InvitadoController::class, 'editarPlatoView'])->name('invitados.editarplato');
 Route::put('/invitados/editarPlato', [App\Http\Controllers\InvitadoController::class, 'editarPlatoUpdate']);
+Route::post('/invitados/eliminar', [App\Http\Controllers\InvitadoController::class, 'eliminarInvitado'])->middleware('auth');
+Route::post('/invitados/getInvitado', [App\Http\Controllers\InvitadoController::class, 'getInvitado'])->middleware('auth');
+Route::post('/invitados/updateInvitado', [App\Http\Controllers\InvitadoController::class, 'updateInvitado'])->middleware('auth');
 
 /* ------------------------------------------- INVITACIONES  ------------------------------------------ */
 Route::prefix('/invitaciones')->group(function () {
