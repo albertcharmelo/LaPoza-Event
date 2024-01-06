@@ -194,14 +194,19 @@
                                                     name="nombre_org" placeholder="introduzca el nombre aquí" required>
                                             </div>
                                         </div>
-                                        <div class="col-12 col-md-6 mb-2 mb-lg-0">
+                                        <div class="col-12 col-md-4 mb-2 mb-lg-0">
                                             <div class="form-group">
                                                 <label class="text-black font-w600 form-label" for="email_org">Email
                                                     del organizador</label>
                                                 <input class="form-control" type="email" id="email_org" name="email_org"
-                                                    placeholder="introduzca el email aquí" required>
+                                                    placeholder="introduzca el email aquí" required>                                              
                                             </div>
                                         </div>
+                                        <div class="col-12 col-md-2 mb-2 mb-lg-0" style="display: flex; align-items: flex-end;">
+                                            <button class="btn btn-primary mt-2" id="btn_agregar_email" style="height: 42px;">Agregar email</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 ml-auto justify-content-between" id="listEmails">
                                     </div>
                                     <div class="row">
                                         <div class="col-12 col-md-4 mb-2 mb-lg-0">
