@@ -68,6 +68,10 @@
     .borde-negro {
         border: 1px solid #b5b5cde3;
     }
+    .selectedBorder {
+       border: 2px solid #fd683e;
+       border-radius: 5px;
+    }
 </style>
 @endsectio
 
@@ -166,7 +170,7 @@
                                 <div onclick="selectPlato(event)" style="cursor: pointer"
                                     class="d-flex flex-wrap gap-3 align-items-center py-2 px-1 rounded {{ $alternating == 1 ? 'alternating_1' : 'alternating_2' }}">
                                     <input type="radio" name="{{ $pregunta }}" class="form-check-input opcion_plato"
-                                        value="{{ $plato_opcion }}" id="">
+                                        value="{{ $plato_opcion }}" id=""  id="" onclick="selectDivPlato(event)">
                                     <h4 onclick="selectPlatoH4(event)" class="text-center mb-0">{{ $plato_opcion_show }}
                                     </h4>
                                 </div>
