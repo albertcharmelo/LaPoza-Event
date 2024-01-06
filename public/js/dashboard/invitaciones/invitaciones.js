@@ -15,6 +15,10 @@ let telefono_organizador = document.getElementById("telefono_org");
 let fecha_evento = $("#fecha_evento");
 let input_file_menu = document.getElementById("input_file_menu");
 let name_menu_uploaded = document.getElementById("name_menu_uploaded");
+let btn_agregar_email = $("#btn_agregar_email");
+let listEmails = $("#listEmails");
+btn_agregar_email.prop("disabled", true);
+arrayEmailsOrg = [];
 
 let arrayNombresImagenes = [];
 let arrayFilesImagenes = [];
@@ -132,6 +136,7 @@ function iniciarDatos() {
 
     nombre_org.val("");
     email_org.val("");
+
     telefono_org.value = "";
     let fecha = new Date();
     let dia = fecha.getDate();
@@ -177,11 +182,39 @@ function iniciarDatos() {
             addPlateOptionsWithPlate();
         }
 
-        nombre_org.val(invitacion_edit.evento.nombre);
-        email_org.val(invitacion_edit.evento.email_organizador);
+        nombre_org.val(invitacion_edit.evento.nombre);        
         telefono_org.value = invitacion_edit.evento.telefono_organizador;
         fecha_evento.val(invitacion_edit.evento.fecha);
+        if (invitacion_edit.evento.email_organizador) {
+            var emails = invitacion_edit.evento.email_organizador;
+            // Si emails es una cadena, conviértela en una matriz con un solo elemento
+            if (emails[0] === '[') {
+                emails = JSON.parse(emails);
+            } else {
+                // Si no es un corchete, asumimos que es una cadena y la convertimos en una matriz con un solo elemento
+                emails = [emails];
+            }
+            showEmailsOrg(emails);
+        }        
     }
+}
+
+function showEmailsOrg(emails) {
+    listEmails.html("");
+    arrayEmailsOrg = [];
+    emails.forEach(function(email) {
+        let html = `<span class="badge badge-pill badge-primary mb-1" style="margin-right: 5px;">${email} <button class="close" style="padding-left: 5px; padding-right: 5px; border-radius: 50%;">&times;</button></span>`;
+        let badge = $(html);
+        badge.find('button').on('click', function() {
+            let index = arrayEmailsOrg.indexOf(email);
+            if (index > -1) {
+                arrayEmailsOrg.splice(index, 1);
+            }
+            badge.remove();
+        });
+        listEmails.append(badge);
+        arrayEmailsOrg.push(email);
+    }); 
 }
 
 function mostrarDocumentos() {
@@ -497,24 +530,15 @@ btnGuardar.on("click", function () {
             "Debe ingresar el nombre de organizador"
         );
         return false;
-    }
+    }   
 
-    if (email_org.val() == "") {
+    if (arrayEmailsOrg.length == 0) {
         SwalShowMessage(
             "warning",
             "¡Advertencia!",
-            "Debe ingresar el email de organizador"
+            "Debe ingresar al menos un email de organizador"
         );
         return false;
-    } else {
-        if (!validateEmail(email_org.val())) {
-            SwalShowMessage(
-                "warning",
-                "¡Advertencia!",
-                "Debe ingresar un email válido"
-            );
-            return false;
-        }
     }
 
     agregarInvitacion();
@@ -572,7 +596,7 @@ btnGuardar.on("click", function () {
         }
 
         data.append("nombre_org", nombre_org.val());
-        data.append("email_org", email_org.val());
+        data.append("email_org", JSON.stringify(arrayEmailsOrg));
         data.append("telefono_org", telefono_org.value);
         data.append("fecha_evento", fecha_evento.val());
         data.append("datos_requeridos", datos_requeridos.val());
@@ -1102,8 +1126,7 @@ async function ShowNameMenuUploaded(e) {
                     $("#listImagenesMenu").append(html);
                 });
             }
-        } else {
-            console.log("arrayNombresImagenesMenu.:", arrayNombresImagenesMenu);
+        } else {            
             arrayFilesImagenesMenu.push({
                 documento: documento,
                 url: "",
@@ -1195,3 +1218,35 @@ async function pdfToImage(fileInput) {
         });
     return response;
 }
+
+email_org.on("keyup", function () {
+    if (email_org.val() != "") {
+        if (!validateEmail(email_org.val())) {           
+            btn_agregar_email.prop("disabled", true);
+        } else {           
+            btn_agregar_email.prop("disabled", false);
+        }
+    } else {       
+        btn_agregar_email.prop("disabled", true);
+    }
+});
+
+
+btn_agregar_email.on("click", function () {
+    var email = email_org.val();    
+    if (email) {        
+        let html = `<span class="badge badge-pill badge-primary mb-1" style="margin-right: 5px;">${email} <button class="close" style="padding-left: 5px; padding-right: 5px; border-radius: 50%;">&times;</button></span>`;
+        let badge = $(html);
+        badge.find('button').on('click', function() {
+            let index = arrayEmailsOrg.indexOf(email);
+            if (index > -1) {
+                arrayEmailsOrg.splice(index, 1);
+            }
+            badge.remove();
+        });
+        listEmails.append(badge);
+        arrayEmailsOrg.push(email);
+        email_org.val("");        
+        btn_agregar_email.prop("disabled", true);
+    }
+});
