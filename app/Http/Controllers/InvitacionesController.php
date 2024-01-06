@@ -612,7 +612,17 @@ class InvitacionesController extends Controller
         $invitaciones = Invitacion::where('evento_id', $request->evento_id)->get()->first();
 
         $url_invitacion = url('/invitaciones/' . $invitaciones->id);
-        Mail::to($invitaciones->evento->email_organizador)->send(new SendUrlInvitacion($url_invitacion));
+        $emails = $invitaciones->evento->email_organizador;
+        // Si el primer carácter de emails es un corchete, asumimos que es una matriz en formato JSON
+        if ($emails[0] === '[') {
+            $emails = json_decode($emails);
+        } else {
+            // Si no es un corchete, asumimos que es una cadena y la convertimos en una matriz con un solo elemento
+            $emails = [$emails];
+        }
+        foreach ($emails as $email) {
+            Mail::to($email)->send(new SendUrlInvitacion($url_invitacion));
+        }        
 
         return response()->json([
             'message' => 'Invitacion enviada correctamente',
