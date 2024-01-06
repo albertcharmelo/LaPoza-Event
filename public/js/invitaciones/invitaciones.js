@@ -256,13 +256,47 @@ function iniciarCarousel() {
 }
 
 function selectPlato(e) {
+    // desmarcar todos los otros divs
+    $('.opcion_plato_box > div').removeClass('selectedBorder');
     // marcar el input checkbox hijo con clase opcion_plato
     $(e.target).children(".opcion_plato").prop("checked", true);
+    // agregar la clase 'selectedBorder' al div
+    $(e.target).addClass('selectedBorder');
 }
 
-function selectPlatoH4(e) {
-    // marcar el input checkbox hermano con clase opcion_plato
-    $(e.target).siblings(".opcion_plato").prop("checked", true);
+function selectPlatoH4(event) {
+    // Prevenir la propagación del evento para evitar que se active el evento del div padre
+    event.stopPropagation();
+
+    // Seleccionar el div padre
+    var divPadre = event.target.parentNode;
+
+    // Desmarcar todos los otros divs
+    var divs = document.querySelectorAll('.d-flex');
+    divs.forEach(function(div) {
+        div.classList.remove('selectedBorder');
+    });
+
+    // Marcar el input radio hermano con clase opcion_plato
+    var input = divPadre.querySelector(".opcion_plato");
+    input.checked = true;
+
+    // Agregar la clase 'selectedBorder' al div
+    divPadre.classList.add('selectedBorder');
+}
+
+function selectDivPlato(event) {
+    // Prevenir la propagación del evento para evitar que se active el evento del div padre
+    event.stopPropagation();
+
+    // Seleccionar el div padre
+    var divPadre = event.target.parentNode;
+
+    // desmarcar todos los otros divs
+    $('.opcion_plato_box > div').removeClass('selectedBorder');    
+
+    // Agregar la clase 'selectedBorder' al div
+    divPadre.classList.add('selectedBorder');
 }
 
 BtnNext.on("click", nextStep);
